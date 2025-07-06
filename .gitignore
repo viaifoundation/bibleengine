@@ -1,0 +1,47 @@
+# Sensitive configuration files
+dbconfig.php
+dbconfig_bak.php
+
+# Backup files
+*.bak
+*.backup*
+
+# Media files
+*.gif
+*.jpg
+*.png
+*.xcf
+
+# Verification files
+BingSiteAuth.xml
+baidu-verify-*.txt
+bd_*.txt
+tc_verify.txt
+
+# QR code files
+qrcode_*.jpg
+
+# Temporary and test files
+dbtest.php
+test13571.php
+monitor.html
+deleteGAPPSnotBefore20160807utc.html
+
+# Text data files
+books.txt
+books1.txt
+books2.txt
+
+# Configuration files (if sensitive)
+config.yaml
+
+# Common ignore patterns
+*.log
+*.cache
+.DS_Store
+Thumbs.db
+
+# Directories with potentially sensitive or generated content
+/cache/
+/logs/
+/tmp/
