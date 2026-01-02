@@ -1220,7 +1220,7 @@ if($mode=='QUERY' && $api)
 
 $count = 0;
 
-$english_title = $book_chinese[$book]  . " " . $book_enlish[$book];
+$english_title = ($book_chinese[$book] ?? '') . " " . ($book_english[$book] ?? '');
 $short_url_title = $short_url_base . "/" . $book_short[$book];
 if($chapter)
 {
@@ -1605,10 +1605,10 @@ if($index || !$echo_string)
 							$text_string  = str_replace($search_str, $replace_str, $text_string);
 							
 							$pattern = '/<WH(\w+)>/i';
-							$replacement = '<a href=http://bible.fhl.net/new/s.php?N=1&k=${1} target=_blank>&lt;H${1}&gt;</a>';
+							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							$pattern = '/<WG(\w+)>/i';
-							$replacement = '<a href=http://bible.fhl.net/new/s.php?N=0&k=${1} target=_blank>&lt;G${1}&gt;</a>';
+							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
 							
@@ -2028,12 +2028,12 @@ else echo "none";
 <option value=2 <?php if($multi_verse==3) echo "SELECTED";?>>3</option>
 </select>节 VV
 扩展 Ext<select name="e">
-<option value=0 <?php if($extend==0) echo "SELECTED";?>>0</option>
-<option value=1 <?php if(!$extend || $extend==1) echo "SELECTED";?>>1</option>
-<option value=2 <?php if($extend==2) echo "SELECTED";?>>2</option>
-<option value=3 <?php if($extend==3) echo "SELECTED";?>>3</option>
-<option value=4 <?php if($extend==4) echo "SELECTED";?>>4</option>
-<option value=5 <?php if($extend==3) echo "SELECTED";?>>5</option>
+<option value=0 <?php if(($extend ?? 1)==0) echo "SELECTED";?>>0</option>
+<option value=1 <?php if(!isset($extend) || ($extend ?? 1)==1) echo "SELECTED";?>>1</option>
+<option value=2 <?php if(($extend ?? 1)==2) echo "SELECTED";?>>2</option>
+<option value=3 <?php if(($extend ?? 1)==3) echo "SELECTED";?>>3</option>
+<option value=4 <?php if(($extend ?? 1)==4) echo "SELECTED";?>>4</option>
+<option value=5 <?php if(($extend ?? 1)==5) echo "SELECTED";?>>5</option>
 </select>节 VV
 <input type='checkbox' name='cn' value=1 <?php if($cn) echo 'checked'?>>简CN
 <input type='checkbox' name='tw' value=1 <?php if($tw) echo 'checked'?>>繁TW
@@ -2052,7 +2052,7 @@ else echo "none";
 <input type='checkbox' name='lcvs' value='lcvs' <?php if($cuvs) echo 'checked'?>>吕振中LCVS
 <input type='checkbox' name='ccsb' value='ccsb' <?php if($ccsb) echo 'checked'?>>思高本CCSB
 <?php if($portable) echo "<br/>"?>
-<input type='checkbox' name='clbs' value='clbs' <?php if($clbs) echo 'checked'?>>当代圣经CLBS 
+<input type='checkbox' name='clbs' value='clbs' <?php if(isset($clbs) && $clbs) echo 'checked'?>>当代圣经CLBS 
 <input type='checkbox' name='ckjvs' value='ckjvs' <?php if($ckjvs) echo 'checked'?>>简体钦定本CKJVS
 <input type='checkbox' name='ckjvt' value='ckjvt' <?php if($ckjvt) echo 'checked'?>>繁体钦定本CKJVT
 <br/>
@@ -2061,11 +2061,11 @@ else echo "none";
 <input type='checkbox' name='kjv1611' value='kjv1611' <?php if($kjv1611) echo 'checked'?>>1611钦定 KJV1611
 <input type='checkbox' name='bbe' value='bbe' <?php if($bbe) echo 'checked'?>>简易英文BBE
 <!-- 
-<input type='hidden' name='n' value=<?php if(!$books) echo $name ?>>
-<input type='hidden' name='c' value=<?php echo $chapter ?>>
-<input type='hidden' name='v' value=<?php echo $verse ?>>
-<input type='hidden' name='v2' value=<?php echo $verse2 ?>>
-<input type='hidden' name='mode' value=<?php echo $mode ?>> -->
+<input type='hidden' name='n' value="<?php echo htmlspecialchars($name ?? '') ?>">
+<input type='hidden' name='c' value="<?php echo (int)($chapter ?? 0) ?>">
+<input type='hidden' name='v' value="<?php echo (int)($verse ?? 0) ?>">
+<input type='hidden' name='v2' value="<?php echo (int)($verse2 ?? 0) ?>">
+<input type='hidden' name='mode' value="<?php echo htmlspecialchars($mode ?? '') ?>"> -->
 </div>
 </FORM> 
 </div></center>

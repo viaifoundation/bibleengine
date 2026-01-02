@@ -42,11 +42,7 @@ $logo= "/logos/logo_bible.png";
 
 
 <?php 
-if (file_exists(__DIR__ . "/header1.php")) {
-    include(__DIR__ . "/header1.php");
-} else if (file_exists(__DIR__ . "/header.php")) {
-    include(__DIR__ . "/header.php");
-}
+// Skip header includes since this file redirects
 ?>
 <script type="text/javascript" charset="gb2312-80"  >
 var momourl = " http://zhsw.org/bk";
@@ -57,11 +53,6 @@ var momotype = "0";
 <script type="text/javascript" src=" http://zhsw.org/bk/plugins/momo/momo.js"></script>
 </head>
 <body>
-<?php 
-if (file_exists(__DIR__ . "/header3.php")) {
-    include(__DIR__ . "/header3.php");
-}
-?>
 <h1 id="firstHeading" class="firstHeading">神同在圣经</h1>
 		<div id="bodyContent">
 			<h3 id="siteSub">出自Godwithus Wiki</h3>
