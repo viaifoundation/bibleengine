@@ -82,11 +82,14 @@ function search_wiki(string $q, int $p = 1): string {
                 throw new Exception("Error parsing search XML response.");
             }
 
-            $count = count($xml->query->search->p);
+            $search_results = $xml->query->search->p ?? null;
+            $count = is_countable($search_results) ? count($search_results) : 0;
             if ($count > 0) {
                 $txt .= "$q 共搜索到$count 个词条，请发送完整的词条标题查看内容：\n";
-                foreach ($xml->query->search->p as $result) {
-                    $txt .= "\n " . (string)$result['title'] . "\n";
+                if (is_countable($search_results)) {
+                    foreach ($search_results as $result) {
+                        $txt .= "\n " . (string)$result['title'] . "\n";
+                    }
                 }
 
                 if (strlen($txt) > 2000) {
@@ -259,26 +262,28 @@ foreach ($request_params as $key => $default) {
 }
 $_REQUEST['api'] = $_REQUEST['api'] ?: $_REQUEST['a'];
 
-$mode = $_REQUEST['mode'];
-$search = $_REQUEST['s'];
-$index = $_REQUEST['i'];
+$mode = $_REQUEST['mode'] ?? '';
+$search = $_REQUEST['s'] ?? '';
+$index = $_REQUEST['i'] ?? '';
 $chapter = (int)$_REQUEST['c'];
 $verse = (int)$_REQUEST['v'];
 $verse2 = (int)$_REQUEST['v2'];
-$books = $_REQUEST['b'];
-$options = $_REQUEST['o'];
+$books = $_REQUEST['b'] ?? '';
+$options = $_REQUEST['o'] ?? '';
 [$book, $book2] = array_pad(explode("-", $books, 2), 2, '');
-$name = $_REQUEST['n'];
-$portable = $_REQUEST['p'];
-$query = trim($_REQUEST['q']);
-$multi_verse = (int)$_REQUEST['m'];
+$book = $book ? (int)$book : 0;
+$book2 = $book2 ? (int)$book2 : 0;
+$name = $_REQUEST['n'] ?? '';
+$portable = $_REQUEST['p'] ?? '';
+$query = trim($_REQUEST['q'] ?? '');
+$multi_verse = (int)($_REQUEST['m'] ?? 0);
 $extend = isset($_REQUEST['e']) ? (int)$_REQUEST['e'] : 0;
 $search_table = 'bible_search';
-$language = strtolower($_REQUEST['l']) ?: 'cn';
-$wiki = $_REQUEST['w'];
-$api = $_REQUEST['api'];
+$language = strtolower($_REQUEST['l'] ?? 'cn') ?: 'cn';
+$wiki = $_REQUEST['w'] ?? '';
+$api = $_REQUEST['api'] ?? '';
 $script = 'index.php';
-$strongs = $_REQUEST['strongs'];
+$strongs = $_REQUEST['strongs'] ?? '';
 
 if (!$query) {
     require_once '/opt/www/bibleengine.com/votd.php';
@@ -387,8 +392,10 @@ if ($book == 100) {
 if (!$wiki && (!$chapter || $chapter < 1)) {
     $chapter = 1;
 }
-if ($chapter > $book_count[$book]) {
+if (isset($book_count[$book]) && $chapter > $book_count[$book]) {
     $chapter = $book_count[$book];
+} elseif (!isset($book_count[$book])) {
+    $chapter = 1;
 }
 if (!$verse) {
     $verse = 1;
@@ -610,10 +617,10 @@ if ($mode === 'QUERY' && $do_query) {
         $sql_where = " 1=1 ";
     }
 
-    if ($do_query) {
+    if ($do_query && !empty($queries) && isset($queries[0]) && $queries[0] !== '') {
         try {
             $sql = "SELECT book, chapter, verse FROM $search_table WHERE txt LIKE '%" . $db->real_escape_string($queries[0]) . "%'";
-            for ($i = 1; $i < $count; ++$i) {
+            for ($i = 1; $i < $count && isset($queries[$i]); ++$i) {
                 $sql .= " AND txt LIKE '%" . $db->real_escape_string($queries[$i]) . "%' ";
             }
             if ($sql_where) {
@@ -756,7 +763,13 @@ for ($i = 1; $i <= ($book_count[$book] ?? 0); $i++) {
     }
     $chapter_menu .= "\n";
     $wiki_chapter_menu .= "\n";
-    if (!$chapter && ($i % 5) == 0) {if ($index) {
+    if (!$chapter && ($i % 5) == 0) {
+        $chapter_menu .= "<br/>\n";
+        $wiki_chapter_menu .= "<br/>\n";
+    }
+}
+
+if ($index) {
     $sql = "SELECT bible_books.* ";
     $book_count = 0;
     foreach ($bible_books as $bible_book) {
@@ -790,7 +803,7 @@ for ($i = 1; $i <= ($book_count[$book] ?? 0); $i++) {
     }
     $sql .= ") ";
 } else {
-    if ($mode === 'QUERY' && !$echo_string || $mode === 'READ') {
+    if (($mode === 'QUERY' && !$echo_string) || $mode === 'READ') {
         $sql = "SELECT bible_books.* ";
         foreach ($bible_books as $bible_book) {
             if ($bible_book) {
@@ -850,10 +863,14 @@ if ($index || !$echo_string) {
             $txt_cn = $row['text_cuvs'] ?? '';
             $txt_en = $row['text_kjv'] ?? '';
 
-            foreach ($queries as $query_word) {
-                $txt_tw = str_replace($query_word, "<strong>$query_word</strong>", $txt_tw);
-                $txt_cn = str_replace($query_word, "<strong>$query_word</strong>", $txt_cn);
-                $txt_en = str_ireplace($query_word, "<strong>$query_word</strong>", $txt_en);
+            if (is_array($queries)) {
+                foreach ($queries as $query_word) {
+                    if (!empty($query_word)) {
+                        $txt_tw = str_replace($query_word, "<strong>$query_word</strong>", $txt_tw);
+                        $txt_cn = str_replace($query_word, "<strong>$query_word</strong>", $txt_cn);
+                        $txt_en = str_ireplace($query_word, "<strong>$query_word</strong>", $txt_en);
+                    }
+                }
             }
 
             if ($vid == $verse && ($mode === 'READ' || $mode === 'INDEX')) {
@@ -993,7 +1010,9 @@ if ($index || !$echo_string) {
 
 $text_tw = "<p>" . htmlspecialchars($text_tw) . " (繁體和合本 CUVT)</p>";
 $text_cn = "<p>" . htmlspecialchars($text_cn) . " (和合本 CUV)</p>";
-$text_en = "<p>" . htmlspecialchars($text_en) . " (King James Version KJV)</p>";if ($mode === 'QUERY' && in_array($api, ['plain', 'html'])) {
+$text_en = "<p>" . htmlspecialchars($text_en) . " (King James Version KJV)</p>";
+
+if ($mode === 'QUERY' && in_array($api, ['plain', 'html'])) {
     header('Content-Type: text/plain');
     echo htmlspecialchars($text_cmp);
     exit;

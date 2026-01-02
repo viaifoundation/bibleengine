@@ -1,7 +1,7 @@
 <?php
 require_once("config.php");
-$host = strtolower($_SERVER['HTTP_HOST']);	
-$https =strtolower($_SERVER['HTTPS']);	
+$host = isset($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : '';	
+$https = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : '';	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
