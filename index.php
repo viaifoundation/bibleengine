@@ -451,9 +451,9 @@ if ($query) {
                             $verses_temp = explode(",", $r2);
                             if ((int)$verses_temp[0]) {
                                 $verse = $verse2 = (int)$verses_temp[0];
-                                $sql_where .= " AND (verse BETWEEN (" . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend) . ")";
+                                $sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend);
                                 for ($iii = 1; $iii < count($verses_temp); $iii++) {
-                                    $sql_where .= " OR verse BETWEEN (" . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend) . ")";
+                                    $sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend);
                                     $verse = $verse2 = (int)$verses_temp[$iii];
                                 }
                                 $sql_where .= ") ";
@@ -521,9 +521,9 @@ if ($query) {
                         $verses_temp = explode(",", $r2);
                         if ((int)$verses_temp[0]) {
                             $verse = $verse2 = (int)$verses_temp[0];
-                            $sql_where .= " AND (verse BETWEEN (" . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend) . ")";
+                            $sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend);
                             for ($iii = 1; $iii < count($verses_temp); $iii++) {
-                                $sql_where .= " OR verse BETWEEN (" . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend) . ")";
+                                $sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend);
                                 $verse = $verse2 = (int)$verses_temp[$iii];
                             }
                             $sql_where .= ") ";
