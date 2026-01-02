@@ -1446,7 +1446,7 @@ if($index || !$echo_string)
 		$txt_en = $row['txt_en'] ?? '';
 		
 		// Process HTML tags in verse text if Strong's is enabled
-		if($strongs) {
+		if($strongs && $strongs !== '') {
 			// Process font color tags first
 			$search_str = array('<FR>','<Fr>');
 			$replace_str = array('<font color="red">','</font>');
@@ -1454,28 +1454,35 @@ if($index || !$echo_string)
 			$txt_cn = str_replace($search_str, $replace_str, $txt_cn);
 			$txt_en = str_replace($search_str, $replace_str, $txt_en);
 			
-			// Process Strong's Hebrew codes (both <WH...> and <H...> formats)
-			$pattern = '/<WH(\w+)>/i';
-			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
+			// Process Strong's codes - process <WG...> and <WH...> first, then <G...> and <H...>
+			// This order ensures <WG...> doesn't get partially matched by <G...> pattern
+			
+			// Process <WG...> format (Greek, long form) - converts to <G...> inside link
+			$pattern = '/<WG(\d+)>/i';
+			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
-			// Also process <H...> format
-			$pattern = '/<H(\w+)>/i';
+			
+			// Process <WH...> format (Hebrew, long form) - converts to <H...> inside link
+			$pattern = '/<WH(\d+)>/i';
 			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
 			
-			// Process Strong's Greek codes (both <WG...> and <G...> formats)
-			$pattern = '/<WG(\w+)>/i';
+			// Process <G...> format (Greek, short form) - standalone codes
+			// Use negative lookbehind to avoid matching <G...> that's already inside an anchor tag
+			$pattern = '/(?<!>)<G(\d+)>/i';
 			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
-			// Also process <G...> format
-			$pattern = '/<G(\w+)>/i';
-			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
+			
+			// Process <H...> format (Hebrew, short form) - standalone codes
+			// Use negative lookbehind to avoid matching <H...> that's already inside an anchor tag
+			$pattern = '/(?<!>)<H(\d+)>/i';
+			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
@@ -1682,22 +1689,26 @@ if($index || !$echo_string)
 							$replace_str = array('<font color="red">','</font>');
 							$text_string  = str_replace($search_str, $replace_str, $text_string);
 							
-							// Process Strong's Hebrew codes (both <WH...> and <H...> formats)
-							$pattern = '/<WH(\w+)>/i';
-							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
+							// Process Strong's codes - process <WG...> and <WH...> first, then <G...> and <H...>
+							
+							// Process <WG...> format (Greek, long form) - converts to <G...> inside link
+							$pattern = '/<WG(\d+)>/i';
+							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
-							// Also process <H...> format
-							$pattern = '/<H(\w+)>/i';
+							
+							// Process <WH...> format (Hebrew, long form) - converts to <H...> inside link
+							$pattern = '/<WH(\d+)>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
-							// Process Strong's Greek codes (both <WG...> and <G...> formats)
-							$pattern = '/<WG(\w+)>/i';
+							// Process <G...> format (Greek, short form) - standalone codes, avoid matching inside anchor tags
+							$pattern = '/(?<!<a[^>]*>)<G(\d+)>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
-							// Also process <G...> format
-							$pattern = '/<G(\w+)>/i';
-							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
+							
+							// Process <H...> format (Hebrew, short form) - standalone codes, avoid matching inside anchor tags
+							$pattern = '/(?<!<a[^>]*>)<H(\d+)>/i';
+							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
 							// Process italic tags

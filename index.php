@@ -1024,12 +1024,22 @@ if (($index || !$echo_string) && !empty($sql)) {
                         $search_str = ['<FR>', '<Fr>'];
                         $replace_str = ['<font color="red">', '</font>'];
                         $text_string = str_replace($search_str, $replace_str, $text_string);
-                        // Process Strong's Hebrew codes (both <WH...> and <H...> formats)
-                        $text_string = preg_replace('/<WH(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
-                        $text_string = preg_replace('/<H(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
-                        // Process Strong's Greek codes (both <WG...> and <G...> formats)
-                        $text_string = preg_replace('/<WG(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
-                        $text_string = preg_replace('/<G(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        // Process Strong's codes - process <WG...> and <WH...> first, then <G...> and <H...>
+                        // This order ensures <WG...> doesn't get partially matched by <G...> pattern
+                        
+                        // Process <WG...> format (Greek, long form) - converts to <G...> inside link
+                        $text_string = preg_replace('/<WG(\d+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        
+                        // Process <WH...> format (Hebrew, long form) - converts to <H...> inside link
+                        $text_string = preg_replace('/<WH(\d+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
+                        
+                        // Process <G...> format (Greek, short form) - standalone codes
+                        // Use negative lookbehind to avoid matching <G...> that's already inside an anchor tag
+                        $text_string = preg_replace('/(?<!>)<G(\d+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        
+                        // Process <H...> format (Hebrew, short form) - standalone codes
+                        // Use negative lookbehind to avoid matching <H...> that's already inside an anchor tag
+                        $text_string = preg_replace('/(?<!>)<H(\d+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
                         // Process italic tags
                         $text_string = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $text_string);
                         // Fix font color attributes (replace backticks with quotes)
