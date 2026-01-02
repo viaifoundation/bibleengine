@@ -28,6 +28,7 @@ $wiki_base = 'https://bible.world/w';
 $wiki_search_base = 'https://godwithus.cn/w'; // Wiki search redirect base
 $short_url_base = 'https://bibleengine.ai';
 $long_url_base = 'https://bibleengine.ai';
+$img_url = 'https://bibleengine.ai'; // Image/asset base URL
 $sitename = 'BibleEngine.ai';
 
 function show_hint(): string {

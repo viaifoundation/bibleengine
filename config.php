@@ -10,6 +10,7 @@ if (!isset($long_url_base)) {
 }
 //$short_url_base="http://ymnl.org";
 //$short_url_base=$long_url_base;
+// $img_url should be set by index.php, only set default if not already set
 if (!isset($img_url)) {
     $img_url = "https://engine.bible.world";
 }
