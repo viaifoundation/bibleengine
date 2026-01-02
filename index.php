@@ -1077,9 +1077,9 @@ if (($index || !$echo_string) && !empty($sql)) {
     }
 }
 
-$text_tw = "<p>" . htmlspecialchars($text_tw) . " (繁體和合本 CUVT)</p>";
-$text_cn = "<p>" . htmlspecialchars($text_cn) . " (和合本 CUV)</p>";
-$text_en = "<p>" . htmlspecialchars($text_en) . " (King James Version KJV)</p>";
+$text_tw = "<p>" . $text_tw . " (繁體和合本 CUVT)</p>";
+$text_cn = "<p>" . $text_cn . " (和合本 CUV)</p>";
+$text_en = "<p>" . $text_en . " (King James Version KJV)</p>";
 
 if ($mode === 'QUERY' && in_array($api, ['plain', 'html'])) {
     header('Content-Type: text/plain');
@@ -1264,34 +1264,34 @@ if ($query && $echo_string) {
 <?php
 if (!$show_verse && !$portable) {
     if ($cn) {
-        echo "<p> </p>";
-        echo htmlspecialchars($text_cn);
+        echo "<p> </p>";
+        echo $text_cn;
     }
     if ($tw) {
-        echo "<p> </p>\n";
-        echo htmlspecialchars($text_tw);
+        echo "<p> </p>\n";
+        echo $text_tw;
     }
     if ($en) {
-        echo "<p> </p>\n";
-        echo htmlspecialchars($text_en);
+        echo "<p> </p>\n";
+        echo $text_en;
     }
 } else {
-    echo "<p> </p>\n";
+    echo "<p> </p>\n";
     echo $text_cmp;
-    echo "<p> </p>\n";
-    echo "<p> </p>\n";
+    echo "<p> </p>\n";
+    echo "<p> </p>\n";
     if ($cn) {
-        echo htmlspecialchars($text_cn);
+        echo $text_cn;
     }
-    echo "<p> </p>\n";
+    echo "<p> </p>\n";
     if ($tw) {
-        echo htmlspecialchars($text_tw);
+        echo $text_tw;
     }
-    echo "<p> </p>\n";
+    echo "<p> </p>\n";
     if ($en) {
-        echo htmlspecialchars($text_en);
+        echo $text_en;
     }
-    echo "<p> </p>\n";
+    echo "<p> </p>\n";
 }
 
 if ($wiki) {
