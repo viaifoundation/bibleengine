@@ -577,9 +577,18 @@ if ($query) {
     }
 }if ($sql && !$echo_string) {
     try {
+        // Debug: Print SQL query
+        if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+            echo "<!-- DEBUG SQL (index query): " . htmlspecialchars($sql) . " -->\n";
+            $echo_string .= "<pre style='background: #f0f0f0; padding: 10px; border: 1px solid #ccc;'>DEBUG SQL (index query):\n" . htmlspecialchars($sql) . "</pre>";
+        }
         $result = $db->query($sql);
         if ($result === false) {
-            throw new Exception("Query Error: " . $db->error);
+            $error_msg = "Query Error: " . $db->error;
+            if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+                $error_msg .= "\n\nSQL Query:\n" . htmlspecialchars($sql);
+            }
+            throw new Exception($error_msg);
         }
         $count = $result->num_rows;
         $querystr = '';
@@ -637,10 +646,19 @@ if ($mode === 'QUERY' && $do_query) {
                 $sql .= " AND (" . $sql_where . ") ";
             }
 
-            $result = $db->query($sql);
-            if ($result === false) {
-                throw new Exception("Query Error: " . $db->error);
-            }
+                // Debug: Print SQL query
+                if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+                    echo "<!-- DEBUG SQL (search query): " . htmlspecialchars($sql) . " -->\n";
+                    $echo_string .= "<pre style='background: #f0f0f0; padding: 10px; border: 1px solid #ccc;'>DEBUG SQL (search query):\n" . htmlspecialchars($sql) . "</pre>";
+                }
+                $result = $db->query($sql);
+                if ($result === false) {
+                    $error_msg = "Query Error: " . $db->error;
+                    if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+                        $error_msg .= "\n\nSQL Query:\n" . htmlspecialchars($sql);
+                    }
+                    throw new Exception($error_msg);
+                }
 
             $querystr = '';
             $querystrtext = '';
@@ -876,9 +894,18 @@ if (!$index) {
 
 if (($index || !$echo_string) && !empty($sql)) {
     try {
+        // Debug: Print SQL query
+        if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+            echo "<!-- DEBUG SQL: " . htmlspecialchars($sql) . " -->\n";
+            $echo_string .= "<pre style='background: #f0f0f0; padding: 10px; border: 1px solid #ccc;'>DEBUG SQL:\n" . htmlspecialchars($sql) . "</pre>";
+        }
         $result = $db->query($sql);
         if ($result === false) {
-            throw new Exception("Query Error: " . $db->error);
+            $error_msg = "Query Error: " . $db->error;
+            if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+                $error_msg .= "\n\nSQL Query:\n" . htmlspecialchars($sql);
+            }
+            throw new Exception($error_msg);
         }
 
         if (!$index) {
