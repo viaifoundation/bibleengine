@@ -188,26 +188,28 @@ These tags link words to Hebrew/Greek dictionary entries at [bible.fhl.net](http
 
 | Tag Format      | Meaning                          | Range        | Database Format          | Rendered Output                      |
 |-----------------|----------------------------------|--------------|--------------------------|--------------------------------------|
-| `<WHxxxx>`      | Hebrew Strong's number (OT)      | 1-8674       | `word<WH7225>`           | `<a href="...">word</a>`            |
-| `<WGxxxx>`      | Greek Strong's number (NT)       | 1-5624       | `word<WG2316>`          | `<a href="...">word</a>`       |
-| `<Hxxxx>`       | Hebrew Strong's (alternative)    | 1-8674       | `word<H430>`              | `<a href="...">word</a>`            |
-| `<Gxxxx>`       | Greek Strong's (alternative)     | 1-5624       | `word<G2316>`             | `<a href="...">word</a>`            |
+| `<WHxxxx>`      | Hebrew Strong's number (OT)      | 1-8674       | `word<WH7225>`           | `word (<a href="...">H7225</a>)`    |
+| `<WGxxxx>`      | Greek Strong's number (NT)       | 1-5624       | `word<WG2316>`          | `word (<a href="...">G2316</a>)`    |
+| `<Hxxxx>`       | Hebrew Strong's (alternative)    | 1-8674       | `word<H430>`              | `word (<a href="...">H430</a>)`     |
+| `<Gxxxx>`       | Greek Strong's (alternative)     | 1-5624       | `word<G2316>`             | `word (<a href="...">G2316</a>)`    |
 
 **Examples from Genesis 1:1:**
 
 - **CUVS Database:** `起初<WH7225>，　神<WH430>创造<WH1254>天<WH8064>地<WH776>。`
-  - **Rendered Output:** `<strong><a href="http://bible.fhl.net/new/s.php?N=1&k=7225" target="_blank">起初</a>，　<a href="http://bible.fhl.net/new/s.php?N=1&k=430" target="_blank">神</a><a href="http://bible.fhl.net/new/s.php?N=1&k=1254" target="_blank">创造</a><a href="http://bible.fhl.net/new/s.php?N=1&k=8064" target="_blank">天</a><a href="http://bible.fhl.net/new/s.php?N=1&k=776" target="_blank">地</a>。</strong>`
-  - **Visual Result:** **起初，　神创造天地。** (with clickable links on each word)
+  - **Rendered Output:** `<strong>起初 (<a href="http://bible.fhl.net/new/s.php?N=1&k=7225" target="_blank">H7225</a>)，　神 (<a href="http://bible.fhl.net/new/s.php?N=1&k=430" target="_blank">H430</a>)创造 (<a href="http://bible.fhl.net/new/s.php?N=1&k=1254" target="_blank">H1254</a>)天 (<a href="http://bible.fhl.net/new/s.php?N=1&k=8064" target="_blank">H8064</a>)地 (<a href="http://bible.fhl.net/new/s.php?N=1&k=776" target="_blank">H776</a>)。</strong>`
+  - **Visual Result:** **起初 (H7225)，　神 (H430)创造 (H1254)天 (H8064)地 (H776)。** (with clickable Strong's codes)
 
 - **KJV Database:** `In the beginning<WH7225> God<WH430> created<WH1254><WH853> the heaven<WH8064> and<WH853> the earth<WH776>.`
-  - **Rendered Output:** `<strong>In the <a href="http://bible.fhl.net/new/s.php?N=1&k=7225" target="_blank">beginning</a> <a href="http://bible.fhl.net/new/s.php?N=1&k=430" target="_blank">God</a> <a href="http://bible.fhl.net/new/s.php?N=1&k=1254" target="_blank">created</a><a href="http://bible.fhl.net/new/s.php?N=1&k=853" target="_blank"></a> the <a href="http://bible.fhl.net/new/s.php?N=1&k=8064" target="_blank">heaven</a> <a href="http://bible.fhl.net/new/s.php?N=1&k=853" target="_blank">and</a> the <a href="http://bible.fhl.net/new/s.php?N=1&k=776" target="_blank">earth</a>.</strong>`
-  - **Visual Result:** **In the beginning God created the heaven and the earth.** (with clickable links on each tagged word)
+  - **Rendered Output:** `<strong>In the beginning (<a href="http://bible.fhl.net/new/s.php?N=1&k=7225" target="_blank">H7225</a>) God (<a href="http://bible.fhl.net/new/s.php?N=1&k=430" target="_blank">H430</a>) created (<a href="http://bible.fhl.net/new/s.php?N=1&k=1254" target="_blank">H1254</a>) (<a href="http://bible.fhl.net/new/s.php?N=1&k=853" target="_blank">H853</a>) the heaven (<a href="http://bible.fhl.net/new/s.php?N=1&k=8064" target="_blank">H8064</a>) and (<a href="http://bible.fhl.net/new/s.php?N=1&k=853" target="_blank">H853</a>) the earth (<a href="http://bible.fhl.net/new/s.php?N=1&k=776" target="_blank">H776</a>).</strong>`
+  - **Visual Result:** **In the beginning (H7225) God (H430) created (H1254) (H853) the heaven (H8064) and (H853) the earth (H776).** (with clickable Strong's codes)
 
 **Note:** 
-- The word immediately before the tag becomes the clickable link text
+- The word remains as plain text, and the Strong's code appears in parentheses after the word
+- The Strong's code itself (e.g., `H7225`, `G2316`) is the clickable link
 - When a verse is highlighted (target verse), the entire verse including links is wrapped in `<strong>` tags
-- Multiple tags can appear after a single word (e.g., `created<WH1254><WH853>`)
+- Multiple tags can appear after a single word (e.g., `created<WH1254><WH853>` becomes `created (H1254) (H853)`)
 - All links open in a new tab (`target="_blank"`)
+- This approach keeps the text readable while making Strong's references clearly visible and clickable
 
 ### 2. Formatting & Emphasis Tags
 
