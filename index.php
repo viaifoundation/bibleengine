@@ -369,7 +369,8 @@ try {
         throw new Exception("Error: Database configuration variables not set in dbconfig.php");
     }
 
-    $db = new mysqli($dbhost, $dbuser, $dbpassword, $database, $dbport ?? 3306);
+    $dbport_int = isset($dbport) ? (int)$dbport : 3306;
+    $db = new mysqli($dbhost, $dbuser, $dbpassword, $database, $dbport_int);
     if ($db->connect_error) {
         throw new Exception("Connection Error: " . $db->connect_error);
     }
