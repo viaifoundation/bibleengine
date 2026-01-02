@@ -1216,23 +1216,23 @@ function show_form(string $seq = '0'): void {
 show_form();
 
 if (!$portable) {
-    echo "<p> </p>";
-    echo htmlspecialchars($book_menu);
-    echo "<p> </p>";
+    echo "<p> </p>";
+    echo $book_menu;
+    echo "<p> </p>";
 }
 
 if ($wiki) {
-    echo htmlspecialchars($wiki_book_menu);
+    echo $wiki_book_menu;
 }
 
 if ($book) {
     if (!$portable) {
-        echo "<p> </p>";
-        echo htmlspecialchars($chapter_menu);
-        echo "<p> </p>";
+        echo "<p> </p>";
+        echo $chapter_menu;
+        echo "<p> </p>";
     }
     if ($wiki) {
-        echo htmlspecialchars($wiki_chapter_menu);
+        echo $wiki_chapter_menu;
         if (!$chapter) {
             echo "<p> </p><p>{{Template:MHC:" . htmlspecialchars($book_chinese[$book] ?? '') . "}}</p>";
         } else {
@@ -1302,13 +1302,13 @@ if ($wiki) {
     echo "<p>{{Template:MHC:圣经}}</p><p> </p>";
 }
 
-echo "<p> </p>";
+echo "<p> </p>";
 if ($book && !$portable) {
-    echo htmlspecialchars($chapter_menu);
+    echo $chapter_menu;
 }
-echo "<p> </p>";
+echo "<p> </p>";
 if (!$portable) {
-    echo htmlspecialchars($book_menu);
+    echo $book_menu;
 }
 
 echo "<p> </p>";
