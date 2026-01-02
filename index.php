@@ -83,17 +83,22 @@ function search_wiki(string $q, int $p = 1): string {
             }
 
             $search_results = $xml->query->search->p ?? null;
-            $count = is_countable($search_results) ? count($search_results) : 0;
-            if ($count > 0) {
-                $txt .= "$q 共搜索到$count 个词条，请发送完整的词条标题查看内容：\n";
-                if (is_countable($search_results)) {
+            if ($search_results !== null) {
+                $count = 0;
+                foreach ($search_results as $result) {
+                    $count++;
+                }
+                if ($count > 0) {
+                    $txt .= "$q 共搜索到$count 个词条，请发送完整的词条标题查看内容：\n";
                     foreach ($search_results as $result) {
                         $txt .= "\n " . (string)$result['title'] . "\n";
                     }
-                }
 
-                if (strlen($txt) > 2000) {
-                    $txt = mb_strcut($txt, 0, 2000, 'UTF-8') . "\n\n内容太长有删节";
+                    if (strlen($txt) > 2000) {
+                        $txt = mb_strcut($txt, 0, 2000, 'UTF-8') . "\n\n内容太长有删节";
+                    }
+                } else {
+                    $txt = "没有查到搜索的词条，请更换关键词再搜索。" . show_hint() . show_banner();
                 }
             } else {
                 $txt = "没有查到搜索的词条，请更换关键词再搜索。" . show_hint() . show_banner();
@@ -617,7 +622,7 @@ if ($mode === 'QUERY' && $do_query) {
         $sql_where = " 1=1 ";
     }
 
-    if ($do_query && !empty($queries) && isset($queries[0]) && $queries[0] !== '') {
+    if ($do_query && isset($queries[0])) {
         try {
             $sql = "SELECT book, chapter, verse FROM $search_table WHERE txt LIKE '%" . $db->real_escape_string($queries[0]) . "%'";
             for ($i = 1; $i < $count && isset($queries[$i]); ++$i) {
@@ -742,21 +747,27 @@ for ($i = 1; $i <= 66; ++$i) {
 $book_menu .= "</p>";
 $wiki_book_menu .= "\n";
 
+$book_chinese_val = $book_chinese[$book] ?? '';
+$book_cn_val = $book_cn[$book] ?? '';
+$book_english_val = $book_english[$book] ?? '';
+$book_short_val = $book_short[$book] ?? '';
+$book_count_val = $book_count[$book] ?? 0;
+
 $chapter_menu = isset($book_chinese[$book], $book_cn[$book], $book_english[$book], $book_short[$book]) ? "{$book_chinese[$book]}({$book_cn[$book]}) {$book_english[$book]}({$book_short[$book]}) " : '';
-$wiki_chapter_menu = "<p>=={$book_chinese[$book] ?? ''}目录==</p><p> </p>\n";
-for ($i = 1; $i <= ($book_count[$book] ?? 0); $i++) {
+$wiki_chapter_menu = "<p>=={$book_chinese_val}目录==</p><p> </p>\n";
+for ($i = 1; $i <= $book_count_val; $i++) {
     if ($i == $chapter) {
         $chapter_menu .= "<strong>";
     }
     if ($short_url_base) {
-        $chapter_menu .= "<a href=\"$short_url_base/{$book_short[$book] ?? ''}.$i.htm\" title=\"{$book_chinese[$book] ?? ''} $i   {$book_english[$book] ?? ''} $i\"> &$i </a> ";
+        $chapter_menu .= "<a href=\"$short_url_base/{$book_short_val}.$i.htm\" title=\"{$book_chinese_val} $i   {$book_english_val} $i\"> &$i </a> ";
     } else {
-        $chapter_menu .= "<a href=\"$script?q={$book_short[$book] ?? ''} $i\" title=\"{$book_chinese[$book] ?? ''} $i   {$book_english[$book] ?? ''} $i\"> &$i </a> ";
+        $chapter_menu .= "<a href=\"$script?q={$book_short_val} $i\" title=\"{$book_chinese_val} $i   {$book_english_val} $i\"> &$i </a> ";
     }
     if ($chapter) {
-        $wiki_chapter_menu .= "<p>[[MHC:{$book_chinese[$book] ?? ''} $i | {$book_cn[$book] ?? ''} $i]]</p>\n";
+        $wiki_chapter_menu .= "<p>[[MHC:{$book_chinese_val} $i | {$book_cn_val} $i]]</p>\n";
     } else {
-        $wiki_chapter_menu .= "<p>[[MHC:{$book_chinese[$book] ?? ''} $i | {$book_chinese[$book] ?? ''} $i]]</p>\n";
+        $wiki_chapter_menu .= "<p>[[MHC:{$book_chinese_val} $i | {$book_chinese_val} $i]]</p>\n";
     }
     if ($i == $chapter) {
         $chapter_menu .= "</strong>";
@@ -847,11 +858,18 @@ if ($index || !$echo_string) {
         }
 
         if (!$index) {
-            $text_tw .= "<b>" . ($book_taiwan[$book] ?? '') . " (" . ($book_tw[$book] ?? '') . ") $chapter</b>\n";
-            $text_cn .= "<b>" . ($book_chinese[$book] ?? '') . " (" . ($book_cn[$book] ?? '') . ") $chapter</b>\n";
-            $text_en .= "<b>" . ($book_english[$book] ?? '') . " (" . ($book_en[$book] ?? '') . ") $chapter</b>\n";
+            $book_taiwan_val = $book_taiwan[$book] ?? '';
+            $book_tw_val = $book_tw[$book] ?? '';
+            $book_chinese_val2 = $book_chinese[$book] ?? '';
+            $book_cn_val2 = $book_cn[$book] ?? '';
+            $book_english_val2 = $book_english[$book] ?? '';
+            $book_en_val = $book_en[$book] ?? '';
+            $text_tw .= "<b>" . $book_taiwan_val . " (" . $book_tw_val . ") $chapter</b>\n";
+            $text_cn .= "<b>" . $book_chinese_val2 . " (" . $book_cn_val2 . ") $chapter</b>\n";
+            $text_en .= "<b>" . $book_english_val2 . " (" . $book_en_val . ") $chapter</b>\n";
         }
-        $wiki_text = "<p> </p> ==" . ($book_chinese[$book] ?? '') . " $chapter 目录==<p> </p>\n";
+        $book_chinese_val3 = $book_chinese[$book] ?? '';
+        $wiki_text = "<p> </p> ==" . $book_chinese_val3 . " $chapter 目录==<p> </p>\n";
         $verse_number = 0;
 
         while ($row = $result->fetch_assoc()) {
