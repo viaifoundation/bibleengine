@@ -1441,10 +1441,28 @@ if($index || !$echo_string)
 		$cid=$row['chapter'];
 		$vid = $row['verse'];
 		$likes=$row['likes'];
-		$txt_tw = $row['txt_tw'];
-		$txt_cn = $row['txt_cn'];
-		$txt_en = $row['txt_en'];
+		$txt_tw = $row['txt_tw'] ?? '';
+		$txt_cn = $row['txt_cn'] ?? '';
+		$txt_en = $row['txt_en'] ?? '';
+		
+		// Process HTML tags in verse text if Strong's is enabled
+		if($strongs) {
+			// Process italic tags
+			$txt_tw = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_tw);
+			$txt_cn = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_cn);
+			$txt_en = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_en);
+			
+			// Fix font color attributes (replace backticks with quotes, add quotes if missing)
+			$txt_tw = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $txt_tw);
+			$txt_cn = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $txt_cn);
+			$txt_en = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $txt_en);
+			$txt_tw = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $txt_tw);
+			$txt_cn = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $txt_cn);
+			$txt_en = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $txt_en);
+		}
+		
 		foreach ($queries as $query_word){
+			if(empty($query_word)) continue;
 			/*
 			$pattern = "/($query_word)/";
 			$replacement = "<strong>${1}</strong>";
@@ -1457,6 +1475,11 @@ if($index || !$echo_string)
 			$txt_en= str_ireplace($query_word, "<strong>" . $query_word . "</strong>", $txt_en);
 			
 		}
+		
+		// Remove empty strong tags that might have been created
+		$txt_tw = str_replace('<strong></strong>', '', $txt_tw);
+		$txt_cn = str_replace('<strong></strong>', '', $txt_cn);
+		$txt_en = str_replace('<strong></strong>', '', $txt_en);
 		//$txt_py = $row['txt_py'];
 		if($vid == $verse && ($mode=='READ' || $mode=='INDEX'))
 		{
@@ -1598,19 +1621,32 @@ if($index || !$echo_string)
 		foreach ($bible_books as $bible_book) {
 				if($bible_book)
 				{
-					$text_string= $row["text_$bible_book"];
+					$text_string= $row["text_$bible_book"] ?? '';
 					if($strongs && ( $bible_book == "cuvs" || $bible_book=="cuvt" || $bible_book == "kjv" || $bible_book == "nasb")){
+							// Process font color tags
 							$search_str = array('<FR>','<Fr>');
-							$replace_str = array('<font color=red>','</font>');
+							$replace_str = array('<font color="red">','</font>');
 							$text_string  = str_replace($search_str, $replace_str, $text_string);
 							
+							// Process Strong's Hebrew codes
 							$pattern = '/<WH(\w+)>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
+							
+							// Process Strong's Greek codes
 							$pattern = '/<WG(\w+)>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
+							// Process italic tags
+							$text_string = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $text_string);
+							
+							// Fix font color attributes (replace backticks with quotes, add quotes if missing)
+							$text_string = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $text_string);
+							$text_string = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $text_string);
+							
+							// Remove empty strong tags
+							$text_string = str_replace('<strong></strong>', '', $text_string);
 							
 						}
 					$text_cmp .= "\n<li><p>" . $text_string . "<b>(" . strtoupper($bible_book) . ")</b></p></li>\n";
