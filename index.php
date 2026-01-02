@@ -1034,28 +1034,26 @@ if (($index || !$echo_string) && !empty($sql)) {
                         
                         // Italics (supplied words) - <FI>...</Fi>
                         $text_string = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $text_string);
-                        // Process Strong's codes - process <WG...> and <WH...> first, then <G...> and <H...>
-                        // This order ensures <WG...> doesn't get partially matched by <G...> pattern
-                        // Hebrew: <WHxxxx> or <Hxxxx> where xxxx is 1-8674 (Old Testament)
-                        // Greek: <WGxxxx> or <Gxxxx> where xxxx is 1-5624 (New Testament)
+                        // Process Strong's codes - tags appear AFTER the word they reference
+                        // Pattern: word<WHxxxx> or word<WGxxxx> - the word becomes the link text
+                        // Hebrew: <WHxxxx> where xxxx is 1-8674 (Old Testament)
+                        // Greek: <WGxxxx> where xxxx is 1-5624 (New Testament)
                         
-                        // Process <WG...> format (Greek, long form) - converts to <G...> inside link
-                        // Matches <WG1> through <WG5624> (Greek Strong's numbers)
-                        $text_string = preg_replace('/<WG(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        // Process <WG...> format (Greek, long form) - word before tag becomes link
+                        // Matches word<WG1> through word<WG5624> (Greek Strong's numbers)
+                        $text_string = preg_replace('/([^\s<>]+)<WG(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">${1}</a>', $text_string);
                         
-                        // Process <WH...> format (Hebrew, long form) - converts to <H...> inside link
-                        // Matches <WH1> through <WH8674> (Hebrew Strong's numbers)
-                        $text_string = preg_replace('/<WH(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
+                        // Process <WH...> format (Hebrew, long form) - word before tag becomes link
+                        // Matches word<WH1> through word<WH8674> (Hebrew Strong's numbers)
+                        $text_string = preg_replace('/([^\s<>]+)<WH(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">${1}</a>', $text_string);
                         
-                        // Process <G...> format (Greek, short form) - standalone codes
-                        // Matches <G1> through <G5624> (Greek Strong's numbers)
-                        // Use negative lookbehind to avoid matching <G...> that's already inside an anchor tag
-                        $text_string = preg_replace('/(?<!>)<G(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        // Process <G...> format (Greek, short form) - word before tag becomes link
+                        // Matches word<G1> through word<G5624> (Greek Strong's numbers)
+                        $text_string = preg_replace('/(?<!>)([^\s<>]+)<G(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">${1}</a>', $text_string);
                         
-                        // Process <H...> format (Hebrew, short form) - standalone codes
-                        // Matches <H1> through <H8674> (Hebrew Strong's numbers)
-                        // Use negative lookbehind to avoid matching <H...> that's already inside an anchor tag
-                        $text_string = preg_replace('/(?<!>)<H(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
+                        // Process <H...> format (Hebrew, short form) - word before tag becomes link
+                        // Matches word<H1> through word<H8674> (Hebrew Strong's numbers)
+                        $text_string = preg_replace('/(?<!>)([^\s<>]+)<H(\d{1,4})>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">${1}</a>', $text_string);
                         // Process italic tags
                         $text_string = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $text_string);
                         // Fix font color attributes (replace backticks with quotes)

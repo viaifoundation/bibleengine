@@ -178,6 +178,77 @@ bibleengine/
 - `/P` or `/PINYIN`: Pinyin
 - `/KJV`, `/NASB`, `/ESV`: Specific translations
 
+## Bible Text Tag Formats
+
+The Goshen Bible Engine supports MySword/theWord-style tagged Bible modules. The following tags are processed when Strong's codes are enabled:
+
+### 1. Strong's Number Tags (Lexical/Concordance Tags)
+
+These tags link words to Hebrew/Greek dictionary entries at [bible.fhl.net](http://bible.fhl.net). **Important:** In the database, Strong's tags appear **AFTER** the word they reference, not before.
+
+| Tag Format      | Meaning                          | Range        | Database Format          | Rendered Output                      |
+|-----------------|----------------------------------|--------------|--------------------------|--------------------------------------|
+| `<WHxxxx>`      | Hebrew Strong's number (OT)      | 1-8674       | `word<WH7225>`           | `<a href="...">word</a>`            |
+| `<WGxxxx>`      | Greek Strong's number (NT)       | 1-5624       | `word<WG2316>`          | `<a href="...">word</a>`       |
+| `<Hxxxx>`       | Hebrew Strong's (alternative)    | 1-8674       | `word<H430>`              | `<a href="...">word</a>`            |
+| `<Gxxxx>`       | Greek Strong's (alternative)     | 1-5624       | `word<G2316>`             | `<a href="...">word</a>`            |
+
+**Examples from Genesis 1:1:**
+
+- **CUVS Database:** `起初<WH7225>，　神<WH430>创造<WH1254>天<WH8064>地<WH776>。`
+  - **Rendered Output:** `<strong><a href="http://bible.fhl.net/new/s.php?N=1&k=7225" target="_blank">起初</a>，　<a href="http://bible.fhl.net/new/s.php?N=1&k=430" target="_blank">神</a><a href="http://bible.fhl.net/new/s.php?N=1&k=1254" target="_blank">创造</a><a href="http://bible.fhl.net/new/s.php?N=1&k=8064" target="_blank">天</a><a href="http://bible.fhl.net/new/s.php?N=1&k=776" target="_blank">地</a>。</strong>`
+  - **Visual Result:** **起初，　神创造天地。** (with clickable links on each word)
+
+- **KJV Database:** `In the beginning<WH7225> God<WH430> created<WH1254><WH853> the heaven<WH8064> and<WH853> the earth<WH776>.`
+  - **Rendered Output:** `<strong>In the <a href="http://bible.fhl.net/new/s.php?N=1&k=7225" target="_blank">beginning</a> <a href="http://bible.fhl.net/new/s.php?N=1&k=430" target="_blank">God</a> <a href="http://bible.fhl.net/new/s.php?N=1&k=1254" target="_blank">created</a><a href="http://bible.fhl.net/new/s.php?N=1&k=853" target="_blank"></a> the <a href="http://bible.fhl.net/new/s.php?N=1&k=8064" target="_blank">heaven</a> <a href="http://bible.fhl.net/new/s.php?N=1&k=853" target="_blank">and</a> the <a href="http://bible.fhl.net/new/s.php?N=1&k=776" target="_blank">earth</a>.</strong>`
+  - **Visual Result:** **In the beginning God created the heaven and the earth.** (with clickable links on each tagged word)
+
+**Note:** 
+- The word immediately before the tag becomes the clickable link text
+- When a verse is highlighted (target verse), the entire verse including links is wrapped in `<strong>` tags
+- Multiple tags can appear after a single word (e.g., `created<WH1254><WH853>`)
+- All links open in a new tab (`target="_blank"`)
+
+### 2. Formatting & Emphasis Tags
+
+These tags control visual formatting and are converted to HTML:
+
+| Opening Tag | Closing Tag | Meaning / Rendering                     | HTML Output                              | Common Use                              |
+|-------------|-------------|-----------------------------------------|------------------------------------------|------------------------------------------|
+| `<FI>`      | `<Fi>`      | Formatted Italics                       | `<i>...</i>`                             | Words added by translators (supplied words) |
+| `<FR>`      | `<Fr>`      | Formatted Red (Red Letter)              | `<span style="color:red;">...</span>`   | Words of Christ (Gospels, parts of Acts & Rev) |
+| `<FO>`      | `<Fo>`      | Formatted Orange                        | `<span style="color:orange;">...</span>` | Words of angels, Holy Spirit, or divine speech |
+| `<b>`       | `</b>`      | Bold (standard HTML)                    | `<strong>...</strong>` or `<b>...</b>`   | Emphasis, headings, or supplied words    |
+| `<font color="#008000">` | `</font>` | Inline color | `<font color="#008000">...</font>` | Special emphasis (e.g., OT quotes, divine words) |
+
+### 3. Tag Support by Bible Version
+
+| Version | Strong's Tags       | Italics `<FI>` | Red Letter `<FR>` | Orange `<FO>` | Colored Font | Bold `<b>` |
+|---------|---------------------|----------------|-------------------|---------------|--------------|------------|
+| NASB    | Yes (WH/WG mainly)  | Yes            | Rare/No           | No            | Possible (green) | Possible   |
+| KJV     | Yes                 | Yes            | Yes               | Yes           | Rare         | Yes        |
+| CUVS    | Yes                 | Likely         | Possible (in NT)  | Rare          | No           | Possible   |
+| CUVT    | Yes                 | Likely         | Possible          | Rare          | No           | Possible   |
+
+### 4. Processing Order
+
+When Strong's codes are enabled, tags are processed in this order:
+
+1. **Formatting tags first**: Red letter (`<FR>`), Orange letter (`<FO>`), Italics (`<FI>`)
+2. **Strong's codes second**: Long forms (`<WG...>`, `<WH...>`) then short forms (`<G...>`, `<H...>`)
+3. **Font color fixes**: Backticks replaced with quotes, missing quotes added
+
+### 5. Optional Tags (Not Currently Processed)
+
+These tags may appear in some modules but are not currently processed:
+
+- `<TS>...</Ts>` - Section/Chapter Title
+- `<CL>` - Line break (for poetry)
+- `<CM>` - Paragraph break
+- `<RF>...</Rf>` - Footnote/reference
+
+These can be added in future versions if needed.
+
 ## Development
 
 ### PHP 8 Compatibility
@@ -188,6 +259,7 @@ This project has been updated for PHP 8 compatibility:
 - Type casting for database ports
 - Safe array access with `isset()` checks
 - Updated mysqli usage (object-oriented style)
+- Tag processing only occurs when Strong's codes are enabled (prevents HTML escaping)
 
 ### Debugging
 
