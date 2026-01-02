@@ -1089,7 +1089,7 @@ function toggleOptions(elm, idx) {
 function show_form(string $seq = '0'): void {
     global $query, $books, $script, $options, $multi_verse, $portable, $cn, $tw, $en, $strongs,
            $cuvs, $cuvt, $cuvc, $kjv, $nasb, $esv, $ckjvs, $ckjvt, $pinyin, $ncvs, $lcvs, $ccsb, $clbs, $ukjv, $kjv1611, $bbe,
-           $wiki_base, $long_url_base, $short_url_base, $book_chinese, $book_english, $book_cn, $book_short;
+           $wiki_base, $long_url_base, $short_url_base, $book_chinese, $book_english, $book_cn, $book_short, $extend;
 ?>
 <center><div align="center">
 <form method="GET" action="<?php echo htmlspecialchars($script); ?>">
