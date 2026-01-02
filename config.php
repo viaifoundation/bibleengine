@@ -26,4 +26,16 @@ if (!isset($max_record_count)) {
 if (!isset($sitename)) {
     $sitename = "@歌珊地圣经引擎 Wechat 微信号 CCBible/DBible/BibleEngine";
 }
+if (!isset($engine_name_en)) {
+    $engine_name_en = 'Goshen Bible Engine';
+}
+if (!isset($engine_name_cn)) {
+    $engine_name_cn = '歌珊地圣经引擎';
+}
+if (!isset($engine_name_full)) {
+    $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Bible Study and Bible Search Engine';
+}
+if (!isset($copyright_text)) {
+    $copyright_text = '2004-2026 VI AI Foundation (歌珊地科技 Goshen Tech)';
+}
 ?>

@@ -262,7 +262,7 @@ function show_help()
 function show_about()
 {
 	$txt="\n【关于我们】\n\n基督徒百科歌珊地圣经引擎粉丝服务平台\n\n";
-    $txt .="\n 歌珊地圣经引擎——给力的圣经研读查经和圣经搜索引擎\n Geshandi Bible Engine -- Powerful Bible Study and Bible Search Engine ";
+    $txt .="\n 歌珊地圣经引擎——给力的圣经研读查经和圣经搜索引擎\n " . (isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine') . " -- Powerful Bible Study and Bible Search Engine ";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） wcf，威斯敏斯特大要理问答（大要理问答）wlc，威斯敏斯特小要理问答（小要理问答）wsc";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
     $txt .= "\n\n我们的微博：@基督徒百科@如鹰展翼而上@歌珊地圣经引擎";

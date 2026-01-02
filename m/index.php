@@ -616,16 +616,18 @@ $verse = (int)$_REQUEST['v'];
 $verse2 = (int)$_REQUEST['v2'];
 $books=$_REQUEST['b'];
 $options=$_REQUEST['o'];
-list($book,$book2) = explode("-", $books);
+list($book,$book2) = array_pad(explode("-", $books, 2), 2, '');
+$book = $book ? (int)$book : 0;
+$book2 = $book2 ? (int)$book2 : 0;
 //$range = $_REQUEST['r'];
-$name = $_REQUEST['n'];
-$portable=$_REQUEST['p'];
+$name = $_REQUEST['n'] ?? '';
+$portable=$_REQUEST['p'] ?? '';
 $portable=1;
-$query=trim($_REQUEST['q']);
+$query=trim($_REQUEST['q'] ?? '');
 if(!$query)
 {
-	require_once("../votd.php");
-	$query=$votd_string;
+	require_once(__DIR__ . "/../votd.php");
+	$query=$votd_string ?? '';
 }
 /*
 if(preg_match('/index/i',$query))
@@ -742,9 +744,9 @@ $strongs=$_REQUEST['strongs'];
 //echo "book=" . $book . " chapter=" . $chapter . " chapter2="  . $chapter2 . " verse=" . $verse . " verse2=" .$verse2;
 
 
-require_once("../common.php");
-require_once("../config.php");
-require_once('../dbconfig.php');
+require_once(__DIR__ . "/../common.php");
+require_once(__DIR__ . "/../config.php");
+require_once(__DIR__ . "/../dbconfig.php");
 //print_r($book_index);
 
 //$init=false;
@@ -762,7 +764,7 @@ if(!$mode && !$book && !$query && !$wiki)
 }
 if(!$query && $mode=="READ")
 {
-	$book =$book_index[$name];
+	$book = $book_index[$name] ?? 43;
 	if($book<=0 || $book > 66)
 		$book=43;	
 }
@@ -770,14 +772,23 @@ if(!$query && $mode=="READ")
 
 if(!$wiki && (!$chapter || $chapter < 1))
 	$chapter = 1;
-if($chapter>$book_count[$book])
+if(isset($book_count[$book]) && $chapter>$book_count[$book])
 	$chapter=$book_count[$book];
+elseif(!isset($book_count[$book]))
+	$chapter = 1;
 if(!$verse) $verse=1;	
 
 
-$db = mysqli_connect($dbhost.":".$dbport, $dbuser, $dbpassword) or die("Connection Error");
-mysqli_select_db($db, $database) or die("Error conecting to db.");
-mysqli_query($db, "SET NAMES utf8");
+try {
+    $dbport_int = isset($dbport) ? (int)$dbport : 3306;
+    $db = new mysqli($dbhost, $dbuser, $dbpassword, $database, $dbport_int);
+    if ($db->connect_error) {
+        throw new Exception("Connection Error: " . $db->connect_error);
+    }
+    $db->set_charset('utf8');
+} catch (Exception $e) {
+    die($e->getMessage());
+}
 /*
 $db = new SaeMysql();
 $sql="SET NAMES utf8";
@@ -884,12 +895,12 @@ if($query)
 									$verse=$verse2=$verses_temp[0];
 
 									//$sql_where .= " AND ((verse=" . (int)$verses_temp[0] .  " )";
-									$sql_where .= " AND (verse BETWEEN (" . (int)$verses_temp[0] .  " - $extend) AND ("  . (int)$verses_temp[0] . " + $extend)";
+									$sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend);
 									$index_temp=count($verses_temp);
 									for($iii=1;$iii<$index_temp;$iii++)
 									{
 										//$sql_where .= " OR (verse=" . (int)$verses_temp[$iii] . ") ";
-										$sql_where .= " OR verse BETWEEN (" . (int)$verses_temp[$iii] . " - $extend) AND ("  . (int)$verses_temp[$iii] . " + $extend) ";
+										$sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend);
 										$verse=$verse2=$verses_temp[$iii];
 
 									}
@@ -1762,7 +1773,7 @@ if($mode=='QUERY' && ($api == "plain" || $api == "html"))
 }
 
 ?>
-<?php require_once("../header.php") ?>
+<?php require_once(__DIR__ . "/../header.php") ?>
 <script type="text/javascript"> 
 <!--
 function FontZoom(size) 
@@ -1818,7 +1829,7 @@ function toggleOptions(elm,idx)
 
 </head>
 <body>
-<?php require_once("../banner.php") ?>
+<?php require_once(__DIR__ . "/../banner.php") ?>
 <center><div align=center>
 <!--
   <p><?php echo $title?><a href="http://BibleEngine.com">BibleEngine.com</a>  <br/>
@@ -2154,12 +2165,12 @@ if(!$portable)
 <a href="javascript:FontZoom(14)">大 L</a>
 <a href="javascript:FontZoom(16)">更大 XL</a>】
 </p></div></center>
-<?php require_once("../footer.php") ?>
+<?php require_once(__DIR__ . "/../footer.php") ?>
 <?php
 }
 else
 {
-include("../footer_portal.php");
+include(__DIR__ . "/../footer_portal.php");
 }
 ?>
 </body>

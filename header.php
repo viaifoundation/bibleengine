@@ -13,6 +13,6 @@ $https = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : '';
 	<link rel="apple-touch-icon" href="<?php echo $img_url?>/favicon.png" type="image/png" />
 	<link rel="icon" href="<?php echo $img_url?>/favicon.ico" type="image/x-icon"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo $img_url?>/css/css.css" />
-	<meta name="description" content="歌珊地圣经引擎——给力的圣经研读和搜索引擎 Geshandi Bible Engine -- Powerful Bible Study and Search Engine " />
+	<meta name="description" content="<?php echo isset($engine_name_cn) ? $engine_name_cn : '歌珊地圣经引擎'; ?>——给力的圣经研读和搜索引擎 <?php echo isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine'; ?> -- Powerful Bible Study and Search Engine " />
 	<meta name="keywords" content="圣经,研读,研经,搜索,引擎, Bible, Study, Search, Engine"/>
 	<title><?php echo $title?></title>
