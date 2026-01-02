@@ -25,23 +25,26 @@ $title = '';
 $max_record_count = 500;
 $max_book_count = 10;
 $wiki_base = 'https://bible.world/w';
-$short_url_base = 'https://bibleengine.com';
-$long_url_base = 'https://bibleengine.com';
-$sitename = 'BibleEngine.com';
+$wiki_search_base = 'https://godwithus.cn/w'; // Wiki search redirect base
+$short_url_base = 'https://bibleengine.ai';
+$long_url_base = 'https://bibleengine.ai';
+$sitename = 'BibleEngine.ai';
 
 function show_hint(): string {
     return "提示：请输入圣经章节，如 'John 3:16' 或 '约 3:16'。";
 }
 
 function show_banner(): string {
-    return "<br/><a href='https://bibleengine.com'>BibleEngine.com</a>";
+    global $long_url_base, $sitename;
+    return "<br/><a href='$long_url_base'>$sitename</a>";
 }
 
 function search_wiki(string $q, int $p = 1): string {
-    global $echo_string;
+    global $echo_string, $wiki_base;
     $p = max(1, $p);
     $block_size = 1800;
-    $url = "https://bible.world/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=" . urlencode($q);
+    $wiki_api_base = rtrim($wiki_base, '/') . '/api.php';
+    $url = $wiki_api_base . "?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=" . urlencode($q);
 
     try {
         $ch = curl_init($url);
@@ -68,7 +71,7 @@ function search_wiki(string $q, int $p = 1): string {
         }
 
         if (empty($txt)) {
-            $url = "https://bible.world/w/api.php?action=query&list=search&format=xml&srlimit=max&srsearch=" . urlencode($q);
+            $url = $wiki_api_base . "?action=query&list=search&format=xml&srlimit=max&srsearch=" . urlencode($q);
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec($ch);
@@ -291,7 +294,7 @@ $script = 'index.php';
 $strongs = $_REQUEST['strongs'] ?? '';
 
 if (!$query) {
-    require_once '/opt/www/bibleengine.com/votd.php';
+    require_once __DIR__ . '/votd.php';
     $query = $votd_string ?? '';
 }
 
@@ -353,14 +356,14 @@ if ($en) {
 
 $bible_books = array_filter([$cuvs, $cuvt, $kjv, $nasb, $esv, $ncvs, $cuvc, $lcvs, $pinyin, $ccsb, $ckjvs, $ckjvt, $clbs, $ukjv, $kjv1611, $bbe]);
 
-require_once '/opt/www/bibleengine.com/config.php';
-require_once '/opt/www/bibleengine.com/dbconfig.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/dbconfig.php';
 
 try {
-    if (!file_exists('/opt/www/bibleengine.com/dbconfig.php')) {
-        throw new Exception("Error: /opt/www/bibleengine.com/dbconfig.php not found");
+    if (!file_exists(__DIR__ . '/dbconfig.php')) {
+        throw new Exception("Error: " . __DIR__ . "/dbconfig.php not found");
     }
-    require_once '/opt/www/bibleengine.com/dbconfig.php';
+    require_once __DIR__ . '/dbconfig.php';
 
     if (!isset($dbhost, $dbuser, $dbpassword, $database)) {
         throw new Exception("Error: Database configuration variables not set in dbconfig.php");
@@ -390,7 +393,8 @@ if (!$query && $mode === 'READ') {
 }
 
 if ($book == 100) {
-    header("Location: https://godwithus.cn/w/index.php?title=Special%3A%E6%90%9C%E7%B4%A2&go=%E5%89%8D%E5%BE%80&search=" . urlencode($query));
+    global $wiki_search_base;
+    header("Location: $wiki_search_base/index.php?title=Special%3A%E6%90%9C%E7%B4%A2&go=%E5%89%8D%E5%BE%80&search=" . urlencode($query));
     exit;
 }
 
@@ -1037,7 +1041,7 @@ if ($mode === 'QUERY' && in_array($api, ['plain', 'html'])) {
 }
 
 ?>
-<?php include '/opt/www/bibleengine.com/header.php'; ?>
+<?php include __DIR__ . '/header.php'; ?>
 <script type="text/javascript">
 function FontZoom(size) {
     var elements = document.getElementsByTagName("p");
@@ -1078,7 +1082,7 @@ function toggleOptions(elm, idx) {
 </style>
 </head>
 <body>
-<?php include '/opt/www/bibleengine.com/banner.php'; ?>
+<?php include __DIR__ . '/banner.php'; ?>
 <center><div align="center">
 <?php
 function show_form(string $seq = '0'): void {
@@ -1273,10 +1277,10 @@ if (!$portable) {
     <a href="javascript:FontZoom(14)">大 L</a>
     <a href="javascript:FontZoom(16)">更大 XL</a>】
     </p></div></center>
-    <?php include '/opt/www/bibleengine.com/footer.php'; ?>
+    <?php include __DIR__ . '/footer.php'; ?>
 <?php
 } else {
-    include '/opt/www/bibleengine.com/footer_portal.php';
+    include __DIR__ . '/footer_portal.php';
 }
 ?>
 </body>
