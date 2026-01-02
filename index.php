@@ -786,65 +786,84 @@ for ($i = 1; $i <= $book_count_val; $i++) {
 }
 
 if ($index) {
-    $sql = "SELECT bible_books.* ";
-    $book_count = 0;
-    foreach ($bible_books as $bible_book) {
-        if ($bible_book) {
-            $sql .= ", $bible_book.Scripture AS text_$bible_book ";
-            $book_count++;
-            if ($book_count > $max_book_count) {
-                $echo_string .= "<h2>选择查询的圣经译本超出<b>$max_book_count</b>个，请缩减同时查询的译本个数以降低服务器开销</h2>";
-                break;
-            }
-        }
-    }
-    $sql .= " FROM bible_books ";
-    foreach ($bible_books as $bible_book) {
-        if ($bible_book) {
-            $sql .= ", bible_book_$bible_book AS $bible_book";
-        }
-    }
-    $sql .= " WHERE (1=1 ";
-    foreach ($bible_books as $bible_book) {
-        if ($bible_book) {
-            $sql .= " AND (bible_books.book=$bible_book.book AND bible_books.chapter=$bible_book.chapter AND bible_books.verse=$bible_book.verse) ";
-        }
-    }
-    $sql .= ") AND ( 1=0 ";
-    $verses = explode(",", $index);
-    $verse_count = count($verses);
-    for ($i = 0; $i < $verse_count; $i++) {
-        [$verse_book, $verse_chapter, $verse_verse] = array_pad(explode(":", $verses[$i]), 3, '');
-        $sql .= " OR (bible_books.book=" . (int)$verse_book . " AND bible_books.chapter=" . (int)$verse_chapter . " AND bible_books.verse=" . (int)$verse_verse . ")";
-    }
-    $sql .= ") ";
-} else {
-    if (($mode === 'QUERY' && !$echo_string) || $mode === 'READ') {
+    if (empty($bible_books)) {
+        $echo_string = "请至少选择一个圣经译本";
+        $sql = '';
+    } else {
         $sql = "SELECT bible_books.* ";
+        $book_count = 0;
         foreach ($bible_books as $bible_book) {
             if ($bible_book) {
                 $sql .= ", $bible_book.Scripture AS text_$bible_book ";
+                $book_count++;
+                if ($book_count > $max_book_count) {
+                    $echo_string .= "<h2>选择查询的圣经译本超出<b>$max_book_count</b>个，请缩减同时查询的译本个数以降低服务器开销</h2>";
+                    break;
+                }
             }
         }
-        $sql .= " FROM bible_books";
+        $sql .= " FROM bible_books ";
         foreach ($bible_books as $bible_book) {
             if ($bible_book) {
-                $sql .= ", bible_book_$bible_book AS $bible_book ";
+                $sql .= ", bible_book_$bible_book AS $bible_book";
             }
         }
-        $sql .= " WHERE 1=1 ";
+        $sql .= " WHERE (1=1 ";
         foreach ($bible_books as $bible_book) {
             if ($bible_book) {
                 $sql .= " AND (bible_books.book=$bible_book.book AND bible_books.chapter=$bible_book.chapter AND bible_books.verse=$bible_book.verse) ";
             }
         }
-        if ($chapter) {
-            $sql .= " AND bible_books.book = " . (int)$book . " AND bible_books.chapter=" . (int)$chapter;
-            if ($verse) {
-                if ($verse2) {
-                    $sql .= " AND bible_books.verse >= " . (int)$verse . " AND bible_books.verse <= " . (int)$verse2;
-                } else {
-                    $sql .= " AND bible_books.verse >= " . ((int)$verse - 3) . " AND bible_books.verse <= " . ((int)$verse + 3);
+        $sql .= ") AND ( 1=0 ";
+        $verses = explode(",", $index);
+        $verse_count = count($verses);
+        $has_verses = false;
+        for ($i = 0; $i < $verse_count; $i++) {
+            [$verse_book, $verse_chapter, $verse_verse] = array_pad(explode(":", $verses[$i]), 3, '');
+            if ($verse_book && $verse_chapter && $verse_verse) {
+                $sql .= " OR (bible_books.book=" . (int)$verse_book . " AND bible_books.chapter=" . (int)$verse_chapter . " AND bible_books.verse=" . (int)$verse_verse . ")";
+                $has_verses = true;
+            }
+        }
+        if (!$has_verses) {
+            $echo_string = "索引格式错误，请检查输入的索引格式";
+            $sql = '';
+        } else {
+            $sql .= ") ";
+        }
+    }
+} else {
+    if (($mode === 'QUERY' && !$echo_string) || $mode === 'READ') {
+        if (empty($bible_books)) {
+            $echo_string = "请至少选择一个圣经译本";
+            $sql = '';
+        } else {
+            $sql = "SELECT bible_books.* ";
+            foreach ($bible_books as $bible_book) {
+                if ($bible_book) {
+                    $sql .= ", $bible_book.Scripture AS text_$bible_book ";
+                }
+            }
+            $sql .= " FROM bible_books";
+            foreach ($bible_books as $bible_book) {
+                if ($bible_book) {
+                    $sql .= ", bible_book_$bible_book AS $bible_book ";
+                }
+            }
+            $sql .= " WHERE 1=1 ";
+            foreach ($bible_books as $bible_book) {
+                if ($bible_book) {
+                    $sql .= " AND (bible_books.book=$bible_book.book AND bible_books.chapter=$bible_book.chapter AND bible_books.verse=$bible_book.verse) ";
+                }
+            }
+            if ($chapter) {
+                $sql .= " AND bible_books.book = " . (int)$book . " AND bible_books.chapter=" . (int)$chapter;
+                if ($verse) {
+                    if ($verse2) {
+                        $sql .= " AND bible_books.verse >= " . (int)$verse . " AND bible_books.verse <= " . (int)$verse2;
+                    } else {
+                        $sql .= " AND bible_books.verse >= " . ((int)$verse - 3) . " AND bible_books.verse <= " . ((int)$verse + 3);
+                    }
                 }
             }
         }
@@ -855,7 +874,7 @@ if (!$index) {
     $sql .= " ORDER BY bible_books.book, bible_books.chapter, bible_books.verse";
 }
 
-if ($index || !$echo_string) {
+if (($index || !$echo_string) && !empty($sql)) {
     try {
         $result = $db->query($sql);
         if ($result === false) {
