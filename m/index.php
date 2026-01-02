@@ -1453,12 +1453,17 @@ if($index || !$echo_string)
 			$txt_en = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_en);
 			
 			// Fix font color attributes (replace backticks with quotes, add quotes if missing)
-			$txt_tw = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $txt_tw);
-			$txt_cn = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $txt_cn);
-			$txt_en = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $txt_en);
-			$txt_tw = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $txt_tw);
-			$txt_cn = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $txt_cn);
-			$txt_en = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $txt_en);
+			// First, replace backticks with quotes in font color attributes
+			$txt_tw = str_replace('color=`', 'color="', $txt_tw);
+			$txt_cn = str_replace('color=`', 'color="', $txt_cn);
+			$txt_en = str_replace('color=`', 'color="', $txt_en);
+			$txt_tw = str_replace('`>', '">', $txt_tw);
+			$txt_cn = str_replace('`>', '">', $txt_cn);
+			$txt_en = str_replace('`>', '">', $txt_en);
+			// Then, add quotes to unquoted font color attributes
+			$txt_tw = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_tw);
+			$txt_cn = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_cn);
+			$txt_en = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_en);
 		}
 		
 		foreach ($queries as $query_word){
@@ -1476,16 +1481,23 @@ if($index || !$echo_string)
 			
 		}
 		
-		// Remove empty strong tags that might have been created
-		$txt_tw = str_replace('<strong></strong>', '', $txt_tw);
-		$txt_cn = str_replace('<strong></strong>', '', $txt_cn);
-		$txt_en = str_replace('<strong></strong>', '', $txt_en);
+		// Remove empty strong tags that might have been created (multiple patterns)
+		$txt_tw = preg_replace('/<strong>\s*<\/strong>/i', '', $txt_tw);
+		$txt_cn = preg_replace('/<strong>\s*<\/strong>/i', '', $txt_cn);
+		$txt_en = preg_replace('/<strong>\s*<\/strong>/i', '', $txt_en);
 		//$txt_py = $row['txt_py'];
 		if($vid == $verse && ($mode=='READ' || $mode=='INDEX'))
 		{
-			$txt_tw = "<strong>" . $txt_tw . "</strong>";
-			$txt_cn = "<strong>" . $txt_cn . "</strong>";
-			$txt_en = "<strong>" . $txt_en . "</strong>";
+			// Only wrap in strong tags if text is not empty
+			if(trim($txt_tw) !== '') {
+				$txt_tw = "<strong>" . $txt_tw . "</strong>";
+			}
+			if(trim($txt_cn) !== '') {
+				$txt_cn = "<strong>" . $txt_cn . "</strong>";
+			}
+			if(trim($txt_en) !== '') {
+				$txt_en = "<strong>" . $txt_en . "</strong>";
+			}
 			//$txt_py = "<strong>" . $txt_py . "</strong>";
 		}
 //		$book_short = $row['short'];
@@ -1547,7 +1559,10 @@ if($index || !$echo_string)
 		}
 
 		
-		$text_cmp = $text_cmp .  $txt_cn . " (CUVS)";
+		// Only output if text is not empty
+		if(trim($txt_cn) !== '') {
+			$text_cmp = $text_cmp .  $txt_cn . " (CUVS)";
+		}
 	
 		$text_cmp = $text_cmp .  "</p>\n";
 		}
@@ -1574,7 +1589,10 @@ if($index || !$echo_string)
 		}
 
 		
-		$text_cmp = $text_cmp .  $txt_tw . " (CUVT)";
+		// Only output if text is not empty
+		if(trim($txt_tw) !== '') {
+			$text_cmp = $text_cmp .  $txt_tw . " (CUVT)";
+		}
 	
 		$text_cmp = $text_cmp .  "</p>\n";
 		}
@@ -1613,7 +1631,10 @@ if($index || !$echo_string)
 			$text_cmp = $text_cmp .  $cv .  "</a></sup> ";
 		}
 
-		$text_cmp = $text_cmp .  $txt_en . " (KJV)";		
+		// Only output if text is not empty
+		if(trim($txt_en) !== '') {
+			$text_cmp = $text_cmp .  $txt_en . " (KJV)";
+		}
 		$text_cmp = $text_cmp .  "</p>\n";
 		
 		}
@@ -1642,11 +1663,14 @@ if($index || !$echo_string)
 							$text_string = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $text_string);
 							
 							// Fix font color attributes (replace backticks with quotes, add quotes if missing)
-							$text_string = preg_replace('/<font color=`([^`]+)`>/i', '<font color="$1">', $text_string);
-							$text_string = preg_replace('/<font color=([^>]+)>/i', '<font color="$1">', $text_string);
+							// First, replace backticks with quotes in font color attributes
+							$text_string = str_replace('color=`', 'color="', $text_string);
+							$text_string = str_replace('`>', '">', $text_string);
+							// Then, add quotes to unquoted font color attributes
+							$text_string = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $text_string);
 							
-							// Remove empty strong tags
-							$text_string = str_replace('<strong></strong>', '', $text_string);
+							// Remove empty strong tags (with optional whitespace)
+							$text_string = preg_replace('/<strong>\s*<\/strong>/i', '', $text_string);
 							
 						}
 					$text_cmp .= "\n<li><p>" . $text_string . "<b>(" . strtoupper($bible_book) . ")</b></p></li>\n";
