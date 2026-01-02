@@ -1,5 +1,45 @@
 <?php
 
+// Initialize variables to prevent undefined warnings
+$echo_string = '';
+$text_tw = '';
+$text_cn = '';
+$text_en = '';
+$text_cmp = '';
+$text_py = '';
+$short_url_base = '';
+$long_url_base = '';
+$img_url = '';
+$sitename = '';
+$wiki_base = '';
+$wiki_search_base = '';
+$extend = 1;
+$clbs = '';
+$ccsb = '';
+$ckjvs = '';
+$ckjvt = '';
+$cuvs = '';
+$cuvt = '';
+$cuvc = '';
+$ncvs = '';
+$pinyin = '';
+$lcvs = '';
+$kjv = '';
+$nasb = '';
+$esv = '';
+$ukjv = '';
+$kjv1611 = '';
+$bbe = '';
+$tr = '';
+$wlc = '';
+$name = '';
+$chapter = 0;
+$verse = 0;
+$verse2 = 0;
+$mode = '';
+$book = 0;
+$book2 = 0;
+
 $book_short=array("", "Gen", "Exod", "Lev", "Num", "Deut", "Josh", "Judg", "Ruth", "1Sam", "2Sam", "1Kgs", "2Kgs", "1Chr", "2Chr", "Ezra", "Neh", "Esth", "Job", "Ps", "Prov", "Eccl", "Song", "Isa", "Jer", "Lam", "Ezek", "Dan", "Hos", "Joel", "Amos", "Obad", "Jonah", "Mic", "Nah", "Hab", "Zeph", "Hag", "Zech", "Mal", "Matt", "Mark", "Luke", "John", "Acts", "Rom", "1Cor", "2Cor", "Gal", "Eph", "Phil", "Col", "1Thess", "2Thess", "1Tim", "2Tim", "Titus", "Phlm", "Heb", "Jas", "1Pet", "2Pet", "1John", "2John", "3John", "Jude", "Rev");
 //$book_index=array(""=>0, "Gen"=>1, "Exod"=>2, "Lev"=>3, "Num"=>4, "Deut"=>5, "Josh"=>6, "Judg"=>7, "Ruth"=>8, "1Sam"=>9, "2Sam"=>10, "1Kgs"=>11, "2Kgs"=>12, "1Chr"=>13, "2Chr"=>14, "Ezra"=>15, "Neh"=>16, "Esth"=>17, "Job"=>18, "Ps"=>19, "Prov"=>20, "Eccl"=>21, "Song"=>22, "Isa"=>23, "Jer"=>24, "Lam"=>25, "Ezek"=>26, "Dan"=>27, "Hos"=>28, "Joel"=>29, "Amos"=>30, "Obad"=>31, "Jonah"=>32, "Mic"=>33, "Nah"=>34, "Hab"=>35, "Zeph"=>36, "Hag"=>37, "Zech"=>38, "Mal"=>39, "Matt"=>40, "Mark"=>41, "Luke"=>42, "John"=>43, "Acts"=>44, "Rom"=>45, "1Cor"=>46, "2Cor"=>47, "Gal"=>48, "Eph"=>49, "Phil"=>50, "Col"=>51, "1Thess"=>52, "2Thess"=>53, "1Tim"=>54, "2Tim"=>55, "Titus"=>56, "Phlm"=>57, "Heb"=>58, "Jas"=>59, "1Pet"=>60, "2Pet"=>61, "1John"=>62, "2John"=>63, "3John"=>64, "Jude"=>65, "Rev"=>66);
 $book_english=array( "", "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi", "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation");
@@ -759,9 +799,18 @@ $bible_books=array($cuvs,$cuvt,$kjv,$nasb,$esv,$ncvs,$cuvc,$lcvs,$pinyin,$ccsb,$
 
 $strongs = $_REQUEST['strongs'] ?? '';
 
-// Set $img_url before including common.php
-if (!isset($img_url)) {
+// Set default values before including common.php and config.php
+if (!$img_url) {
     $img_url = 'https://bibleengine.ai';
+}
+if (!$short_url_base) {
+    $short_url_base = 'https://bibleengine.ai';
+}
+if (!$long_url_base) {
+    $long_url_base = 'https://bibleengine.ai';
+}
+if (!$sitename) {
+    $sitename = 'BibleEngine.ai';
 }
 
 //echo "book=" . $book . " chapter=" . $chapter . " chapter2="  . $chapter2 . " verse=" . $verse . " verse2=" .$verse2;
