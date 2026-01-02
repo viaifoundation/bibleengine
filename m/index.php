@@ -1447,6 +1447,39 @@ if($index || !$echo_string)
 		
 		// Process HTML tags in verse text if Strong's is enabled
 		if($strongs) {
+			// Process font color tags first
+			$search_str = array('<FR>','<Fr>');
+			$replace_str = array('<font color="red">','</font>');
+			$txt_tw = str_replace($search_str, $replace_str, $txt_tw);
+			$txt_cn = str_replace($search_str, $replace_str, $txt_cn);
+			$txt_en = str_replace($search_str, $replace_str, $txt_en);
+			
+			// Process Strong's Hebrew codes (both <WH...> and <H...> formats)
+			$pattern = '/<WH(\w+)>/i';
+			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
+			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
+			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
+			$txt_en = preg_replace($pattern, $replacement, $txt_en);
+			// Also process <H...> format
+			$pattern = '/<H(\w+)>/i';
+			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
+			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
+			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
+			$txt_en = preg_replace($pattern, $replacement, $txt_en);
+			
+			// Process Strong's Greek codes (both <WG...> and <G...> formats)
+			$pattern = '/<WG(\w+)>/i';
+			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
+			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
+			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
+			$txt_en = preg_replace($pattern, $replacement, $txt_en);
+			// Also process <G...> format
+			$pattern = '/<G(\w+)>/i';
+			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
+			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
+			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
+			$txt_en = preg_replace($pattern, $replacement, $txt_en);
+			
 			// Process italic tags
 			$txt_tw = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_tw);
 			$txt_cn = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_cn);
@@ -1649,13 +1682,21 @@ if($index || !$echo_string)
 							$replace_str = array('<font color="red">','</font>');
 							$text_string  = str_replace($search_str, $replace_str, $text_string);
 							
-							// Process Strong's Hebrew codes
+							// Process Strong's Hebrew codes (both <WH...> and <H...> formats)
 							$pattern = '/<WH(\w+)>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
+							// Also process <H...> format
+							$pattern = '/<H(\w+)>/i';
+							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
+							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
-							// Process Strong's Greek codes
+							// Process Strong's Greek codes (both <WG...> and <G...> formats)
 							$pattern = '/<WG(\w+)>/i';
+							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
+							$text_string= preg_replace($pattern, $replacement, $text_string);
+							// Also process <G...> format
+							$pattern = '/<G(\w+)>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							

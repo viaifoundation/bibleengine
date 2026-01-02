@@ -1022,12 +1022,26 @@ if (($index || !$echo_string) && !empty($sql)) {
                     $text_string = $row["text_$bible_book"] ?? '';
                     if ($strongs && in_array($bible_book, ['cuvs', 'cuvt', 'kjv', 'nasb'])) {
                         $search_str = ['<FR>', '<Fr>'];
-                        $replace_str = ['<font color=red>', '</font>'];
+                        $replace_str = ['<font color="red">', '</font>'];
                         $text_string = str_replace($search_str, $replace_str, $text_string);
+                        // Process Strong's Hebrew codes (both <WH...> and <H...> formats)
                         $text_string = preg_replace('/<WH(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
+                        $text_string = preg_replace('/<H(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>', $text_string);
+                        // Process Strong's Greek codes (both <WG...> and <G...> formats)
                         $text_string = preg_replace('/<WG(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        $text_string = preg_replace('/<G(\w+)>/i', '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>', $text_string);
+                        // Process italic tags
+                        $text_string = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $text_string);
+                        // Fix font color attributes (replace backticks with quotes)
+                        $text_string = str_replace('color=`', 'color="', $text_string);
+                        $text_string = str_replace('`>', '">', $text_string);
+                        $text_string = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $text_string);
+                        // Don't escape HTML since we've processed it
+                        $text_cmp .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
+                    } else {
+                        // Escape HTML for non-Strong's text
+                        $text_cmp .= "<li><p>" . htmlspecialchars($text_string) . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     }
-                    $text_cmp .= "<li><p>" . htmlspecialchars($text_string) . " (" . strtoupper($bible_book) . ")</p></li>\n";
                 }
             }
             $text_cmp .= "</ul>\n";
