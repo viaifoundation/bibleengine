@@ -1447,50 +1447,66 @@ if($index || !$echo_string)
 		
 		// Process HTML tags in verse text if Strong's is enabled
 		if($strongs && $strongs !== '') {
-			// Process font color tags first
+			// Process formatting tags first (before Strong's codes)
+			// Red letter (words of Christ) - <FR>...</Fr>
 			$search_str = array('<FR>','<Fr>');
-			$replace_str = array('<font color="red">','</font>');
+			$replace_str = array('<span style="color:red;">','</span>');
 			$txt_tw = str_replace($search_str, $replace_str, $txt_tw);
 			$txt_cn = str_replace($search_str, $replace_str, $txt_cn);
 			$txt_en = str_replace($search_str, $replace_str, $txt_en);
 			
+			// Orange letter (words of angels/divine speech) - <FO>...</Fo>
+			$search_str = array('<FO>','<Fo>');
+			$replace_str = array('<span style="color:orange;">','</span>');
+			$txt_tw = str_replace($search_str, $replace_str, $txt_tw);
+			$txt_cn = str_replace($search_str, $replace_str, $txt_cn);
+			$txt_en = str_replace($search_str, $replace_str, $txt_en);
+			
+			// Italics (supplied words) - <FI>...</Fi>
+			$txt_tw = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_tw);
+			$txt_cn = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_cn);
+			$txt_en = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_en);
+			
 			// Process Strong's codes - process <WG...> and <WH...> first, then <G...> and <H...>
 			// This order ensures <WG...> doesn't get partially matched by <G...> pattern
+			// Hebrew: <WHxxxx> or <Hxxxx> where xxxx is 1-8674 (Old Testament)
+			// Greek: <WGxxxx> or <Gxxxx> where xxxx is 1-5624 (New Testament)
 			
 			// Process <WG...> format (Greek, long form) - converts to <G...> inside link
-			$pattern = '/<WG(\d+)>/i';
+			// Matches <WG1> through <WG5624> (Greek Strong's numbers)
+			$pattern = '/<WG(\d{1,4})>/i';
 			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
 			
 			// Process <WH...> format (Hebrew, long form) - converts to <H...> inside link
-			$pattern = '/<WH(\d+)>/i';
+			// Matches <WH1> through <WH8674> (Hebrew Strong's numbers)
+			$pattern = '/<WH(\d{1,4})>/i';
 			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
 			
 			// Process <G...> format (Greek, short form) - standalone codes
+			// Matches <G1> through <G5624> (Greek Strong's numbers)
 			// Use negative lookbehind to avoid matching <G...> that's already inside an anchor tag
-			$pattern = '/(?<!>)<G(\d+)>/i';
+			$pattern = '/(?<!>)<G(\d{1,4})>/i';
 			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
 			
 			// Process <H...> format (Hebrew, short form) - standalone codes
+			// Matches <H1> through <H8674> (Hebrew Strong's numbers)
 			// Use negative lookbehind to avoid matching <H...> that's already inside an anchor tag
-			$pattern = '/(?<!>)<H(\d+)>/i';
+			$pattern = '/(?<!>)<H(\d{1,4})>/i';
 			$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 			$txt_tw = preg_replace($pattern, $replacement, $txt_tw);
 			$txt_cn = preg_replace($pattern, $replacement, $txt_cn);
 			$txt_en = preg_replace($pattern, $replacement, $txt_en);
 			
-			// Process italic tags
-			$txt_tw = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_tw);
-			$txt_cn = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_cn);
-			$txt_en = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $txt_en);
+			// Italics are already processed above
 			
 			// Fix font color attributes (replace backticks with quotes, add quotes if missing)
 			// First, replace backticks with quotes in font color attributes
@@ -1684,35 +1700,51 @@ if($index || !$echo_string)
 				{
 					$text_string= $row["text_$bible_book"] ?? '';
 					if($strongs && ( $bible_book == "cuvs" || $bible_book=="cuvt" || $bible_book == "kjv" || $bible_book == "nasb")){
-							// Process font color tags
+							// Process formatting tags first
+							// Red letter (words of Christ) - <FR>...</Fr>
 							$search_str = array('<FR>','<Fr>');
-							$replace_str = array('<font color="red">','</font>');
+							$replace_str = array('<span style="color:red;">','</span>');
 							$text_string  = str_replace($search_str, $replace_str, $text_string);
 							
+							// Orange letter (words of angels/divine speech) - <FO>...</Fo>
+							$search_str = array('<FO>','<Fo>');
+							$replace_str = array('<span style="color:orange;">','</span>');
+							$text_string  = str_replace($search_str, $replace_str, $text_string);
+							
+							// Italics (supplied words) - <FI>...</Fi>
+							$text_string = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $text_string);
+							
 							// Process Strong's codes - process <WG...> and <WH...> first, then <G...> and <H...>
+							// Hebrew: <WHxxxx> or <Hxxxx> where xxxx is 1-8674 (Old Testament)
+							// Greek: <WGxxxx> or <Gxxxx> where xxxx is 1-5624 (New Testament)
 							
 							// Process <WG...> format (Greek, long form) - converts to <G...> inside link
-							$pattern = '/<WG(\d+)>/i';
+							// Matches <WG1> through <WG5624> (Greek Strong's numbers)
+							$pattern = '/<WG(\d{1,4})>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
 							// Process <WH...> format (Hebrew, long form) - converts to <H...> inside link
-							$pattern = '/<WH(\d+)>/i';
+							// Matches <WH1> through <WH8674> (Hebrew Strong's numbers)
+							$pattern = '/<WH(\d{1,4})>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
-							// Process <G...> format (Greek, short form) - standalone codes, avoid matching inside anchor tags
-							$pattern = '/(?<!<a[^>]*>)<G(\d+)>/i';
+							// Process <G...> format (Greek, short form) - standalone codes
+							// Matches <G1> through <G5624> (Greek Strong's numbers)
+							// Use negative lookbehind to avoid matching <G...> that's already inside an anchor tag
+							$pattern = '/(?<!>)<G(\d{1,4})>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=0&k=${1}" target="_blank"><G${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
-							// Process <H...> format (Hebrew, short form) - standalone codes, avoid matching inside anchor tags
-							$pattern = '/(?<!<a[^>]*>)<H(\d+)>/i';
+							// Process <H...> format (Hebrew, short form) - standalone codes
+							// Matches <H1> through <H8674> (Hebrew Strong's numbers)
+							// Use negative lookbehind to avoid matching <H...> that's already inside an anchor tag
+							$pattern = '/(?<!>)<H(\d{1,4})>/i';
 							$replacement = '<a href="http://bible.fhl.net/new/s.php?N=1&k=${1}" target="_blank"><H${1}></a>';
 							$text_string= preg_replace($pattern, $replacement, $text_string);
 							
-							// Process italic tags
-							$text_string = str_replace(array('<FI>', '<Fi>'), array('<i>', '</i>'), $text_string);
+							// Italics are already processed above
 							
 							// Fix font color attributes (replace backticks with quotes, add quotes if missing)
 							// First, replace backticks with quotes in font color attributes
