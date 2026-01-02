@@ -606,16 +606,29 @@ if (!isset($_REQUEST['w']))
 {
 	$_REQUEST['w'] = ""; 
 }
-$mode = trim($_REQUEST['mode']);
+if (!isset($_REQUEST['mode'])) 
+{
+	$_REQUEST['mode'] = ""; 
+}
+if (!isset($_REQUEST['b'])) 
+{
+	$_REQUEST['b'] = ""; 
+}
+if (!isset($_REQUEST['o'])) 
+{
+	$_REQUEST['o'] = ""; 
+}
+$echo_string = ''; // Initialize echo_string
+$mode = trim($_REQUEST['mode'] ?? '');
 //if(!$mode)
 //	$mode='READ';
-$search = trim($_REQUEST['s']);
-$index = trim($_REQUEST['i']);
-$chapter = (int)$_REQUEST['c'];
-$verse = (int)$_REQUEST['v'];
-$verse2 = (int)$_REQUEST['v2'];
-$books=$_REQUEST['b'];
-$options=$_REQUEST['o'];
+$search = trim($_REQUEST['s'] ?? '');
+$index = trim($_REQUEST['i'] ?? '');
+$chapter = (int)($_REQUEST['c'] ?? 0);
+$verse = (int)($_REQUEST['v'] ?? 0);
+$verse2 = (int)($_REQUEST['v2'] ?? 0);
+$books = $_REQUEST['b'] ?? '';
+$options = $_REQUEST['o'] ?? '';
 list($book,$book2) = array_pad(explode("-", $books, 2), 2, '');
 $book = $book ? (int)$book : 0;
 $book2 = $book2 ? (int)$book2 : 0;
@@ -641,26 +654,32 @@ $replace=array(' ',':',',',':','-','-',';');
 $query=str_replace($search,$replace,$query);
 preg_match("/@(.*)/", $query, $query_option_array);
 //print_r($query_option_array);
-$query_options=$query_option_array[1];
+$query_options = isset($query_option_array[1]) ? $query_option_array[1] : '';
 //ltrim($query_options, "@");
 $query_without_options=preg_replace("/@(.*)/","",$query);
 if($query_options)
 {
 	//echo $query_options;
+	$query_option = '';
+	$query_option2 = '';
 	if(strstr($query_options,"-"))
-		list($query_option,$query_option2)=explode("-",$query_options);
+	{
+		$query_options_parts = explode("-", $query_options, 2);
+		$query_option = $query_options_parts[0] ?? '';
+		$query_option2 = $query_options_parts[1] ?? '';
+	}
 	else
 		$query_option=$query_options;
 	//echo $query_option . " " . $query_option2;
 	if((int)$query_option)
 		$book=(int)$query_option;
-	elseif($book_index[$query_option])
+	elseif(isset($book_index[$query_option]) && $book_index[$query_option])
 		$book=$book_index[$query_option];
 	//echo $book_index[$query_option];
 	//echo "Book=$book";
 	if((int)$query_option)
 		$book2=(int)$query_option2;
-	else if($book_index[$query_option2])
+	else if(isset($book_index[$query_option2]) && $book_index[$query_option2])
 		$book2=$book_index[$query_option2];
 	//echo "Book2=$book2";
 }	
@@ -738,8 +757,12 @@ if($en){
 
 $bible_books=array($cuvs,$cuvt,$kjv,$nasb,$esv,$ncvs,$cuvc,$lcvs,$pinyin,$ccsb,$ckjvs,$ckjvt,$clbs,$ukjv,$kjv1611,$bbe);
 
-$strongs=$_REQUEST['strongs'];
+$strongs = $_REQUEST['strongs'] ?? '';
 
+// Set $img_url before including common.php
+if (!isset($img_url)) {
+    $img_url = 'https://bibleengine.ai';
+}
 
 //echo "book=" . $book . " chapter=" . $chapter . " chapter2="  . $chapter2 . " verse=" . $verse . " verse2=" .$verse2;
 
@@ -869,9 +892,15 @@ if($query)
 					$sql_where = " (book = $ii) ";
 					$references = str_replace(" ","",substr($segment, strlen($book_name)));
 					//echo $references;
-					list($reference1, $reference2) = explode("-", $references);
-					list($r1,$r2)=explode(":",$reference1);
-					list($r3,$r4)=explode(":",$reference2);
+					$references_parts = explode("-", $references, 2);
+					$reference1 = $references_parts[0] ?? '';
+					$reference2 = $references_parts[1] ?? '';
+					$r1_parts = explode(":", $reference1, 2);
+					$r1 = $r1_parts[0] ?? '';
+					$r2 = $r1_parts[1] ?? '';
+					$r3_parts = explode(":", $reference2, 2);
+					$r3 = $r3_parts[0] ?? '';
+					$r4 = $r3_parts[1] ?? '';
 					list($ir1,$ir2,$ir3,$ir4)=array((int)($r1),(int)($r2),(int)($r3),(int)($r4));
 					//echo "r1=$r1, r2=$r2, r3=$r3, r4=$r4<br/>\n";
 					//echo "ir1=$ir1, ir2=$ir2, ir3=$ir3, ir4=$ir4";
@@ -994,9 +1023,9 @@ if($query)
 				while($row = mysqli_fetch_assoc($result)) {
 				//foreach($result as $row){
 					$count++;
-					$bid = $row[book];
-					$cid = $row[chapter];
-					$vid = $row[verse];
+					$bid = $row['book'] ?? 0;
+					$cid = $row['chapter'] ?? 0;
+					$vid = $row['verse'] ?? 0;
 					$querystr .=  $bid . ":" . $cid . ":" . $vid . ",";
 					if($count>500)
 					{
