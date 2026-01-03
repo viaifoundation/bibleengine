@@ -298,13 +298,17 @@ $api = $_REQUEST['api'] ?? '';
 $script = 'index.php';
 $strongs = $_REQUEST['strongs'] ?? '';
 
+// Preserve original query for title BEFORE any processing (including votd)
+$original_query = $query;
+
 if (!$query) {
     require_once __DIR__ . '/votd.php';
     $query = $votd_string ?? '';
+    // Update original_query if we got a votd and original was empty
+    if ($query && !$original_query) {
+        $original_query = $query;
+    }
 }
-
-// Preserve original query for title before processing
-$original_query = $query;
 
 $query = str_replace(['　', '：', '，', '.', '—', '－', '–', '；', '／'], [' ', ':', ',', ' ', '-', '-', '-', ';', '/'], $query);
 preg_match("/@([^ ]+) /", $query, $query_option_array);
@@ -762,16 +766,25 @@ if ($verse2) {
     $short_url_title .= "-$verse2";
 }
 
-// Build title - prefer original query if it looks like a verse reference (e.g., "Deut 2:9")
-// Otherwise use english_title if available
-if ($original_query && preg_match('/^[a-zA-Z\u4e00-\u9fff]+[\s:]+[\d:,-]+/', $original_query)) {
-    // Query looks like a verse reference (e.g., "Deut 2:9", "约 3:16")
-    $title = $original_query;
-} elseif ($english_title) {
-    // Use formatted english title (e.g., "申命记 Deuteronomy 2:9")
+// Build title - prefer original query if it looks like a verse reference
+// For short URLs like "Deut.2.10.htm" -> "Deut 2:10", use the original query format
+$title = '';
+if ($original_query) {
+    // Check if it looks like a verse reference (book name + numbers)
+    // This matches patterns like "Deut 2:10", "Deut2:10", "约 3:16", etc.
+    if (preg_match('/^[a-zA-Z\u4e00-\u9fff]+/', $original_query) && preg_match('/\d/', $original_query)) {
+        // Use original query as-is, it should already be in a readable format
+        $title = $original_query;
+    } else {
+        $title = $original_query;
+    }
+}
+// If no title from original_query or it's empty, use english_title
+if (!$title && $english_title) {
     $title = $english_title;
-} else {
-    // Fallback to original query
+}
+// Final fallback
+if (!$title) {
     $title = $original_query ?: '';
 }
 $title .= " - $sitename";
