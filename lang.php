@@ -18,18 +18,22 @@ function detectLanguage(): string {
         return $_COOKIE['bibleengine_lang'];
     }
     
-    // Detect from browser
+    // Detect from browser - check full Accept-Language header
     $browser_lang = '';
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 5);
+        $browser_lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     }
     
     // Map browser language to our language codes
-    if (strpos($browser_lang, 'zh-Hant') !== false || strpos($browser_lang, 'zh-TW') !== false || strpos($browser_lang, 'zh-HK') !== false) {
+    // Prioritize Chinese variants first
+    if (stripos($browser_lang, 'zh-Hant') !== false || stripos($browser_lang, 'zh-TW') !== false || stripos($browser_lang, 'zh-HK') !== false) {
         return 'zh_tw';
-    } elseif (strpos($browser_lang, 'zh') !== false || strpos($browser_lang, 'zh-CN') !== false) {
+    } elseif (stripos($browser_lang, 'zh-CN') !== false || stripos($browser_lang, 'zh-SG') !== false) {
         return 'zh_cn';
-    } elseif (strpos($browser_lang, 'en') !== false) {
+    } elseif (stripos($browser_lang, 'zh') !== false) {
+        // Generic Chinese - default to Traditional
+        return 'zh_tw';
+    } elseif (stripos($browser_lang, 'en') !== false) {
         return 'en';
     }
     
@@ -122,6 +126,46 @@ $translations = [
         'lang_en' => 'English',
         'language' => '語言',
         'language_full' => '語言 Language',
+        
+        // Bible sections
+        'old_testament' => '舊約 (OT)',
+        'new_testament' => '新約 (NT)',
+        
+        // Organization names
+        'viai_foundation' => '唯愛AI基金會',
+        'goshen_tech' => '歌珊地科技',
+        
+        // Font size
+        'font_size' => '字體大小',
+        'font_size_full' => '字體大小 FontSize',
+        'font_xs' => '更小',
+        'font_xs_full' => '更小 XS',
+        'font_s' => '小',
+        'font_s_full' => '小 S',
+        'font_m' => '中',
+        'font_m_full' => '中 M',
+        'font_l' => '大',
+        'font_l_full' => '大 L',
+        'font_xl' => '更大',
+        'font_xl_full' => '更大 XL',
+        
+        // Bible translations
+        'trans_cuvs' => '簡體和合本CUVS',
+        'trans_cuvt' => '繁體和合本CUVT',
+        'trans_kjv' => '英王欽定本KJV',
+        'trans_nasb' => '新美國標準聖經NASB',
+        'trans_esv' => '英文標準版本ESV',
+        'trans_cuvc' => '文理和合CUVC',
+        'trans_ncvs' => '新譯本NCVS',
+        'trans_lcvs' => '呂振中LCVS',
+        'trans_ccsb' => '思高本CCSB',
+        'trans_clbs' => '當代聖經CLBS',
+        'trans_ckjvs' => '簡體欽定本CKJVS',
+        'trans_ckjvt' => '繁體欽定本CKJVT',
+        'trans_pinyin' => '拼音pinyin',
+        'trans_ukjv' => '更新欽定UKJV',
+        'trans_kjv1611' => '1611欽定 KJV1611',
+        'trans_bbe' => '簡易英文BBE',
     ],
     
     'zh_cn' => [
@@ -205,6 +249,46 @@ $translations = [
         'lang_en' => 'English',
         'language' => '语言',
         'language_full' => '语言 Language',
+        
+        // Bible sections
+        'old_testament' => '旧约 (OT)',
+        'new_testament' => '新约 (NT)',
+        
+        // Organization names
+        'viai_foundation' => '唯爱AI基金会',
+        'goshen_tech' => '歌珊地科技',
+        
+        // Font size
+        'font_size' => '字体大小',
+        'font_size_full' => '字体大小 FontSize',
+        'font_xs' => '更小',
+        'font_xs_full' => '更小 XS',
+        'font_s' => '小',
+        'font_s_full' => '小 S',
+        'font_m' => '中',
+        'font_m_full' => '中 M',
+        'font_l' => '大',
+        'font_l_full' => '大 L',
+        'font_xl' => '更大',
+        'font_xl_full' => '更大 XL',
+        
+        // Bible translations
+        'trans_cuvs' => '简体和合本CUVS',
+        'trans_cuvt' => '繁体和合本CUVT',
+        'trans_kjv' => '英王钦定本KJV',
+        'trans_nasb' => '新美国标准圣经NASB',
+        'trans_esv' => '英文标准版本ESV',
+        'trans_cuvc' => '文理和合CUVC',
+        'trans_ncvs' => '新译本NCVS',
+        'trans_lcvs' => '吕振中LCVS',
+        'trans_ccsb' => '思高本CCSB',
+        'trans_clbs' => '当代圣经CLBS',
+        'trans_ckjvs' => '简体钦定本CKJVS',
+        'trans_ckjvt' => '繁体钦定本CKJVT',
+        'trans_pinyin' => '拼音pinyin',
+        'trans_ukjv' => '更新钦定UKJV',
+        'trans_kjv1611' => '1611钦定 KJV1611',
+        'trans_bbe' => '简易英文BBE',
     ],
     
     'en' => [
@@ -288,6 +372,46 @@ $translations = [
         'lang_en' => 'English',
         'language' => 'Language',
         'language_full' => 'Language',
+        
+        // Bible sections
+        'old_testament' => 'Old Testament (OT)',
+        'new_testament' => 'New Testament (NT)',
+        
+        // Organization names
+        'viai_foundation' => 'VI AI Foundation',
+        'goshen_tech' => 'Goshen Tech',
+        
+        // Font size
+        'font_size' => 'Font Size',
+        'font_size_full' => 'Font Size',
+        'font_xs' => 'XS',
+        'font_xs_full' => 'Extra Small XS',
+        'font_s' => 'S',
+        'font_s_full' => 'Small S',
+        'font_m' => 'M',
+        'font_m_full' => 'Medium M',
+        'font_l' => 'L',
+        'font_l_full' => 'Large L',
+        'font_xl' => 'XL',
+        'font_xl_full' => 'Extra Large XL',
+        
+        // Bible translations
+        'trans_cuvs' => 'CUVS (Simplified Chinese Union Version)',
+        'trans_cuvt' => 'CUVT (Traditional Chinese Union Version)',
+        'trans_kjv' => 'KJV (King James Version)',
+        'trans_nasb' => 'NASB (New American Standard Bible)',
+        'trans_esv' => 'ESV (English Standard Version)',
+        'trans_cuvc' => 'CUVC (Classical Chinese Union Version)',
+        'trans_ncvs' => 'NCVS (New Chinese Version Simplified)',
+        'trans_lcvs' => 'LCVS (Lu Zhenzhong Version)',
+        'trans_ccsb' => 'CCSB (Chinese Catholic Bible)',
+        'trans_clbs' => 'CLBS (Contemporary Chinese Bible)',
+        'trans_ckjvs' => 'CKJVS (Chinese KJV Simplified)',
+        'trans_ckjvt' => 'CKJVT (Chinese KJV Traditional)',
+        'trans_pinyin' => 'Pinyin',
+        'trans_ukjv' => 'UKJV (Updated King James Version)',
+        'trans_kjv1611' => 'KJV1611 (King James Version 1611)',
+        'trans_bbe' => 'BBE (Bible in Basic English)',
     ],
 ];
 
@@ -320,17 +444,62 @@ function getCurrentLang(): string {
     return $current_lang;
 }
 
+// Get Bible book names based on current language
+function getBookNames(): array {
+    global $current_lang;
+    
+    // Book names in Traditional Chinese (long form)
+    $book_names_tw_long = ["", "創世記", "出埃及記", "利未記", "民數記", "申命記", "約書亞記", "士師記", "路得記", "撒母耳記上", "撒母耳記下", "列王紀上", "列王紀下", "歷代志上", "歷代志下", "以斯拉記", "尼希米記", "以斯帖記", "約伯記", "詩篇", "箴言", "傳道書", "雅歌", "以賽亞書", "耶利米書", "耶利米哀歌", "以西結書", "但以理書", "何西阿書", "約珥書", "阿摩司書", "俄巴底亞書", "約拿書", "彌迦書", "那鴻書", "哈巴谷書", "西番雅書", "哈該書", "撒迦利亞書", "瑪拉基書", "馬太福音", "馬可福音", "路加福音", "約翰福音", "使徒行傳", "羅馬書", "哥林多前書", "哥林多後書", "加拉太書", "以弗所書", "腓立比書", "歌羅西書", "帖撒羅尼迦前書", "帖撒羅尼迦後書", "提摩太前書", "提摩太後書", "提多書", "腓利門書", "希伯來書", "雅各書", "彼得前書", "彼得後書", "約翰一書", "約翰二書", "約翰三書", "猶大書", "啟示錄"];
+    
+    // Book names in Traditional Chinese (short form)
+    $book_names_tw_short = ["", "創", "出", "利", "民", "申", "書", "士", "得", "撒上", "撒下", "王上", "王下", "代上", "代下", "拉", "尼", "斯", "伯", "詩", "箴", "傳", "歌", "賽", "耶", "哀", "結", "但", "何", "珥", "摩", "俄", "拿", "彌", "鴻", "哈", "番", "該", "亞", "瑪", "太", "可", "路", "約", "徒", "羅", "林前", "林後", "加", "弗", "腓", "西", "帖前", "帖後", "提前", "提後", "多", "門", "來", "雅", "彼前", "彼後", "約一", "約二", "約三", "猶", "啟"];
+    
+    // Book names in Simplified Chinese (long form)
+    $book_names_cn_long = ["", "创世记", "出埃及记", "利未记", "民数记", "申命记", "约书亚记", "士师记", "路得记", "撒母耳记上", "撒母耳记下", "列王纪上", "列王纪下", "历代志上", "历代志下", "以斯拉记", "尼希米记", "以斯帖记", "约伯记", "诗篇", "箴言", "传道书", "雅歌", "以赛亚书", "耶利米书", "耶利米哀歌", "以西结书", "但以理书", "何西阿书", "约珥书", "阿摩司书", "俄巴底亚书", "约拿书", "弥迦书", "那鸿书", "哈巴谷书", "西番雅书", "哈该书", "撒迦利亚书", "玛拉基书", "马太福音", "马可福音", "路加福音", "约翰福音", "使徒行传", "罗马书", "哥林多前书", "哥林多后书", "加拉太书", "以弗所书", "腓立比书", "歌罗西书", "帖撒罗尼迦前书", "帖撒罗尼迦后书", "提摩太前书", "提摩太后书", "提多书", "腓利门书", "希伯来书", "雅各书", "彼得前书", "彼得后书", "约翰一书", "约翰二书", "约翰三书", "犹大书", "启示录"];
+    
+    // Book names in Simplified Chinese (short form)
+    $book_names_cn_short = ["", "创", "出", "利", "民", "申", "书", "士", "得", "撒上", "撒下", "王上", "王下", "代上", "代下", "拉", "尼", "斯", "伯", "诗", "箴", "传", "歌", "赛", "耶", "哀", "结", "但", "何", "珥", "摩", "俄", "拿", "弥", "鸿", "哈", "番", "该", "亚", "玛", "太", "可", "路", "约", "徒", "罗", "林前", "林后", "加", "弗", "腓", "西", "帖前", "帖后", "提前", "提后", "多", "门", "来", "雅", "彼前", "彼后", "约一", "约二", "约三", "犹", "启"];
+    
+    // Book names in English (long form)
+    $book_names_en_long = ["", "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi", "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation"];
+    
+    // Book names in English (short form) - using OSIS abbreviations
+    $book_names_en_short = ["", "Gen", "Exod", "Lev", "Num", "Deut", "Josh", "Judg", "Ruth", "1Sam", "2Sam", "1Kgs", "2Kgs", "1Chr", "2Chr", "Ezra", "Neh", "Esth", "Job", "Ps", "Prov", "Eccl", "Song", "Isa", "Jer", "Lam", "Ezek", "Dan", "Hos", "Joel", "Amos", "Obad", "Jonah", "Mic", "Nah", "Hab", "Zeph", "Hag", "Zech", "Mal", "Matt", "Mark", "Luke", "John", "Acts", "Rom", "1Cor", "2Cor", "Gal", "Eph", "Phil", "Col", "1Thess", "2Thess", "1Tim", "2Tim", "Titus", "Phlm", "Heb", "Jas", "1Pet", "2Pet", "1John", "2John", "3John", "Jude", "Rev"];
+    
+    // Return appropriate arrays based on current language
+    if ($current_lang === 'zh_tw') {
+        return [
+            'long' => $book_names_tw_long,
+            'short' => $book_names_tw_short
+        ];
+    } elseif ($current_lang === 'zh_cn') {
+        return [
+            'long' => $book_names_cn_long,
+            'short' => $book_names_cn_short
+        ];
+    } else { // en
+        return [
+            'long' => $book_names_en_long,
+            'short' => $book_names_en_short
+        ];
+    }
+}
+
 // Get language switcher HTML
 function getLanguageSwitcher(): string {
     global $current_lang;
     $current_url = $_SERVER['REQUEST_URI'];
+    // Remove existing lang parameter if present
+    $current_url = preg_replace('/[?&]lang=[^&]*/', '', $current_url);
     $separator = strpos($current_url, '?') !== false ? '&' : '?';
     
-    $switcher = '<select name="lang" onchange="window.location.href=\'' . htmlspecialchars($current_url . $separator . 'lang=') . '\' + this.value" style="display:inline;font-size:12px;">';
+    $switcher = '<span style="display:inline-block;margin:0 5px;">';
+    $switcher .= '<select name="lang" onchange="window.location.href=\'' . htmlspecialchars($current_url . $separator . 'lang=') . '\' + this.value" style="display:inline;font-size:12px;padding:2px 5px;border:1px solid #ccc;border-radius:3px;">';
     $switcher .= '<option value="zh_tw"' . ($current_lang === 'zh_tw' ? ' selected' : '') . '>繁體中文</option>';
     $switcher .= '<option value="zh_cn"' . ($current_lang === 'zh_cn' ? ' selected' : '') . '>简体中文</option>';
     $switcher .= '<option value="en"' . ($current_lang === 'en' ? ' selected' : '') . '>English</option>';
     $switcher .= '</select>';
+    $switcher .= '</span>';
     
     return $switcher;
 }

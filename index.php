@@ -831,28 +831,49 @@ if (!$title || trim($title) === '') {
 }
 $title .= " - $sitename";
 
-$book_menu = "<p>旧约 (OT) ";
-$wiki_book_menu = "<p>== 旧约 ==</p><p> </p>\n";
+$ot_text = function_exists('t') ? t('old_testament') : '旧约 (OT)';
+$book_menu = "<p>" . $ot_text . " ";
+$wiki_book_menu = "<p>== " . (function_exists('t') ? t('old_testament') : '旧约') . " ==</p><p> </p>\n";
 for ($i = 1; $i <= 66; ++$i) {
     if ($book == $i) {
         $book_menu .= " <strong>";
     }
-    if ($short_url_base) {
-        $book_menu .= "   <a href=\"$short_url_base/{$book_short[$i]}.htm\" title=\"{$book_chinese[$i]} ({$book_english[$i]})\">{$book_cn[$i]} ({$book_short[$i]})</a> ";
+    // Get translated book names based on current language
+    $book_names = function_exists('getBookNames') ? getBookNames() : null;
+    if ($book_names) {
+        $book_long = $book_names['long'][$i];
+        $book_short_display = $book_names['short'][$i];
     } else {
-        $book_menu .= "   <a href=\"$script?q={$book_short[$i]} 1\" title=\"{$book_chinese[$i]} ({$book_english[$i]})\">{$book_cn[$i]} ({$book_short[$i]})</a> ";
+        // Fallback to original arrays
+        $book_long = $book_chinese[$i];
+        $book_short_display = $book_cn[$i];
+    }
+    // Display format: Chinese long (Chinese short) English long (English short)
+    // e.g., "雅各书(雅) James(Jas)"
+    $book_display = $book_long . "(" . $book_short_display . ") " . $book_english[$i] . "(" . $book_short[$i] . ")";
+    // For title attribute, show full names
+    $book_title = $book_chinese[$i] . " (" . $book_english[$i] . ")";
+    
+    if ($short_url_base) {
+        $book_menu .= "   <a href=\"$short_url_base/{$book_short[$i]}.htm\" title=\"" . htmlspecialchars($book_title) . "\">" . htmlspecialchars($book_display) . "</a> ";
+    } else {
+        $book_menu .= "   <a href=\"$script?q={$book_short[$i]} 1\" title=\"" . htmlspecialchars($book_title) . "\">" . htmlspecialchars($book_display) . "</a> ";
     }
     if ($book == $i) {
         $book_menu .= "</strong>";
     }
+    // Wiki menu uses same format: Chinese long (Chinese short) English long (English short)
+    $wiki_display = $book_long . "(" . $book_short_display . ") " . $book_english[$i] . "(" . $book_short[$i] . ")";
     if ($chapter) {
-        $wiki_book_menu .= "<p>[[MHC:{$book_chinese[$i]} | {$book_cn[$i]}({$book_short[$i]})]]</p>\n";
+        $wiki_book_menu .= "<p>[[MHC:{$book_chinese[$i]} | " . htmlspecialchars($wiki_display) . "]]</p>\n";
     } else {
-        $wiki_book_menu .= "<p>[[MHC:{$book_chinese[$i]} | {$book_chinese[$i]}({$book_english[$i]})]]</p>\n";
+        $wiki_book_menu .= "<p>[[MHC:{$book_chinese[$i]} | " . htmlspecialchars($wiki_display) . "]]</p>\n";
     }
     if ($i == 39) {
-        $book_menu .= " <br/>新约 (NT) ";
-        $wiki_book_menu .= "\n<p> == 新约 == </p><p> </p>\n";
+        // Use translated "New Testament" text
+        $nt_text = function_exists('t') ? t('new_testament') : '新约 (NT)';
+        $book_menu .= " <br/>" . $nt_text . " ";
+        $wiki_book_menu .= "\n<p> == " . (function_exists('t') ? t('new_testament') : '新约') . " == </p><p> </p>\n";
     }
     $book_menu .= "\n";
     $wiki_book_menu .= "\n";
@@ -1467,24 +1488,24 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             foreach ($bible_books as $bible_book) {
                 if ($bible_book && !empty($block_texts[$bible_book])) {
                     $translation_name = strtoupper($bible_book);
-                    // Map translation codes to full names
+                    // Map translation codes to full names using translations
                     $translation_names = [
-                        'CUVS' => '简体和合本 CUVS',
-                        'CUVT' => '繁体和合本 CUVT',
-                        'KJV' => '英王钦定本 KJV',
-                        'NASB' => '新美国标准圣经 NASB',
-                        'ESV' => '英文标准版本 ESV',
-                        'CUVC' => '文理和合 CUVC',
-                        'NCVS' => '新译本 NCVS',
-                        'LCVS' => '吕振中 LCVS',
-                        'CCSB' => '思高本 CCSB',
-                        'CLBS' => '当代圣经 CLBS',
-                        'CKJVS' => '简体钦定本 CKJVS',
-                        'CKJVT' => '繁体钦定本 CKJVT',
-                        'PINYIN' => '拼音 pinyin',
-                        'UKJV' => '更新钦定 UKJV',
-                        'KJV1611' => '1611钦定 KJV1611',
-                        'BBE' => '简易英文 BBE'
+                        'CUVS' => t('trans_cuvs'),
+                        'CUVT' => t('trans_cuvt'),
+                        'KJV' => t('trans_kjv'),
+                        'NASB' => t('trans_nasb'),
+                        'ESV' => t('trans_esv'),
+                        'CUVC' => t('trans_cuvc'),
+                        'NCVS' => t('trans_ncvs'),
+                        'LCVS' => t('trans_lcvs'),
+                        'CCSB' => t('trans_ccsb'),
+                        'CLBS' => t('trans_clbs'),
+                        'CKJVS' => t('trans_ckjvs'),
+                        'CKJVT' => t('trans_ckjvt'),
+                        'PINYIN' => t('trans_pinyin'),
+                        'UKJV' => t('trans_ukjv'),
+                        'KJV1611' => t('trans_kjv1611'),
+                        'BBE' => t('trans_bbe')
                     ];
                     $display_name = $translation_names[$translation_name] ?? $translation_name;
                     
@@ -1571,7 +1592,7 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
 <a href="help.php"> <?php echo t('help_full'); ?></a>
 <small><a href="copyright.php"><?php echo t('copyright_full'); ?></a></small>
-<?php echo getLanguageSwitcher(); ?>
+<strong style="margin: 0 5px;"><?php echo t('language'); ?>:</strong><?php echo getLanguageSwitcher(); ?>
 <small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo t('source_code_full'); ?></a></small>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
 <br/><?php echo t('books_full'); ?>
@@ -1610,26 +1631,26 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='en' value='1' <?php if ($en) echo 'checked'; ?>><?php echo t('english_full'); ?>
 <br/>
 <input type='checkbox' name='strongs' value='strongs' <?php if ($strongs) echo 'checked'; ?>><?php echo t('strongs_code_full'); ?>
-<input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>>简体和合本CUVS*
-<input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>>繁体和合本CUVT*
+<input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>><?php echo t('trans_cuvs'); ?>*
+<input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>><?php echo t('trans_cuvt'); ?>*
 <?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='kjv' value='kjv' <?php if ($kjv) echo 'checked'; ?>>英王钦定本KJV*
-<input type='checkbox' name='nasb' value='nasb' <?php if ($nasb) echo 'checked'; ?>>新美国标准圣经NASB*
-<input type='checkbox' name='esv' value='esv' <?php if ($esv) echo 'checked'; ?>>英文标准版本ESV
+<input type='checkbox' name='kjv' value='kjv' <?php if ($kjv) echo 'checked'; ?>><?php echo t('trans_kjv'); ?>*
+<input type='checkbox' name='nasb' value='nasb' <?php if ($nasb) echo 'checked'; ?>><?php echo t('trans_nasb'); ?>*
+<input type='checkbox' name='esv' value='esv' <?php if ($esv) echo 'checked'; ?>><?php echo t('trans_esv'); ?>
 <br/>
-<input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>>文理和合CUVC
-<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>>新译本NCVS
-<input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>>吕振中LCVS
-<input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>>思高本CCSB
+<input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>><?php echo t('trans_cuvc'); ?>
+<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?>
+<input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>><?php echo t('trans_lcvs'); ?>
+<input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>><?php echo t('trans_ccsb'); ?>
 <?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>>当代圣经CLBS
-<input type='checkbox' name='ckjvs' value='ckjvs' <?php if ($ckjvs) echo 'checked'; ?>>简体钦定本CKJVS
-<input type='checkbox' name='ckjvt' value='ckjvt' <?php if ($ckjvt) echo 'checked'; ?>>繁体钦定本CKJVT
+<input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>><?php echo t('trans_clbs'); ?>
+<input type='checkbox' name='ckjvs' value='ckjvs' <?php if ($ckjvs) echo 'checked'; ?>><?php echo t('trans_ckjvs'); ?>
+<input type='checkbox' name='ckjvt' value='ckjvt' <?php if ($ckjvt) echo 'checked'; ?>><?php echo t('trans_ckjvt'); ?>
 <br/>
-<input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>>拼音pinyin
-<input type='checkbox' name='ukjv' value='ukjv' <?php if ($ukjv) echo 'checked'; ?>>更新钦定UKJV
-<input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>>1611钦定 KJV1611
-<input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>>简易英文BBE
+<input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>><?php echo t('trans_pinyin'); ?>
+<input type='checkbox' name='ukjv' value='ukjv' <?php if ($ukjv) echo 'checked'; ?>><?php echo t('trans_ukjv'); ?>
+<input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?>
+<input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>><?php echo t('trans_bbe'); ?>
 </div>
 </form>
 </div></center>
@@ -1677,12 +1698,12 @@ if ($query && $echo_string) {
 }
 ?>
 <center><div align="center"><p>
-【<strong>字体大小 FontSize</strong>
-<a href="javascript:FontZoom(9)">更小 XS</a>
-<a href="javascript:FontZoom(10)">小 S</a>
-<a href="javascript:FontZoom(12)">中 M</a>
-<a href="javascript:FontZoom(14)">大 L</a>
-<a href="javascript:FontZoom(16)">更大 XL</a>】
+【<strong><?php echo t('font_size_full'); ?></strong>
+<a href="javascript:FontZoom(9)"><?php echo t('font_xs_full'); ?></a>
+<a href="javascript:FontZoom(10)"><?php echo t('font_s_full'); ?></a>
+<a href="javascript:FontZoom(12)"><?php echo t('font_m_full'); ?></a>
+<a href="javascript:FontZoom(14)"><?php echo t('font_l_full'); ?></a>
+<a href="javascript:FontZoom(16)"><?php echo t('font_xl_full'); ?></a>】
 </p></div></center>
 <?php
 // Removed duplicate display of CUVS, CUVT, and KJV - they're now shown in the list like all other translations
