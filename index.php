@@ -1556,6 +1556,7 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>>便携 Portable
 <a href="help.php"> 帮助 Help</a>
 <small><a href="copyright.php">版权 Copyright</a></small>
+<small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">GitHub 源码 Source Code</a></small>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
 <br/>书卷 Books
 <select name="b">

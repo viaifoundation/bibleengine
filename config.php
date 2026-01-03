@@ -38,4 +38,7 @@ if (!isset($engine_name_full)) {
 if (!isset($copyright_text)) {
     $copyright_text = '2004-2024 Goshen Tech, 2025-2026 VI AI Foundation';
 }
+if (!isset($github_url)) {
+    $github_url = 'https://github.com/viaifoundation/bibleengine';
+}
 ?>
