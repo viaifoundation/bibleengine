@@ -980,7 +980,7 @@ if ($index) {
     }
 }
 
-if (!$index && !empty($sql)) {
+if (!empty($sql)) {
     $sql .= " ORDER BY bible_books.book, bible_books.chapter, bible_books.verse";
 }
 
@@ -990,7 +990,10 @@ if ((isset($_REQUEST['debug']) || isset($_GET['debug'])) && !empty($sql)) {
     $echo_string .= "<pre style='background: #f0f0f0; padding: 10px; border: 1px solid #ccc;'>DEBUG SQL:\n" . htmlspecialchars($sql) . "</pre>";
 }
 
-if (($index || !$echo_string) && !empty($sql)) {
+// Execute SQL query if we have SQL and either:
+// 1. We have an index (search results or verse references), OR
+// 2. We don't have an error message in echo_string
+if (!empty($sql) && ($index || empty($echo_string) || strpos($echo_string, '共查到') !== false)) {
     try {
         $result = $db->query($sql);
         if ($result === false) {
