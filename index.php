@@ -701,7 +701,11 @@ if ($mode === 'QUERY' && $do_query) {
             }
             $result->free();
         } catch (Exception $e) {
-            $echo_string = "Database query error: " . $e->getMessage();
+            $error_msg = "Database query error: " . $e->getMessage();
+            if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
+                $error_msg .= "\n\nSQL Query:\n" . htmlspecialchars($sql ?? 'N/A');
+            }
+            $echo_string = $error_msg;
         }
     }
 }
@@ -808,6 +812,9 @@ for ($i = 1; $i <= $book_count_val; $i++) {
     }
 }
 
+// Initialize SQL variable
+$sql = '';
+
 if ($index) {
     if (empty($bible_books)) {
         $echo_string = "请至少选择一个圣经译本";
@@ -893,17 +900,18 @@ if ($index) {
     }
 }
 
-if (!$index) {
+if (!$index && !empty($sql)) {
     $sql .= " ORDER BY bible_books.book, bible_books.chapter, bible_books.verse";
+}
+
+// Debug: Print SQL query (show even if there's an error)
+if ((isset($_REQUEST['debug']) || isset($_GET['debug'])) && !empty($sql)) {
+    echo "<!-- DEBUG SQL: " . htmlspecialchars($sql) . " -->\n";
+    $echo_string .= "<pre style='background: #f0f0f0; padding: 10px; border: 1px solid #ccc;'>DEBUG SQL:\n" . htmlspecialchars($sql) . "</pre>";
 }
 
 if (($index || !$echo_string) && !empty($sql)) {
     try {
-        // Debug: Print SQL query
-        if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
-            echo "<!-- DEBUG SQL: " . htmlspecialchars($sql) . " -->\n";
-            $echo_string .= "<pre style='background: #f0f0f0; padding: 10px; border: 1px solid #ccc;'>DEBUG SQL:\n" . htmlspecialchars($sql) . "</pre>";
-        }
         $result = $db->query($sql);
         if ($result === false) {
             $error_msg = "Query Error: " . $db->error;
