@@ -1212,14 +1212,22 @@ if (($index || !$echo_string) && !empty($sql)) {
                     
                     // Also build block text for this translation (for SECTION 2: Block/Chapter display)
                     // Add verse reference link (full format) but display only verse number
-                    $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link
-                    $verse_number_display = $vid; // Only verse number for display
-                    if ($portable) {
-                        $block_texts[$bible_book] .= " <sup>" . htmlspecialchars($verse_number_display) . "</sup> " . $text_string . " ";
-                    } elseif ($short_url_base) {
-                        $block_texts[$bible_book] .= " <sup><a href=\"$short_url_base/$osis.htm\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
-                    } else {
-                        $block_texts[$bible_book] .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
+                    // Only build if this translation is enabled and block_texts array has this key
+                    if (isset($block_texts[$bible_book])) {
+                        $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link
+                        $verse_number_display = $vid; // Only verse number for display
+                        // Ensure $osis is defined (it should be defined earlier in the loop)
+                        $osis_block = ($book_short[$bid] ?? '') . ".$cid";
+                        if ($vid) {
+                            $osis_block .= ".$vid";
+                        }
+                        if ($portable) {
+                            $block_texts[$bible_book] .= " <sup>" . htmlspecialchars($verse_number_display) . "</sup> " . $text_string . " ";
+                        } elseif ($short_url_base) {
+                            $block_texts[$bible_book] .= " <sup><a href=\"$short_url_base/$osis_block.htm\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
+                        } else {
+                            $block_texts[$bible_book] .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
+                        }
                     }
                 }
             }
