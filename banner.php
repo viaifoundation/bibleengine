@@ -7,10 +7,8 @@
 </tr></table>
 <br/><br/>
 <a href="<?php echo $long_url_base?>"><?php echo $sitename?></a> 
- |
-<a href="m/">便携版 Mobile</a>
- |
-<a href="<?php 
+|
+<a href="<?php
 $wiki_help_url = isset($wiki_base) ? rtrim($wiki_base, '/w') . '/wiki/BibleEngine' : 'https://bible.world/wiki/BibleEngine';
 echo $wiki_help_url;
 ?>">帮助 Help</a>
