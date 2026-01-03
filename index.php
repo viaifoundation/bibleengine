@@ -1061,9 +1061,28 @@ if (($index || !$echo_string) && !empty($sql)) {
                     // This handles the case where latin1 data is being read as UTF-8
                     $test1 = @mb_convert_encoding($txt_en, 'UTF-8', 'ISO-8859-1');
                     if ($test1 !== false && mb_check_encoding($test1, 'UTF-8')) {
-                        // Check if conversion improved things (fewer replacement chars)
-                        $original_bad = substr_count($txt_en, $utf8_replacement_char) + substr_count($txt_en, '') + substr_count($txt_en, 'ï¿½');
-                        $test1_bad = substr_count($test1, $utf8_replacement_char) + substr_count($test1, '') + substr_count($test1, 'ï¿½');
+                            // Check if conversion improved things (fewer replacement chars)
+                            // Use bytes for replacement character to avoid empty string issues
+                            $replacement_bytes = "\xEF\xBF\xBD";
+                            $replacement_sequence = 'ï¿½';
+                            // Count replacement characters - avoid using empty string in substr_count
+                            $original_bad = substr_count($txt_en, $replacement_bytes);
+                            if (strpos($txt_en, $replacement_sequence) !== false) {
+                                $original_bad += substr_count($txt_en, $replacement_sequence);
+                            }
+                            // Check for replacement character using mb_strpos to handle UTF-8 properly
+                            $replacement_char_code = "\xEF\xBF\xBD";
+                            if (mb_strpos($txt_en, $replacement_char_code, 0, 'UTF-8') !== false) {
+                                $original_bad += 1;
+                            }
+                            
+                            $test1_bad = substr_count($test1, $replacement_bytes);
+                            if (strpos($test1, $replacement_sequence) !== false) {
+                                $test1_bad += substr_count($test1, $replacement_sequence);
+                            }
+                            if (mb_strpos($test1, $replacement_char_code, 0, 'UTF-8') !== false) {
+                                $test1_bad += 1;
+                            }
                         if ($test1_bad < $original_bad || ($original_bad > 0 && $test1_bad === 0)) {
                             $txt_en = $test1;
                         }
@@ -1073,8 +1092,22 @@ if (($index || !$echo_string) && !empty($sql)) {
                     if (strpos($txt_en, $utf8_replacement_char) !== false || strpos($txt_en, '') !== false) {
                         $test2 = @mb_convert_encoding($txt_en, 'UTF-8', 'Windows-1252');
                         if ($test2 !== false && mb_check_encoding($test2, 'UTF-8')) {
-                            $test2_bad = substr_count($test2, $utf8_replacement_char) + substr_count($test2, '') + substr_count($test2, 'ï¿½');
-                            $current_bad = substr_count($txt_en, $utf8_replacement_char) + substr_count($txt_en, '') + substr_count($txt_en, 'ï¿½');
+                            // Count replacement characters - avoid using empty string in substr_count
+                            $test2_bad = substr_count($test2, $replacement_bytes);
+                            if (strpos($test2, $replacement_sequence) !== false) {
+                                $test2_bad += substr_count($test2, $replacement_sequence);
+                            }
+                            if (mb_strpos($test2, $replacement_char_code, 0, 'UTF-8') !== false) {
+                                $test2_bad += 1;
+                            }
+                            
+                            $current_bad = substr_count($txt_en, $replacement_bytes);
+                            if (strpos($txt_en, $replacement_sequence) !== false) {
+                                $current_bad += substr_count($txt_en, $replacement_sequence);
+                            }
+                            if (mb_strpos($txt_en, $replacement_char_code, 0, 'UTF-8') !== false) {
+                                $current_bad += 1;
+                            }
                             if ($test2_bad < $current_bad || ($current_bad > 0 && $test2_bad === 0)) {
                                 $txt_en = $test2;
                             }
@@ -1237,8 +1270,13 @@ if (($index || !$echo_string) && !empty($sql)) {
                             // Try ISO-8859-1 -> UTF-8 conversion
                             $test1 = @mb_convert_encoding($text_string, 'UTF-8', 'ISO-8859-1');
                             if ($test1 !== false && mb_check_encoding($test1, 'UTF-8')) {
-                                $original_bad = substr_count($text_string, $utf8_replacement_char) + substr_count($text_string, '') + substr_count($text_string, 'ï¿½');
-                                $test1_bad = substr_count($test1, $utf8_replacement_char) + substr_count($test1, '') + substr_count($test1, 'ï¿½');
+                                // Use strpos to check for replacement character to avoid empty string issues
+                                $replacement_bytes = "\xEF\xBF\xBD";
+                                $replacement_sequence = 'ï¿½';
+                                $original_bad = substr_count($text_string, $replacement_bytes) + 
+                                              (strpos($text_string, $replacement_sequence) !== false ? substr_count($text_string, $replacement_sequence) : 0);
+                                $test1_bad = substr_count($test1, $replacement_bytes) + 
+                                            (strpos($test1, $replacement_sequence) !== false ? substr_count($test1, $replacement_sequence) : 0);
                                 if ($test1_bad < $original_bad || ($original_bad > 0 && $test1_bad === 0)) {
                                     $text_string = $test1;
                                 }
@@ -1248,8 +1286,10 @@ if (($index || !$echo_string) && !empty($sql)) {
                             if (strpos($text_string, $utf8_replacement_char) !== false || strpos($text_string, '') !== false) {
                                 $test2 = @mb_convert_encoding($text_string, 'UTF-8', 'Windows-1252');
                                 if ($test2 !== false && mb_check_encoding($test2, 'UTF-8')) {
-                                    $test2_bad = substr_count($test2, $utf8_replacement_char) + substr_count($test2, '') + substr_count($test2, 'ï¿½');
-                                    $current_bad = substr_count($text_string, $utf8_replacement_char) + substr_count($text_string, '') + substr_count($text_string, 'ï¿½');
+                                    $test2_bad = substr_count($test2, $replacement_bytes) + 
+                                                (strpos($test2, $replacement_sequence) !== false ? substr_count($test2, $replacement_sequence) : 0);
+                                    $current_bad = substr_count($text_string, $replacement_bytes) + 
+                                                  (strpos($text_string, $replacement_sequence) !== false ? substr_count($text_string, $replacement_sequence) : 0);
                                     if ($test2_bad < $current_bad || ($current_bad > 0 && $test2_bad === 0)) {
                                         $text_string = $test2;
                                     }
