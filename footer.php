@@ -1,6 +1,10 @@
 <p>&nbsp;</p>
 
-<p align=right><div align=right><?php echo isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine'; ?> <?php echo isset($engine_name_cn) ? $engine_name_cn : '歌珊地圣经引擎'; ?> © <?php 
+<p align=right><div align=right><?php 
+$engine_name_en_display = isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine';
+$engine_name_cn_display = function_exists('t') ? t('engine_name') : (isset($engine_name_cn) ? $engine_name_cn : '歌珊地圣经引擎');
+echo htmlspecialchars($engine_name_en_display) . ' ' . htmlspecialchars($engine_name_cn_display); 
+?> © <?php 
 $copyright_display = isset($copyright_text) ? $copyright_text : '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';
 // Use translated organization names
 $goshen_name = function_exists('t') ? t('goshen_tech') : '歌珊地科技 Goshen Tech';

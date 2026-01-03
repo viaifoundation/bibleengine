@@ -8,7 +8,17 @@ require_once("config.php")?>
 <center><div align="center">
 <table border=0><tr>
 <td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="88" /></a> </td>
-<td><?php echo isset($engine_name_full) ? $engine_name_full : '<b>歌珊地圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Goshen Bible Engine</b> -- Powerful Bible Study and Bible Search Engine'; ?></td>
+<td><?php 
+if (function_exists('t')) {
+    $engine_name = t('engine_name');
+    $engine_tagline = t('engine_tagline');
+    $engine_name_en = isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine';
+    $engine_tagline_en = 'Powerful Bible Study and Bible Search Engine';
+    echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline) . ' <br/> <b>' . htmlspecialchars($engine_name_en) . '</b> -- ' . htmlspecialchars($engine_tagline_en);
+} else {
+    echo isset($engine_name_full) ? $engine_name_full : '<b>歌珊地圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Goshen Bible Engine</b> -- Powerful Bible Study and Bible Search Engine';
+}
+?></td>
 </tr></table>
 <br/><br/>
 <a href="<?php echo $long_url_base?>"><?php echo $sitename?></a> 
@@ -29,7 +39,17 @@ echo $wiki_help_url;
 <center><div align="center">
 <table border=0><tr>
 <td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="88" /></a> </td>
-<td><?php echo isset($engine_name_full) ? $engine_name_full : '<b>歌珊地圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Goshen Bible Engine</b> -- Powerful Bible Study and Bible Search Engine'; ?></td>
+<td><?php 
+if (function_exists('t')) {
+    $engine_name = t('engine_name');
+    $engine_tagline = t('engine_tagline');
+    $engine_name_en = isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine';
+    $engine_tagline_en = 'Powerful Bible Study and Bible Search Engine';
+    echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline) . ' <br/> <b>' . htmlspecialchars($engine_name_en) . '</b> -- ' . htmlspecialchars($engine_tagline_en);
+} else {
+    echo isset($engine_name_full) ? $engine_name_full : '<b>歌珊地圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Goshen Bible Engine</b> -- Powerful Bible Study and Bible Search Engine';
+}
+?></td>
 </tr></table>
 <br/><a href="<?php echo $long_url_base?>"><?php echo $sitename?></a>
 <a href="../"><?php echo function_exists('t') ? t('web_version_full') : '网页版 Web'; ?></a> |

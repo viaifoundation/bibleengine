@@ -30,10 +30,15 @@ if (!isset($engine_name_en)) {
     $engine_name_en = 'Goshen Bible Engine';
 }
 if (!isset($engine_name_cn)) {
-    $engine_name_cn = '歌珊地圣经引擎';
+    $engine_name_cn = function_exists('t') ? t('engine_name') : '歌珊地圣经引擎';
 }
 if (!isset($engine_name_full)) {
-    $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Bible Study and Bible Search Engine';
+    // engine_name_full will be set from translations if lang.php is loaded
+    if (function_exists('t')) {
+        $engine_name_full = t('engine_name_full');
+    } else {
+        $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Bible Study and Bible Search Engine';
+    }
 }
 if (!isset($copyright_text)) {
     $copyright_text = '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';

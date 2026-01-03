@@ -49,15 +49,20 @@ $translations = [
     'zh_tw' => [
         // Navigation
         'help' => '幫助',
-        'help_full' => '幫助 Help',
+        'help_full' => '幫助',
         'source_code' => '源碼',
-        'source_code_full' => '源碼 Source Code',
+        'source_code_full' => '源碼',
         'options' => '選項',
-        'options_full' => '選項 Options',
+        'options_full' => '選項',
         'portable' => '便攜',
-        'portable_full' => '便攜 Portable',
+        'portable_full' => '便攜',
         'copyright' => '版權',
-        'copyright_full' => '版權 Copyright',
+        'copyright_full' => '版權',
+        
+        // Engine name and tagline
+        'engine_name' => '歌珊地聖經引擎',
+        'engine_name_full' => '歌珊地聖經引擎——給力的聖經研讀和聖經搜索引擎',
+        'engine_tagline' => '給力的聖經研讀和聖經搜索引擎',
         'web_version' => '網頁版',
         'web_version_full' => '網頁版 Web',
         
@@ -171,15 +176,20 @@ $translations = [
     'zh_cn' => [
         // Navigation
         'help' => '帮助',
-        'help_full' => '帮助 Help',
+        'help_full' => '帮助',
         'source_code' => '源码',
-        'source_code_full' => '源码 Source Code',
+        'source_code_full' => '源码',
         'options' => '选项',
-        'options_full' => '选项 Options',
+        'options_full' => '选项',
         'portable' => '便携',
-        'portable_full' => '便携 Portable',
+        'portable_full' => '便携',
         'copyright' => '版权',
-        'copyright_full' => '版权 Copyright',
+        'copyright_full' => '版权',
+        
+        // Engine name and tagline
+        'engine_name' => '歌珊地圣经引擎',
+        'engine_name_full' => '歌珊地圣经引擎——给力的圣经研读和圣经搜索引擎',
+        'engine_tagline' => '给力的圣经研读和圣经搜索引擎',
         'web_version' => '网页版',
         'web_version_full' => '网页版 Web',
         
@@ -303,6 +313,11 @@ $translations = [
         'portable_full' => 'Portable',
         'copyright' => 'Copyright',
         'copyright_full' => 'Copyright',
+        
+        // Engine name and tagline
+        'engine_name' => 'Goshen Bible Engine',
+        'engine_name_full' => 'Goshen Bible Engine -- Powerful Bible Study and Bible Search Engine',
+        'engine_tagline' => 'Powerful Bible Study and Bible Search Engine',
         'web_version' => 'Web',
         'web_version_full' => 'Web',
         
