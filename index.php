@@ -1036,7 +1036,9 @@ if (($index || !$echo_string) && !empty($sql)) {
             // The question marks () often appear when special characters (like curly quotes) are corrupted
             if (!empty($txt_en)) {
                 // First, try to detect if the text has encoding issues
-                $has_question_marks = (strpos($txt_en, '') !== false || 
+                // Check for UTF-8 replacement character (U+FFFD) or suspicious question mark patterns
+                $utf8_replacement = "\xEF\xBF\xBD"; // UTF-8 bytes for replacement character
+                $has_question_marks = (strpos($txt_en, $utf8_replacement) !== false || 
                                        (preg_match('/\?[^\s]*\?/', $txt_en) && 
                                         preg_match('/[^\x00-\x7F]/', $txt_en) === 0));
                 
@@ -1049,8 +1051,9 @@ if (($index || !$echo_string) && !empty($sql)) {
                         $test = @mb_convert_encoding($txt_en, 'UTF-8', $enc);
                         if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
                             // Check if conversion improved things (fewer question marks)
-                            $original_qm = substr_count($txt_en, '') + substr_count($txt_en, '?');
-                            $test_qm = substr_count($test, '') + substr_count($test, '?');
+                            // Only count if strings are not empty
+                            $original_qm = (!empty($txt_en)) ? (substr_count($txt_en, "\xEF\xBF\xBD") + substr_count($txt_en, '?')) : 0;
+                            $test_qm = (!empty($test)) ? (substr_count($test, "\xEF\xBF\xBD") + substr_count($test, '?')) : 0;
                             if ($test_qm < $original_qm || !$has_question_marks) {
                                 $txt_en = $test;
                                 break;
@@ -1206,7 +1209,8 @@ if (($index || !$echo_string) && !empty($sql)) {
                             }
                         } else {
                             // Valid UTF-8 - check for question marks that might indicate corruption
-                            $has_question_marks = (strpos($text_string, '') !== false || 
+                            $utf8_replacement = "\xEF\xBF\xBD"; // UTF-8 bytes for replacement character
+                            $has_question_marks = (strpos($text_string, $utf8_replacement) !== false || 
                                                  (preg_match('/\?[^\s]*\?/', $text_string) && 
                                                   preg_match('/[^\x00-\x7F]/', $text_string) === 0));
                             if ($has_question_marks) {
@@ -1215,8 +1219,9 @@ if (($index || !$echo_string) && !empty($sql)) {
                                 foreach ($encodings_to_try as $enc) {
                                     $test = @mb_convert_encoding($text_string, 'UTF-8', $enc);
                                     if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
-                                        $original_qm = substr_count($text_string, '') + substr_count($text_string, '?');
-                                        $test_qm = substr_count($test, '') + substr_count($test, '?');
+                                        // Only count if strings are not empty (use UTF-8 replacement character bytes)
+                                        $original_qm = (!empty($text_string)) ? (substr_count($text_string, "\xEF\xBF\xBD") + substr_count($text_string, '?')) : 0;
+                                        $test_qm = (!empty($test)) ? (substr_count($test, "\xEF\xBF\xBD") + substr_count($test, '?')) : 0;
                                         if ($test_qm < $original_qm) {
                                             $text_string = $test;
                                             break;
