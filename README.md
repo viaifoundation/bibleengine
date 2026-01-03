@@ -2,6 +2,8 @@
 
 A powerful Bible study and search engine supporting multiple Bible translations in Chinese (Simplified, Traditional), English, and Pinyin. Built with PHP 8 and MySQL/MariaDB.
 
+**🔗 [GitHub Repository](https://github.com/viaifoundation/bibleengine)** | **🌐 [VI AI Foundation](https://viaifoundation.org)**
+
 ## Features
 
 - **Multi-translation Support**: Supports multiple Bible translations including:
@@ -45,7 +47,7 @@ A powerful Bible study and search engine supporting multiple Bible translations 
 
 1. **Clone or download the repository**:
    ```bash
-   git clone https://github.com/yourusername/bibleengine.git
+   git clone https://github.com/viaifoundation/bibleengine.git
    cd bibleengine
    ```
 
@@ -91,7 +93,7 @@ In `index.php`, you can configure:
 - `$wiki_search_base`: Base URL for wiki search
 - `$engine_name_en`: English engine name (default: "Goshen Bible Engine")
 - `$engine_name_cn`: Chinese engine name (default: "歌珊地圣经引擎")
-- `$copyright_text`: Copyright text (default: "2004-2026 VI AI Foundation (歌珊地科技 Goshen Tech)")
+- `$copyright_text`: Copyright text (default: "2004-2024 Goshen Tech, 2025-2026 VI AI Foundation")
 
 ### Database Configuration
 
@@ -144,6 +146,8 @@ Configure WeChat integration in `wechat.php` or `wechata.php`:
 
 ```
 bibleengine/
+├── LICENSE                # MIT License
+├── README.md              # This file
 ├── index.php              # Main web interface (responsive design)
 ├── m/
 │   └── index.php          # Legacy mobile interface (deprecated - use main interface)
@@ -315,14 +319,26 @@ Enable debug mode by adding `?debug=1` to the URL to see SQL queries and debug i
 
 ## License
 
-Copyright © 2004-2026 VI AI Foundation (歌珊地科技 Goshen Tech)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Copyright © 2004-2024 Goshen Tech, 2025-2026 [VI AI Foundation](https://viaifoundation.org)
 
 ## Support
 
-For issues, questions, or contributions, please open an issue on the GitHub repository.
+For issues, questions, or contributions:
+- **GitHub Issues**: [Open an issue](https://github.com/viaifoundation/bibleengine/issues) on the GitHub repository
+- **Email**: [info@viaifoundation.org](mailto:info@viaifoundation.org) or [i@vi.fyi](mailto:i@vi.fyi)
+- **Website**: [VI AI Foundation](https://viaifoundation.org)
 
 ## Acknowledgments
 
-- Goshen Bible Engine (歌珊地圣经引擎) - A powerful Bible study and search engine
-- Developed by VI AI Foundation (歌珊地科技 Goshen Tech)
+- **Goshen Bible Engine (歌珊地圣经引擎)** - A powerful Bible study and search engine
+- **Developed by**: [VI AI Foundation](https://viaifoundation.org) (歌珊地科技 Goshen Tech)
+- **GitHub**: [https://github.com/viaifoundation/bibleengine](https://github.com/viaifoundation/bibleengine)
+
+## Links
+
+- **GitHub Repository**: [https://github.com/viaifoundation/bibleengine](https://github.com/viaifoundation/bibleengine)
+- **VI AI Foundation**: [https://viaifoundation.org](https://viaifoundation.org)
+- **Contact**: [info@viaifoundation.org](mailto:info@viaifoundation.org) | [i@vi.fyi](mailto:i@vi.fyi)
 
