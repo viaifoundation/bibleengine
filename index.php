@@ -788,12 +788,13 @@ if ($original_query && trim($original_query) !== '') {
     // Check if it looks like a verse reference (book name + numbers)
     // This matches patterns like "Deut 2:10", "Deut2:10", "Gen 10:21", "约 3:16", etc.
     // Pattern: starts with letters (book name) and contains digits
-    if (preg_match('/^[a-zA-Z\u4e00-\u9fff]+/', $original_query) && preg_match('/\d/', $original_query)) {
+    // Use \x{...} format for Unicode ranges (PCRE2 compatible)
+    if (preg_match('/^[a-zA-Z\x{4e00}-\x{9fff}]+/u', $original_query) && preg_match('/\d/', $original_query)) {
         // Normalize the format: ensure space before chapter number if missing
         // "Deut2:10" -> "Deut 2:10", "Deut 2:10" stays "Deut 2:10"
         if (!preg_match('/\s/', $original_query)) {
             // No space found, add it: "Deut2:10" -> "Deut 2:10"
-            $title = preg_replace('/([a-zA-Z\u4e00-\u9fff]+)(\d+):(\d+)/', '${1} ${2}:${3}', $original_query);
+            $title = preg_replace('/([a-zA-Z\x{4e00}-\x{9fff}]+)(\d+):(\d+)/u', '${1} ${2}:${3}', $original_query);
         } else {
             // Space already present, use as-is (e.g., "Gen 10:21", "Deut 2:10")
             $title = $original_query;
@@ -1215,7 +1216,7 @@ if (($index || !$echo_string) && !empty($sql)) {
                     // Only build if this translation is enabled and block_texts array has this key
                     if (isset($block_texts[$bible_book])) {
                         $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link
-                        $verse_number_display = $vid; // Only verse number for display
+                        $verse_number_display = (string)$vid; // Only verse number for display (cast to string)
                         // Ensure $osis is defined (it should be defined earlier in the loop)
                         $osis_block = ($book_short[$bid] ?? '') . ".$cid";
                         if ($vid) {
