@@ -15,16 +15,21 @@ A powerful Bible study and search engine supporting multiple Bible translations 
   - Book range filtering (e.g., "@创-申" for Pentateuch, "@40-43" for Gospels)
   - Multi-verse range support (e.g., "John 3:16-18,20-22")
 
+- **Responsive Design**: Modern, mobile-friendly interface that automatically adapts to desktop and mobile devices - no separate mobile version needed
+
+- **Dual Display Format**:
+  - **Verse-by-Verse Comparison**: Each verse shows all enabled translations side-by-side with clickable verse references
+  - **Whole Chapter/Block Display**: Each enabled translation displays the full chapter/block with verse number links
+
 - **Multiple Interfaces**:
-  - Web interface (`index.php`)
-  - Mobile/portable version (`m/index.php`)
+  - Web interface (`index.php`) - responsive design works on all devices
   - API endpoints (`api.php`)
   - WeChat integration (`wechat.php`, `wechata.php`, `wxb.php`)
   - Weibo integration (`weibo.php`)
 
 - **Wiki Integration**: Integration with Bible wiki for additional study resources
 
-- **Cross-platform**: Works on desktop and mobile devices
+- **Default Translations**: CUVS (Simplified Chinese), CUVT (Traditional Chinese), and KJV (English) are enabled by default
 
 ## Requirements
 
@@ -62,10 +67,11 @@ A powerful Bible study and search engine supporting multiple Bible translations 
 4. **Configure application settings**:
    Edit `index.php` to set your domain and URLs:
    ```php
-   $short_url_base = 'https://yourdomain.com';
-   $long_url_base = 'https://yourdomain.com';
-   $img_url = 'https://yourdomain.com';
-   $sitename = 'Your Site Name';
+   $short_url_base = 'https://bibleengine.ai';
+   $long_url_base = 'https://bibleengine.ai';
+   $img_url = 'https://bibleengine.ai';
+   $sitename = 'BibleEngine.ai';
+   $wiki_base = 'https://engine.bible.world';
    ```
 
 5. **Set file permissions**:
@@ -105,12 +111,15 @@ Access the main interface at `index.php`:
 - Search keywords: `Jesus Christ`, `上帝 爱`
 - Use book range filters: `神 说 @创-申` (search "神 说" in Pentateuch)
 
-### Mobile Interface
+### Responsive Design
 
-Access the mobile-optimized version at `m/index.php`:
-- Same functionality as web interface
-- Optimized for mobile devices
-- Portable mode available
+The main interface (`index.php`) uses modern responsive CSS that automatically adapts to:
+- Desktop computers
+- Tablets
+- Mobile phones
+- All screen sizes
+
+No separate mobile version is needed - the same interface works perfectly on all devices.
 
 ### API
 
@@ -135,9 +144,9 @@ Configure WeChat integration in `wechat.php` or `wechata.php`:
 
 ```
 bibleengine/
-├── index.php              # Main web interface
+├── index.php              # Main web interface (responsive design)
 ├── m/
-│   └── index.php          # Mobile/portable interface
+│   └── index.php          # Legacy mobile interface (deprecated - use main interface)
 ├── api.php                # API endpoint
 ├── config.php             # Configuration file
 ├── dbconfig.php           # Database configuration (create this)
@@ -220,25 +229,33 @@ These tags control visual formatting and are converted to HTML:
 | `<FI>`      | `<Fi>`      | Formatted Italics                       | `<i>...</i>`                             | Words added by translators (supplied words) |
 | `<FR>`      | `<Fr>`      | Formatted Red (Red Letter)              | `<span style="color:red;">...</span>`   | Words of Christ (Gospels, parts of Acts & Rev) |
 | `<FO>`      | `<Fo>`      | Formatted Orange                        | `<span style="color:orange;">...</span>` | Words of angels, Holy Spirit, or divine speech |
+| `<RF>`      | `<Rf>`      | Footnote/Reference                      | `<span class="footnote">...</span>`      | Footnotes and cross-references |
 | `<b>`       | `</b>`      | Bold (standard HTML)                    | `<strong>...</strong>` or `<b>...</b>`   | Emphasis, headings, or supplied words    |
 | `<font color="#008000">` | `</font>` | Inline color | `<font color="#008000">...</font>` | Special emphasis (e.g., OT quotes, divine words) |
+| `<sup>`     | `</sup>`    | Superscript (standard HTML)             | `<sup>...</sup>`                         | Verse numbers, references, notes |
 
 ### 3. Tag Support by Bible Version
 
-| Version | Strong's Tags       | Italics `<FI>` | Red Letter `<FR>` | Orange `<FO>` | Colored Font | Bold `<b>` |
-|---------|---------------------|----------------|-------------------|---------------|--------------|------------|
-| NASB    | Yes (WH/WG mainly)  | Yes            | Rare/No           | No            | Possible (green) | Possible   |
-| KJV     | Yes                 | Yes            | Yes               | Yes           | Rare         | Yes        |
-| CUVS    | Yes                 | Likely         | Possible (in NT)  | Rare          | No           | Possible   |
-| CUVT    | Yes                 | Likely         | Possible          | Rare          | No           | Possible   |
+| Version | Strong's Tags       | Italics `<FI>` | Red Letter `<FR>` | Orange `<FO>` | Footnotes `<RF>` | Colored Font | Bold `<b>` |
+|---------|---------------------|----------------|-------------------|---------------|-------------------|--------------|------------|
+| NASB    | Yes (WH/WG mainly)  | Yes            | Rare/No           | No            | Possible          | Possible (green) | Possible   |
+| KJV     | Yes                 | Yes            | Yes               | Yes           | Yes               | Rare         | Yes        |
+| CUVS    | Yes                 | Likely         | Possible (in NT)  | Rare          | Possible          | No           | Possible   |
+| CUVT    | Yes                 | Likely         | Possible          | Rare          | Possible          | No           | Possible   |
 
 ### 4. Processing Order
 
-When Strong's codes are enabled, tags are processed in this order:
+Tags are always processed in this order (regardless of Strong's code setting):
 
-1. **Formatting tags first**: Red letter (`<FR>`), Orange letter (`<FO>`), Italics (`<FI>`)
-2. **Strong's codes second**: Long forms (`<WG...>`, `<WH...>`) then short forms (`<G...>`, `<H...>`)
-3. **Font color fixes**: Backticks replaced with quotes, missing quotes added
+1. **Formatting tags first**: Red letter (`<FR>`), Orange letter (`<FO>`), Italics (`<FI>`), Footnotes (`<RF>`)
+2. **Font color fixes**: Backticks replaced with quotes, missing quotes added
+3. **Strong's codes** (if enabled): Long forms (`<WG...>`, `<WH...>`) then short forms (`<G...>`, `<H...>`)
+4. **Strong's code removal** (if disabled): All Strong's tags are removed, including those within `<sup>` tags
+
+**Important Notes:**
+- Formatting tags (`<FI>`, `<FR>`, `<FO>`, `<RF>`, `<font color>`, `<sup>`) are **always** processed, even if Strong's codes are disabled
+- If Strong's codes are disabled, they are removed from the text, but formatting tags remain
+- If Strong's codes are disabled, any `<sup>` tags that only contain Strong's codes are removed entirely
 
 ### 5. Optional Tags (Not Currently Processed)
 
@@ -247,7 +264,6 @@ These tags may appear in some modules but are not currently processed:
 - `<TS>...</Ts>` - Section/Chapter Title
 - `<CL>` - Line break (for poetry)
 - `<CM>` - Paragraph break
-- `<RF>...</Rf>` - Footnote/reference
 
 These can be added in future versions if needed.
 
@@ -261,7 +277,37 @@ This project has been updated for PHP 8 compatibility:
 - Type casting for database ports
 - Safe array access with `isset()` checks
 - Updated mysqli usage (object-oriented style)
-- Tag processing only occurs when Strong's codes are enabled (prevents HTML escaping)
+- Proper UTF-8 encoding handling with `utf8mb4` charset
+- Character encoding detection and conversion for legacy data (ISO-8859-1, Windows-1252)
+
+### Character Encoding
+
+The engine includes robust character encoding handling:
+- Database connection uses `utf8mb4` charset for full Unicode support
+- Automatic detection and conversion of legacy encodings (ISO-8859-1, Windows-1252, CP1252)
+- Removes invalid UTF-8 replacement characters (`ï¿½`, `?`)
+- Ensures all Bible text displays correctly regardless of source encoding
+
+### Display Format
+
+Results are displayed in two sections:
+
+1. **Verse-by-Verse Comparison (逐节对照)**: 
+   - Each verse shows all enabled translations in a list
+   - Clickable verse reference (e.g., "创 1:1") appears before each verse
+   - All translations for that verse are shown together for easy comparison
+
+2. **Whole Chapter/Block Display (整章/整段显示)**:
+   - Each enabled translation gets its own section
+   - Full chapter/block text is displayed
+   - Verse numbers are clickable links (hover shows full reference like "Gen 1:1")
+   - Useful for reading complete passages in a single translation
+
+### Default Settings
+
+- **Default Translations**: CUVS (Simplified Chinese), CUVT (Traditional Chinese), and KJV (English) are enabled by default
+- **Strong's Codes**: Disabled by default (can be enabled via options)
+- **All translations are treated equally** - no special duplicate display for default translations
 
 ### Debugging
 
