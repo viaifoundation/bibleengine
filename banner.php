@@ -13,7 +13,9 @@ $wiki_help_url = isset($wiki_base) ? rtrim($wiki_base, '/w') . '/wiki/BibleEngin
 echo $wiki_help_url;
 ?>">帮助 Help</a>
 |
-<a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">GitHub 源码 Source Code</a>
+<a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">源码 Source Code</a>
+|
+<a href="https://viaifoundation.org" target="_blank">唯爱AI基金会 VI AI Foundation</a>
  
 </div></center>
 </p>
@@ -29,7 +31,8 @@ echo $wiki_help_url;
 $wiki_help_url = isset($wiki_base) ? rtrim($wiki_base, '/w') . '/wiki/BibleEngine' : 'https://bible.world/wiki/BibleEngine';
 echo $wiki_help_url;
 ?>">帮助 Help</a> |
-<a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">GitHub 源码 Source Code</a>
+<a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">源码 Source Code</a> |
+<a href="https://viaifoundation.org" target="_blank">唯爱AI基金会 VI AI Foundation</a>
 </div></center>
 
 <?php } ?>

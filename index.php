@@ -33,7 +33,7 @@ $sitename = 'BibleEngine.ai';
 $engine_name_en = 'Goshen Bible Engine'; // English engine name
 $engine_name_cn = '歌珊地圣经引擎'; // Chinese engine name
 $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Bible Study and Bible Search Engine';
-$copyright_text = '2004-2024 Goshen Tech, 2025-2026 VI AI Foundation'; // Copyright text
+$copyright_text = '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation'; // Copyright text
 
 function show_hint(): string {
     return "提示：请输入圣经章节，如 'John 3:16' 或 '约 3:16'。";
@@ -1556,7 +1556,7 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>>便携 Portable
 <a href="help.php"> 帮助 Help</a>
 <small><a href="copyright.php">版权 Copyright</a></small>
-<small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">GitHub 源码 Source Code</a></small>
+<small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">源码 Source Code</a></small>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
 <br/>书卷 Books
 <select name="b">
