@@ -9,14 +9,17 @@ RewriteRule [Bb]ible.([a-zA-Z0-9]{1,}).([a-zA-Z0-9]{1,}).html$ index.php?n=$1&c=
 RewriteRule [Bb]ible.([a-zA-Z0-9]{1,}).([a-zA-Z0-9]{1,})-([a-zA-Z0-9]{1,}).html$ index.php?n=$1&c=$2&c2=$3
 RewriteRule [Bb]ible.([a-zA-Z0-9]{1,}).([a-zA-Z0-9]{1,}).([a-zA-Z0-9]{1,}).html$ index.php?n=$1&c=$2&v=$3
 RewriteRule [Bb]ible.([a-zA-Z0-9]{1,}).([a-zA-Z0-9]{1,}).([a-zA-Z0-9]{1,})-([a-zA-Z0-9]{1,}).html$ index.php?n=$1&c=$2&v=$3&v2=$4
-RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).html$ index.php?q=$1+$2
-RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).htm$ index.php?q=$1+$2
-RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).([0-9]{1,}).html$ index.php?q=$1+$2:$3
-RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).([0-9]{1,}).htm$ index.php?q=$1+$2:$3
-RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,})-([0-9]{1,}).html$ index.php?q=$1+$2:$3
-RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,})-([0-9]{1,}).htm$ index.php?q=$1+$2:$3
+# Three-part rules (book.chapter.verse) must come BEFORE two-part rules to match correctly
 RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).([0-9]{1,})-([0-9]{1,}).html$ index.php?q=$1+$2:$3-$4
 RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).([0-9]{1,})-([0-9]{1,}).htm$ index.php?q=$1+$2:$3-$4
+RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).([0-9]{1,}).html$ index.php?q=$1+$2:$3
+RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).([0-9]{1,}).htm$ index.php?q=$1+$2:$3
+# Two-part rules (book.chapter or book-verse)
+RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,})-([0-9]{1,}).html$ index.php?q=$1+$2:$3
+RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,})-([0-9]{1,}).htm$ index.php?q=$1+$2:$3
+RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).html$ index.php?q=$1+$2
+RewriteRule ([a-zA-Z0-9]{1,}).([0-9]{1,}).htm$ index.php?q=$1+$2
+# Single-part rules (book only)
 RewriteRule ([a-zA-Z0-9]{1,}).html$ index.php?q=$1+1
 RewriteRule ([a-zA-Z0-9]{1,}).htm$ index.php?q=$1+1
 RewriteCond %{REQUEST_URI} !^/index.php
