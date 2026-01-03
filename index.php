@@ -332,9 +332,9 @@ if ($query_options) {
 
 $queries = explode(" ", $query_without_options);
 
-// CUVS and KJV are enabled by default
+// CUVS, CUVT, and KJV are enabled by default
 $cuvs = (isset($_REQUEST['cuvs']) && ($_REQUEST['cuvs'] === '' || $_REQUEST['cuvs'] === '0')) ? "" : "cuvs";
-$cuvt = isset($_REQUEST['cuvt']) ? "cuvt" : "";
+$cuvt = (isset($_REQUEST['cuvt']) && ($_REQUEST['cuvt'] === '' || $_REQUEST['cuvt'] === '0')) ? "" : "cuvt";
 $cuvc = isset($_REQUEST['cuvc']) ? "cuvc" : "";
 $ncvs = isset($_REQUEST['ncvs']) ? "ncvs" : "";
 $pinyin = isset($_REQUEST['pinyin']) ? "pinyin" : "";
@@ -1115,45 +1115,8 @@ if (($index || !$echo_string) && !empty($sql)) {
             $background = ($verse_number % 2) ? " class=light" : " class=dark";
             $text_cmp .= "<table border=0 width=100%><tr><td $background>";
 
-            if ($cn) {
-                $text_cmp .= "<p>\n";
-                $cv = ($book_cn[$bid] ?? '') . " $cid:$vid";
-                if ($portable) {
-                    $text_cmp .= "<sup>" . htmlspecialchars($cv) . "</sup> ";
-                } elseif ($short_url_base) {
-                    $text_cmp .= "<sup><a href=\"$short_url_base/$osis.htm\" title=\"" . htmlspecialchars($book_chinese[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($cv) . "</a></sup> ";
-                } else {
-                    $text_cmp .= "<sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($book_chinese[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($cv) . "</a></sup> ";
-                }
-                $text_cmp .= $txt_cn . " (CUVS)</p>\n";
-            }
-
-            if ($tw) {
-                $text_cmp .= "<p>\n";
-                $cv = ($book_tw[$bid] ?? '') . " $cid:$vid";
-                if ($portable) {
-                    $text_cmp .= "<sup>" . htmlspecialchars($cv) . "</sup> ";
-                } elseif ($short_url_base) {
-                    $text_cmp .= "<sup><a href=\"$short_url_base/$osis.htm\" title=\"" . htmlspecialchars($book_taiwan[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($cv) . "</a></sup> ";
-                } else {
-                    $text_cmp .= "<sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($book_taiwan[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($cv) . "</a></sup> ";
-                }
-                $text_cmp .= $txt_tw . " (CUVT)</p>\n";
-            }
-
-            if ($en) {
-                $text_cmp .= "<p>\n";
-                $cv = ($book_en[$bid] ?? '') . " $cid:$vid";
-                if ($portable) {
-                    $text_cmp .= "<sup>" . htmlspecialchars($cv) . "</sup> ";
-                } elseif ($short_url_base) {
-                    $text_cmp .= "<sup><a href=\"$short_url_base/$osis.htm\" title=\"" . htmlspecialchars($book_english[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($cv) . "</a></sup> ";
-                } else {
-                    $text_cmp .= "<sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($book_english[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($cv) . "</a></sup> ";
-                }
-                $text_cmp .= $txt_en . " (KJV)</p>\n";
-            }
-
+            // All translations are now treated equally and displayed in the list below
+            // CUVS, CUVT, and KJV are no longer shown separately - they appear in the list like all other translations
             $text_cmp .= "<ul>\n";
             foreach ($bible_books as $bible_book) {
                 if ($bible_book) {
@@ -1273,9 +1236,17 @@ if (($index || !$echo_string) && !empty($sql)) {
     }
 }
 
-$text_tw = "<p>" . $text_tw . " (繁體和合本 CUVT)</p>";
-$text_cn = "<p>" . $text_cn . " (和合本 CUV)</p>";
-$text_en = "<p>" . $text_en . " (King James Version KJV)</p>";
+// These are no longer displayed separately - all translations are shown equally in the list
+// $text_tw, $text_cn, and $text_en are still used for the top/bottom summary sections if needed
+if ($text_tw) {
+    $text_tw = "<p>" . $text_tw . " (繁體和合本 CUVT)</p>";
+}
+if ($text_cn) {
+    $text_cn = "<p>" . $text_cn . " (和合本 CUV)</p>";
+}
+if ($text_en) {
+    $text_en = "<p>" . $text_en . " (King James Version KJV)</p>";
+}
 
 if ($mode === 'QUERY' && in_array($api, ['plain', 'html'])) {
     header('Content-Type: text/plain');
