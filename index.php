@@ -299,7 +299,17 @@ $script = 'index.php';
 $strongs = $_REQUEST['strongs'] ?? '';
 
 // Preserve original query for title BEFORE any processing (including votd)
-$original_query = $query;
+// This captures the query as it comes from the URL (e.g., "Gen 10:21" from Gen.10.21.htm)
+$original_query = $query ? trim($query) : '';
+
+// TEMPORARY DEBUG: Show what we're getting from the request
+if (isset($_REQUEST['q']) || isset($_GET['q'])) {
+    echo "<!-- DEBUG: \$_REQUEST['q'] = '" . htmlspecialchars($_REQUEST['q'] ?? '') . "' -->\n";
+    echo "<!-- DEBUG: \$_GET['q'] = '" . htmlspecialchars($_GET['q'] ?? '') . "' -->\n";
+    echo "<!-- DEBUG: \$query (after trim) = '" . htmlspecialchars($query) . "' -->\n";
+    echo "<!-- DEBUG: \$original_query = '" . htmlspecialchars($original_query) . "' -->\n";
+    echo "<!-- DEBUG: REQUEST_URI = '" . htmlspecialchars($_SERVER['REQUEST_URI'] ?? '') . "' -->\n";
+}
 
 if (!$query) {
     require_once __DIR__ . '/votd.php';
@@ -776,9 +786,17 @@ if ($book && isset($book_chinese[$book], $book_english[$book])) {
 // Build title - prefer original query if it looks like a verse reference
 // For short URLs like "Deut.2.10.htm" -> "Deut 2:10", use the original query format
 $title = '';
-if ($original_query) {
+// Always prefer original_query if it exists and looks like a verse reference
+// Debug: Check what original_query contains (remove after testing)
+if (isset($_REQUEST['debug']) && $_REQUEST['debug'] == '1') {
+    echo "<!-- DEBUG: original_query = '" . htmlspecialchars($original_query) . "' -->\n";
+    echo "<!-- DEBUG: english_title = '" . htmlspecialchars($english_title) . "' -->\n";
+    echo "<!-- DEBUG: book = $book, chapter = $chapter, verse = $verse -->\n";
+}
+if ($original_query && trim($original_query) !== '') {
     // Check if it looks like a verse reference (book name + numbers)
-    // This matches patterns like "Deut 2:10", "Deut2:10", "约 3:16", etc.
+    // This matches patterns like "Deut 2:10", "Deut2:10", "Gen 10:21", "约 3:16", etc.
+    // Pattern: starts with letters (book name) and contains digits
     if (preg_match('/^[a-zA-Z\u4e00-\u9fff]+/', $original_query) && preg_match('/\d/', $original_query)) {
         // Normalize the format: ensure space before chapter number if missing
         // "Deut2:10" -> "Deut 2:10", "Deut 2:10" stays "Deut 2:10"
@@ -786,22 +804,29 @@ if ($original_query) {
             // No space found, add it: "Deut2:10" -> "Deut 2:10"
             $title = preg_replace('/([a-zA-Z\u4e00-\u9fff]+)(\d+):(\d+)/', '${1} ${2}:${3}', $original_query);
         } else {
-            // Space already present, use as-is
+            // Space already present, use as-is (e.g., "Gen 10:21", "Deut 2:10")
             $title = $original_query;
         }
     } else {
+        // Doesn't look like a verse reference, but use it anyway if it's not empty
         $title = $original_query;
     }
 }
-// If no title from original_query or it's empty, use english_title
-if (!$title && $english_title) {
+// Only use english_title if original_query is empty or doesn't look like a verse reference
+if ((!$title || trim($title) === '') && $english_title && trim($english_title) !== '') {
     $title = $english_title;
 }
 // Final fallback
-if (!$title) {
-    $title = $original_query ?: '';
+if (!$title || trim($title) === '') {
+    $title = $original_query ?: ($english_title ?: '');
 }
 $title .= " - $sitename";
+
+// TEMPORARY DEBUG: Show final title
+echo "<!-- DEBUG TITLE BUILD: Final title = '" . htmlspecialchars($title) . "' -->\n";
+
+// TEMPORARY DEBUG: Show final title
+echo "<!-- DEBUG TITLE BUILD: Final title = '" . htmlspecialchars($title) . "' -->\n";
 
 $book_menu = "<p>旧约 (OT) ";
 $wiki_book_menu = "<p>== 旧约 ==</p><p> </p>\n";
