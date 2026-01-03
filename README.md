@@ -6,10 +6,19 @@ A powerful Bible study and search engine supporting multiple Bible translations 
 
 ## Features
 
+- **Internationalization (i18n)**: Full support for three languages:
+  - **繁體中文 (Traditional Chinese)** - Default language
+  - **简体中文 (Simplified Chinese)**
+  - **English**
+  - Language switcher in navigation bar
+  - All UI elements, Bible book names, and translation names are fully translated
+  - Language preference saved via cookie
+
 - **Multi-translation Support**: Supports multiple Bible translations including:
   - Chinese: CUVS (Simplified), CUVT (Traditional), NCVS, LCVS, CCSB, CLBS, CKJVS, CKJVT
   - English: KJV, NASB, ESV, UKJV, KJV1611, BBE
   - Pinyin: Pinyin transliteration for Chinese text
+  - Translation names displayed as: "Full Name (SHORT_CODE)" in selected language
 
 - **Flexible Search**:
   - Keyword search across Bible text
@@ -20,8 +29,10 @@ A powerful Bible study and search engine supporting multiple Bible translations 
 - **Responsive Design**: Modern, mobile-friendly interface that automatically adapts to desktop and mobile devices - no separate mobile version needed
 
 - **Dual Display Format**:
-  - **Verse-by-Verse Comparison**: Each verse shows all enabled translations side-by-side with clickable verse references
-  - **Whole Chapter/Block Display**: Each enabled translation displays the full chapter/block with verse number links
+  - **Verse-by-Verse Comparison**: Each verse shows all enabled translations side-by-side with clickable verse references in the selected language
+  - **Whole Chapter/Block Display**: Each enabled translation displays the full chapter/block
+    - **Whole Chapter Mode**: Shows only verse numbers (e.g., "45")
+    - **Multiple Chapters/Books Mode**: Shows book shortname + chapter:verse (e.g., "徒 10:45" for zh_cn, "Acts 10:45" for en)
 
 - **Multiple Interfaces**:
   - Web interface (`index.php`) - responsive design works on all devices
@@ -94,6 +105,29 @@ In `index.php`, you can configure:
 - `$engine_name_en`: English engine name (default: "Goshen Bible Engine")
 - `$engine_name_cn`: Chinese engine name (default: "歌珊地圣经引擎")
 - `$copyright_text`: Copyright text (default: "2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation")
+- `$github_url`: GitHub repository URL (default: "https://github.com/viaifoundation/bibleengine")
+
+### Internationalization (i18n)
+
+The application uses `lang.php` for all UI translations. Supported languages:
+- **zh_tw** (繁體中文) - Traditional Chinese - Default
+- **zh_cn** (简体中文) - Simplified Chinese
+- **en** (English)
+
+Language detection priority:
+1. URL parameter: `?lang=zh_tw`, `?lang=zh_cn`, or `?lang=en`
+2. Cookie: `bibleengine_lang`
+3. Browser language preference
+4. Default: zh_tw (Traditional Chinese)
+
+All UI elements are translated:
+- Navigation items (Help, Source Code, Copyright, Options, Portable)
+- Search hints and messages
+- Form labels (Books, Multi Verse, Verse Context, etc.)
+- Bible book names (long and short forms)
+- Bible translation names (full names in selected language + short codes in parentheses)
+- Error messages
+- Section headers
 
 ### Database Configuration
 
@@ -153,6 +187,7 @@ bibleengine/
 │   └── index.php          # Legacy mobile interface (deprecated - use main interface)
 ├── api.php                # API endpoint
 ├── config.php             # Configuration file
+├── lang.php               # Internationalization (i18n) - language translations
 ├── dbconfig.php           # Database configuration (create this)
 ├── common.php             # Common functions and variables
 ├── header.php             # HTML header template
@@ -296,22 +331,51 @@ The engine includes robust character encoding handling:
 
 Results are displayed in two sections:
 
-1. **Verse-by-Verse Comparison (逐节对照)**: 
+1. **Verse-by-Verse Comparison**: 
    - Each verse shows all enabled translations in a list
-   - Clickable verse reference (e.g., "创 1:1") appears before each verse
+   - Clickable verse reference in selected language (e.g., "创 1:1" for zh_cn, "創 1:1" for zh_tw, "Gen 1:1" for en)
    - All translations for that verse are shown together for easy comparison
+   - Translation names shown as: "Full Name (SHORT_CODE)" (e.g., "简体和合本 (CUVS)", "King James Version (KJV)")
 
-2. **Whole Chapter/Block Display (整章/整段显示)**:
+2. **Whole Chapter/Block Display**:
    - Each enabled translation gets its own section
    - Full chapter/block text is displayed
-   - Verse numbers are clickable links (hover shows full reference like "Gen 1:1")
+   - **Smart verse reference display**:
+     - **Whole Chapter Mode**: Shows only verse numbers (e.g., "45") when all verses are from the same book and chapter
+     - **Multiple Chapters/Books Mode**: Shows book shortname + chapter:verse (e.g., "徒 10:45" for zh_cn, "Acts 10:45" for en) when verses span multiple chapters or books
+   - Verse references are clickable links (hover shows full reference)
    - Useful for reading complete passages in a single translation
 
 ### Default Settings
 
+- **Default Language**: Traditional Chinese (zh_tw)
 - **Default Translations**: CUVS (Simplified Chinese), CUVT (Traditional Chinese), and KJV (English) are enabled by default
 - **Strong's Codes**: Disabled by default (can be enabled via options)
 - **All translations are treated equally** - no special duplicate display for default translations
+
+### UI Language Options
+
+All options and labels are displayed in the selected language:
+
+- **Book Categories**: 
+  - zh_tw: "摩西五經 (創-申)", "福音歷史書 (太-徒)"
+  - zh_cn: "摩西五经 (创-申)", "福音历史书 (太-徒)"
+  - en: "Law (Gen-Deut)", "Gospels and History (Matt-Acts)"
+
+- **Single Books**: 
+  - zh_tw: "創世記 (創)", "雅各書 (雅)"
+  - zh_cn: "创世记 (创)", "雅各书 (雅)"
+  - en: "Genesis (Gen)", "James (Jas)"
+
+- **Translation Names**: 
+  - Format: "Full Name (SHORT_CODE)"
+  - zh_tw: "英王欽定本 (KJV)", "新美國標準聖經 (NASB)"
+  - zh_cn: "英王钦定本 (KJV)", "新美国标准圣经 (NASB)"
+  - en: "King James Version (KJV)", "New American Standard Bible (NASB)"
+
+- **Options Labels**:
+  - "Multiple Verse" / "多节" / "多節"
+  - "Verse Context" / "节上下文" / "節上下文"
 
 ### Debugging
 
@@ -322,6 +386,23 @@ Enable debug mode by adding `?debug=1` to the URL to see SQL queries and debug i
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 Copyright © 2004-2024 [歌珊地科技 Goshen Tech](https://geshandi.com), 2025-2026 [唯爱AI基金会 VI AI Foundation](https://viaifoundation.org)
+
+## Internationalization
+
+The application fully supports three languages with automatic language detection:
+
+- **繁體中文 (Traditional Chinese)** - zh_tw - Default
+- **简体中文 (Simplified Chinese)** - zh_cn
+- **English** - en
+
+### Language Features
+
+- **Language Switcher**: Visible dropdown in the navigation bar
+- **Automatic Detection**: Detects language from URL parameter, cookie, or browser preference
+- **Complete Translation**: All UI elements, Bible book names, translation names, and options are translated
+- **Consistent Display**: No bilingual mixing - everything displays in the selected language only
+- **Book Names**: Long and short forms in selected language (e.g., "创世记 (创)" for zh_cn, "Genesis (Gen)" for en)
+- **Translation Names**: Full names in selected language with English short codes in parentheses
 
 ## Support
 
