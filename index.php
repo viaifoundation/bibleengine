@@ -302,15 +302,6 @@ $strongs = $_REQUEST['strongs'] ?? '';
 // This captures the query as it comes from the URL (e.g., "Gen 10:21" from Gen.10.21.htm)
 $original_query = $query ? trim($query) : '';
 
-// TEMPORARY DEBUG: Show what we're getting from the request
-if (isset($_REQUEST['q']) || isset($_GET['q'])) {
-    echo "<!-- DEBUG: \$_REQUEST['q'] = '" . htmlspecialchars($_REQUEST['q'] ?? '') . "' -->\n";
-    echo "<!-- DEBUG: \$_GET['q'] = '" . htmlspecialchars($_GET['q'] ?? '') . "' -->\n";
-    echo "<!-- DEBUG: \$query (after trim) = '" . htmlspecialchars($query) . "' -->\n";
-    echo "<!-- DEBUG: \$original_query = '" . htmlspecialchars($original_query) . "' -->\n";
-    echo "<!-- DEBUG: REQUEST_URI = '" . htmlspecialchars($_SERVER['REQUEST_URI'] ?? '') . "' -->\n";
-}
-
 if (!$query) {
     require_once __DIR__ . '/votd.php';
     $query = $votd_string ?? '';
@@ -821,12 +812,6 @@ if (!$title || trim($title) === '') {
     $title = $original_query ?: ($english_title ?: '');
 }
 $title .= " - $sitename";
-
-// TEMPORARY DEBUG: Show final title
-echo "<!-- DEBUG TITLE BUILD: Final title = '" . htmlspecialchars($title) . "' -->\n";
-
-// TEMPORARY DEBUG: Show final title
-echo "<!-- DEBUG TITLE BUILD: Final title = '" . htmlspecialchars($title) . "' -->\n";
 
 $book_menu = "<p>旧约 (OT) ";
 $wiki_book_menu = "<p>== 旧约 ==</p><p> </p>\n";
