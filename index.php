@@ -388,7 +388,10 @@ try {
     if ($db->connect_error) {
         throw new Exception("Connection Error: " . $db->connect_error);
     }
-    $db->set_charset('utf8');
+    // Use utf8mb4 for full UTF-8 support (including 4-byte characters)
+    $db->set_charset('utf8mb4');
+    // Also set the connection collation
+    $db->query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
 } catch (Exception $e) {
     die($e->getMessage());
 }
@@ -1023,9 +1026,47 @@ if (($index || !$echo_string) && !empty($sql)) {
             $cid = isset($row['chapter']) ? (int)$row['chapter'] : 0;
             $vid = isset($row['verse']) ? (int)$row['verse'] : 0;
             $likes = isset($row['likes']) ? (int)$row['likes'] : 0;
-            $txt_tw = $row['text_cuvt'] ?? '';
-            $txt_cn = $row['text_cuvs'] ?? '';
-            $txt_en = $row['text_kjv'] ?? '';
+            // Fix encoding issues - ensure all text is properly UTF-8
+            $txt_tw = isset($row['text_cuvt']) ? $row['text_cuvt'] : '';
+            $txt_cn = isset($row['text_cuvs']) ? $row['text_cuvs'] : '';
+            $txt_en = isset($row['text_kjv']) ? $row['text_kjv'] : '';
+            
+            // Fix encoding for KJV text - handle corrupted characters (question marks)
+            // Common issue: text stored in latin1/cp1252 but retrieved as UTF-8
+            // The question marks () often appear when special characters (like curly quotes) are corrupted
+            if (!empty($txt_en)) {
+                // First, try to detect if the text has encoding issues
+                $has_question_marks = (strpos($txt_en, '') !== false || 
+                                       (preg_match('/\?[^\s]*\?/', $txt_en) && 
+                                        preg_match('/[^\x00-\x7F]/', $txt_en) === 0));
+                
+                if ($has_question_marks || !mb_check_encoding($txt_en, 'UTF-8')) {
+                    // Try to fix by converting from common problematic encodings
+                    // Windows-1252 is often the culprit for KJV text with special characters
+                    $encodings_to_try = ['Windows-1252', 'ISO-8859-1', 'CP1252'];
+                    foreach ($encodings_to_try as $enc) {
+                        // Try converting assuming the text is in this encoding
+                        $test = @mb_convert_encoding($txt_en, 'UTF-8', $enc);
+                        if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
+                            // Check if conversion improved things (fewer question marks)
+                            $original_qm = substr_count($txt_en, '') + substr_count($txt_en, '?');
+                            $test_qm = substr_count($test, '') + substr_count($test, '?');
+                            if ($test_qm < $original_qm || !$has_question_marks) {
+                                $txt_en = $test;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Also fix encoding for other translations
+            if (!empty($txt_tw) && !mb_check_encoding($txt_tw, 'UTF-8')) {
+                $txt_tw = @mb_convert_encoding($txt_tw, 'UTF-8', 'Windows-1252') ?: $txt_tw;
+            }
+            if (!empty($txt_cn) && !mb_check_encoding($txt_cn, 'UTF-8')) {
+                $txt_cn = @mb_convert_encoding($txt_cn, 'UTF-8', 'Windows-1252') ?: $txt_cn;
+            }
 
             if (is_array($queries)) {
                 foreach ($queries as $query_word) {
@@ -1149,6 +1190,43 @@ if (($index || !$echo_string) && !empty($sql)) {
             foreach ($bible_books as $bible_book) {
                 if ($bible_book) {
                     $text_string = $row["text_$bible_book"] ?? '';
+                    
+                    // Fix encoding issues for all Bible translations
+                    if (!empty($text_string)) {
+                        // Check if text is valid UTF-8
+                        if (!mb_check_encoding($text_string, 'UTF-8')) {
+                            // Try to convert from common problematic encodings
+                            $encodings_to_try = ['Windows-1252', 'ISO-8859-1', 'CP1252'];
+                            foreach ($encodings_to_try as $enc) {
+                                $test = @mb_convert_encoding($text_string, 'UTF-8', $enc);
+                                if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
+                                    $text_string = $test;
+                                    break;
+                                }
+                            }
+                        } else {
+                            // Valid UTF-8 - check for question marks that might indicate corruption
+                            $has_question_marks = (strpos($text_string, '') !== false || 
+                                                 (preg_match('/\?[^\s]*\?/', $text_string) && 
+                                                  preg_match('/[^\x00-\x7F]/', $text_string) === 0));
+                            if ($has_question_marks) {
+                                // Try to fix by converting from common encodings
+                                $encodings_to_try = ['Windows-1252', 'ISO-8859-1', 'CP1252'];
+                                foreach ($encodings_to_try as $enc) {
+                                    $test = @mb_convert_encoding($text_string, 'UTF-8', $enc);
+                                    if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
+                                        $original_qm = substr_count($text_string, '') + substr_count($text_string, '?');
+                                        $test_qm = substr_count($test, '') + substr_count($test, '?');
+                                        if ($test_qm < $original_qm) {
+                                            $text_string = $test;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     // Always process formatting tags (FI, FR, FO, font color)
                     // Red letter (words of Christ) - <FR>...</Fr>
                     $search_str = ['<FR>', '<Fr>'];
