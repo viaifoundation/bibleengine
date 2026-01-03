@@ -102,7 +102,7 @@ $translations = [
         'multi_verse' => '多節',
         'multi_verse_full' => '多節',
         'extend' => '上下文',
-        'extend_full' => '節上下文',
+        'extend_full' => '上下文',
         'verses' => '節',
         'verses_full' => '節',
         'simplified' => '簡',
@@ -113,8 +113,8 @@ $translations = [
         'english_full' => '英EN',
         'strongs_code' => '帶原文編號',
         'strongs_code_full' => '帶原文編號 W/ Strong\'s Code*',
-        'study' => '研讀',
-        'study_full' => '研讀 STUDY',
+        'study' => '搜尋',
+        'study_full' => '搜尋',
         
         // Bible study resources
         'bible_study' => '本節研經資料',
@@ -238,7 +238,7 @@ $translations = [
         'multi_verse' => '多节',
         'multi_verse_full' => '多节',
         'extend' => '上下文',
-        'extend_full' => '节上下文',
+        'extend_full' => '上下文',
         'verses' => '节',
         'verses_full' => '节',
         'simplified' => '简',
@@ -249,8 +249,8 @@ $translations = [
         'english_full' => '英EN',
         'strongs_code' => '带原文编号',
         'strongs_code_full' => '带原文编号 W/ Strong\'s Code*',
-        'study' => '研读',
-        'study_full' => '研读 STUDY',
+        'study' => '搜索',
+        'study_full' => '搜索',
         
         // Bible study resources
         'bible_study' => '本节研经资料',
@@ -374,7 +374,7 @@ $translations = [
         'multi_verse' => 'Multi Verse',
         'multi_verse_full' => 'Multi Verse',
         'extend' => 'Context',
-        'extend_full' => 'Verse Context',
+        'extend_full' => 'Context',
         'verses' => 'Verses',
         'verses_full' => 'Verses',
         'simplified' => 'CN',
@@ -385,8 +385,8 @@ $translations = [
         'english_full' => 'English EN',
         'strongs_code' => 'W/ Strong\'s Code',
         'strongs_code_full' => 'W/ Strong\'s Code*',
-        'study' => 'STUDY',
-        'study_full' => 'STUDY',
+        'study' => 'Search',
+        'study_full' => 'Search',
         
         // Bible study resources
         'bible_study' => 'Bible Study',

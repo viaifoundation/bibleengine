@@ -294,7 +294,7 @@ $name = $_REQUEST['n'] ?? '';
 $portable = $_REQUEST['p'] ?? '';
 $query = trim($_REQUEST['q'] ?? '');
 $multi_verse = (int)($_REQUEST['m'] ?? 0);
-$extend = isset($_REQUEST['e']) ? (int)$_REQUEST['e'] : 0;
+$context = isset($_REQUEST['e']) ? (int)$_REQUEST['e'] : 0;
 $search_table = 'bible_search';
 $language = strtolower($_REQUEST['l'] ?? 'cn') ?: 'cn';
 $wiki = $_REQUEST['w'] ?? '';
@@ -479,9 +479,9 @@ if ($query) {
                             $verses_temp = explode(",", $r2);
                             if ((int)$verses_temp[0]) {
                                 $verse = $verse2 = (int)$verses_temp[0];
-                                $sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend);
+                                $sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $context) . " AND " . ((int)$verses_temp[0] + $context);
                                 for ($iii = 1; $iii < count($verses_temp); $iii++) {
-                                    $sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend);
+                                    $sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $context) . " AND " . ((int)$verses_temp[$iii] + $context);
                                     $verse = $verse2 = (int)$verses_temp[$iii];
                                 }
                                 $sql_where .= ") ";
@@ -549,9 +549,9 @@ if ($query) {
                         $verses_temp = explode(",", $r2);
                         if ((int)$verses_temp[0]) {
                             $verse = $verse2 = (int)$verses_temp[0];
-                            $sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend);
+                            $sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $context) . " AND " . ((int)$verses_temp[0] + $context);
                             for ($iii = 1; $iii < count($verses_temp); $iii++) {
-                                $sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend);
+                                $sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $context) . " AND " . ((int)$verses_temp[$iii] + $context);
                                 $verse = $verse2 = (int)$verses_temp[$iii];
                             }
                             $sql_where .= ") ";
@@ -1631,7 +1631,7 @@ function toggleOptions(elm, idx) {
 function show_form(string $seq = '0'): void {
     global $query, $books, $script, $options, $multi_verse, $portable, $cn, $tw, $en, $strongs,
            $cuvs, $cuvt, $cuvc, $kjv, $nasb, $esv, $ckjvs, $ckjvt, $pinyin, $ncvs, $lcvs, $ccsb, $clbs, $ukjv, $kjv1611, $bbe,
-           $wiki_base, $long_url_base, $short_url_base, $book_chinese, $book_english, $book_cn, $book_short, $extend;
+           $wiki_base, $long_url_base, $short_url_base, $book_chinese, $book_english, $book_cn, $book_short, $context;
 ?>
 <center><div align="center">
 <form method="GET" action="<?php echo htmlspecialchars($script); ?>">
@@ -1727,13 +1727,13 @@ function show_form(string $seq = '0'): void {
     <option value="0" <?php if ($multi_verse == 0) echo "SELECTED"; ?>><?php echo t('single_verse_full'); ?></option>
     <option value="1" <?php if ($multi_verse == 1) echo "SELECTED"; ?>><?php echo t('multi_verse_full'); ?></option>
 </select><?php echo t('verses_full'); ?>
-<?php echo t('extend_full'); ?><select name="e">
-    <option value="0" <?php if (!$extend || $extend == 0) echo "SELECTED"; ?>>0</option>
-    <option value="1" <?php if ($extend == 1) echo "SELECTED"; ?>>1</option>
-    <option value="2" <?php if ($extend == 2) echo "SELECTED"; ?>>2</option>
-    <option value="3" <?php if ($extend == 3) echo "SELECTED"; ?>>3</option>
-    <option value="4" <?php if ($extend == 4) echo "SELECTED"; ?>>4</option>
-    <option value="5" <?php if ($extend == 5) echo "SELECTED"; ?>>5</option>
+<?php echo t('extend_full'); ?> <select name="e">
+    <option value="0" <?php if (!$context || $context == 0) echo "SELECTED"; ?>>0</option>
+    <option value="1" <?php if ($context == 1) echo "SELECTED"; ?>>1</option>
+    <option value="2" <?php if ($context == 2) echo "SELECTED"; ?>>2</option>
+    <option value="3" <?php if ($context == 3) echo "SELECTED"; ?>>3</option>
+    <option value="4" <?php if ($context == 4) echo "SELECTED"; ?>>4</option>
+    <option value="5" <?php if ($context == 5) echo "SELECTED"; ?>>5</option>
 </select><?php echo t('verses_full'); ?>
 <input type='checkbox' name='cn' value='1' <?php if ($cn) echo 'checked'; ?>><?php echo t('simplified_full'); ?>
 <input type='checkbox' name='tw' value='1' <?php if ($tw) echo 'checked'; ?>><?php echo t('traditional_full'); ?>

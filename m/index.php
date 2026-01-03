@@ -13,7 +13,7 @@ $img_url = '';
 $sitename = '';
 $wiki_base = '';
 $wiki_search_base = '';
-$extend = 1;
+$context = 1;
 $clbs = '';
 $ccsb = '';
 $ckjvs = '';
@@ -727,7 +727,7 @@ $queries=explode(" ",$query_without_options);
 $multi_verse=$_REQUEST['m'];
 if(!$multi_verse)
 	$multi_verse=0;
-$extend=isset($_REQUEST['e'])?(int)$_REQUEST['e']:1;
+$context=isset($_REQUEST['e'])?(int)$_REQUEST['e']:1;
 $search_table = 'bible_search';
 $language = strtolower($_REQUEST['l']); //cn, tw, en
 
@@ -974,12 +974,12 @@ if($query)
 									$verse=$verse2=$verses_temp[0];
 
 									//$sql_where .= " AND ((verse=" . (int)$verses_temp[0] .  " )";
-									$sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $extend) . " AND " . ((int)$verses_temp[0] + $extend);
+									$sql_where .= " AND (verse BETWEEN " . ((int)$verses_temp[0] - $context) . " AND " . ((int)$verses_temp[0] + $context);
 									$index_temp=count($verses_temp);
 									for($iii=1;$iii<$index_temp;$iii++)
 									{
 										//$sql_where .= " OR (verse=" . (int)$verses_temp[$iii] . ") ";
-										$sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $extend) . " AND " . ((int)$verses_temp[$iii] + $extend);
+										$sql_where .= " OR verse BETWEEN " . ((int)$verses_temp[$iii] - $context) . " AND " . ((int)$verses_temp[$iii] + $context);
 										$verse=$verse2=$verses_temp[$iii];
 
 									}
@@ -2217,12 +2217,12 @@ else echo "none";
 <option value=2 <?php if($multi_verse==3) echo "SELECTED";?>>3</option>
 </select>节 VV
 扩展 Ext<select name="e">
-<option value=0 <?php if(($extend ?? 1)==0) echo "SELECTED";?>>0</option>
-<option value=1 <?php if(!isset($extend) || ($extend ?? 1)==1) echo "SELECTED";?>>1</option>
-<option value=2 <?php if(($extend ?? 1)==2) echo "SELECTED";?>>2</option>
-<option value=3 <?php if(($extend ?? 1)==3) echo "SELECTED";?>>3</option>
-<option value=4 <?php if(($extend ?? 1)==4) echo "SELECTED";?>>4</option>
-<option value=5 <?php if(($extend ?? 1)==5) echo "SELECTED";?>>5</option>
+<option value=0 <?php if(($context ?? 1)==0) echo "SELECTED";?>>0</option>
+<option value=1 <?php if(!isset($context) || ($context ?? 1)==1) echo "SELECTED";?>>1</option>
+<option value=2 <?php if(($context ?? 1)==2) echo "SELECTED";?>>2</option>
+<option value=3 <?php if(($context ?? 1)==3) echo "SELECTED";?>>3</option>
+<option value=4 <?php if(($context ?? 1)==4) echo "SELECTED";?>>4</option>
+<option value=5 <?php if(($context ?? 1)==5) echo "SELECTED";?>>5</option>
 </select>节 VV
 <input type='checkbox' name='cn' value=1 <?php if($cn) echo 'checked'?>>简CN
 <input type='checkbox' name='tw' value=1 <?php if($tw) echo 'checked'?>>繁TW
