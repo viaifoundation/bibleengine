@@ -579,8 +579,14 @@ if ($query) {
                 $sql .= ($sql ? " UNION " : "") . "SELECT * FROM $search_table WHERE $sql_where";
             }
         }
+    } else {
+        // Query doesn't contain numbers, treat as text search
+        if (!$mode) {
+            $mode = 'QUERY';
+        }
     }
-}if ($sql && !$echo_string) {
+}
+if ($sql && !$echo_string) {
     try {
         // Debug: Print SQL query
         if (isset($_REQUEST['debug']) || isset($_GET['debug'])) {
@@ -620,6 +626,10 @@ if ($query) {
 }
 
 if ($mode === 'QUERY' && $do_query) {
+    // Filter out empty queries
+    $queries = array_filter($queries, function($q) { return trim($q) !== ''; });
+    $queries = array_values($queries); // Re-index array
+    
     $count = count($queries);
     if ($count > 10) {
         $echo_string = "至多10个关键词，请缩小关键词的数量以降低服务器的开销。";
@@ -641,7 +651,7 @@ if ($mode === 'QUERY' && $do_query) {
         $sql_where = " 1=1 ";
     }
 
-    if ($do_query && isset($queries[0])) {
+    if ($do_query && $count > 0 && isset($queries[0]) && trim($queries[0]) !== '') {
         try {
             $sql = "SELECT book, chapter, verse FROM $search_table WHERE txt LIKE '%" . $db->real_escape_string($queries[0]) . "%'";
             for ($i = 1; $i < $count && isset($queries[$i]); ++$i) {
