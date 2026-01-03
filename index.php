@@ -745,25 +745,32 @@ if ($mode === 'QUERY' && in_array($api, ['json', 'text', 'plain', 'html'])) {
 }
 
 // Build english_title from book/chapter/verse (updated after query parsing)
-$english_title = isset($book_chinese[$book], $book_english[$book]) ? $book_chinese[$book] . " " . $book_english[$book] : '';
-$short_url_title = "$short_url_base/" . ($book_short[$book] ?? '');
-if ($chapter) {
-    $english_title .= " $chapter";
-    $short_url_title .= ".$chapter";
-}
-if ($verse) {
-    $english_title .= ":$verse";
-    $short_url_title .= ".$verse";
-    $show_verse = true;
+// Only build if we have a valid book number
+$english_title = '';
+$short_url_title = '';
+if ($book && isset($book_chinese[$book], $book_english[$book])) {
+    $english_title = $book_chinese[$book] . " " . $book_english[$book];
+    $short_url_title = "$short_url_base/" . ($book_short[$book] ?? '');
+    if ($chapter) {
+        $english_title .= " $chapter";
+        $short_url_title .= ".$chapter";
+    }
+    if ($verse) {
+        $english_title .= ":$verse";
+        $short_url_title .= ".$verse";
+        $show_verse = true;
+    } else {
+        $show_verse = false;
+    }
+    if ($index) {
+        $show_verse = true;
+    }
+    if ($verse2) {
+        $english_title .= "-$verse2";
+        $short_url_title .= "-$verse2";
+    }
 } else {
     $show_verse = false;
-}
-if ($index) {
-    $show_verse = true;
-}
-if ($verse2) {
-    $english_title .= "-$verse2";
-    $short_url_title .= "-$verse2";
 }
 
 // Build title - prefer original query if it looks like a verse reference
@@ -773,8 +780,15 @@ if ($original_query) {
     // Check if it looks like a verse reference (book name + numbers)
     // This matches patterns like "Deut 2:10", "Deut2:10", "约 3:16", etc.
     if (preg_match('/^[a-zA-Z\u4e00-\u9fff]+/', $original_query) && preg_match('/\d/', $original_query)) {
-        // Use original query as-is, it should already be in a readable format
-        $title = $original_query;
+        // Normalize the format: ensure space before chapter number if missing
+        // "Deut2:10" -> "Deut 2:10", "Deut 2:10" stays "Deut 2:10"
+        if (!preg_match('/\s/', $original_query)) {
+            // No space found, add it: "Deut2:10" -> "Deut 2:10"
+            $title = preg_replace('/([a-zA-Z\u4e00-\u9fff]+)(\d+):(\d+)/', '${1} ${2}:${3}', $original_query);
+        } else {
+            // Space already present, use as-is
+            $title = $original_query;
+        }
     } else {
         $title = $original_query;
     }
