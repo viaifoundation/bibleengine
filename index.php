@@ -1655,16 +1655,71 @@ function show_form(string $seq = '0'): void {
     <option value="100" <?php if ($books == 100) echo "SELECTED"; ?>>基督徒百科 CCWiki</option>
     <option value="1-39" <?php if ($books == "1-39") echo "SELECTED"; ?>><?php echo t('old_testament_full'); ?></option>
     <option value="40-66" <?php if ($books == "40-66") echo "SELECTED"; ?>><?php echo t('new_testament_full'); ?></option>
-    <option value="1-5" <?php if ($books == "1-5") echo "SELECTED"; ?>>摩西五经 Law (Gen - Deut)</option>
-    <option value="6-17" <?php if ($books == "6-17") echo "SELECTED"; ?>>历史书 History (Josh - Esth)</option>
-    <option value="18-22" <?php if ($books == "18-22") echo "SELECTED"; ?>>诗歌智慧书 Poetry & Wisdom (Job - Song)</option>
-    <option value="23-27" <?php if ($books == "23-27") echo "SELECTED"; ?>>大先知书 Major Prophets (Is - Dan)</option>
-    <option value="28-39" <?php if ($books == "28-39") echo "SELECTED"; ?>>小先知书 Minor Prophets (Hos - Mal)</option>
-    <option value="40-44" <?php if ($books == "40-44") echo "SELECTED"; ?>>福音历史书 Gospels (Matt - Acts)</option>
-    <option value="45-57" <?php if ($books == "45-57") echo "SELECTED"; ?>>保罗书信 Paul's Epistles (Rom - Philem)</option>
-    <option value="58-66" <?php if ($books == "58-66") echo "SELECTED"; ?>>一般使徒书信 General Epistles (Heb - Rev)</option>
-    <?php for ($i = 1; $i <= 66; $i++) { ?>
-        <option value="<?php echo $i; ?>" <?php if ($books == $i) echo "SELECTED"; ?>><?php echo htmlspecialchars(($book_chinese[$i] ?? '') . " " . ($book_english[$i] ?? '')); ?></option>
+    <?php
+    // Get book names in current language for displaying book ranges
+    $book_names = function_exists('getBookNames') ? getBookNames() : null;
+    
+    // Law (Gen-Deut) - books 1-5
+    $law_start = $book_names ? $book_names['short'][1] : ($book_cn[1] ?? 'Gen');
+    $law_end = $book_names ? $book_names['short'][5] : ($book_cn[5] ?? 'Deut');
+    $law_text = t('law') . " ($law_start-$law_end)";
+    
+    // History (Josh-Esth) - books 6-17
+    $hist_start = $book_names ? $book_names['short'][6] : ($book_cn[6] ?? 'Josh');
+    $hist_end = $book_names ? $book_names['short'][17] : ($book_cn[17] ?? 'Esth');
+    $hist_text = t('history') . " ($hist_start-$hist_end)";
+    
+    // Poetry & Wisdom (Job-Song) - books 18-22
+    $poetry_start = $book_names ? $book_names['short'][18] : ($book_cn[18] ?? 'Job');
+    $poetry_end = $book_names ? $book_names['short'][22] : ($book_cn[22] ?? 'Song');
+    $poetry_text = t('poetry_wisdom') . " ($poetry_start-$poetry_end)";
+    
+    // Major Prophets (Is-Dan) - books 23-27
+    $major_start = $book_names ? $book_names['short'][23] : ($book_cn[23] ?? 'Is');
+    $major_end = $book_names ? $book_names['short'][27] : ($book_cn[27] ?? 'Dan');
+    $major_text = t('major_prophets') . " ($major_start-$major_end)";
+    
+    // Minor Prophets (Hos-Mal) - books 28-39
+    $minor_start = $book_names ? $book_names['short'][28] : ($book_cn[28] ?? 'Hos');
+    $minor_end = $book_names ? $book_names['short'][39] : ($book_cn[39] ?? 'Mal');
+    $minor_text = t('minor_prophets') . " ($minor_start-$minor_end)";
+    
+    // Gospels and History (Matt-Acts) - books 40-44
+    $gospels_start = $book_names ? $book_names['short'][40] : ($book_cn[40] ?? 'Matt');
+    $gospels_end = $book_names ? $book_names['short'][44] : ($book_cn[44] ?? 'Acts');
+    $gospels_text = t('gospels_history') . " ($gospels_start-$gospels_end)";
+    
+    // Paul's Epistles (Rom-Philem) - books 45-57
+    $pauls_start = $book_names ? $book_names['short'][45] : ($book_cn[45] ?? 'Rom');
+    $pauls_end = $book_names ? $book_names['short'][57] : ($book_cn[57] ?? 'Philem');
+    $pauls_text = t('pauls_epistles') . " ($pauls_start-$pauls_end)";
+    
+    // General Epistles (Heb-Rev) - books 58-66
+    $general_start = $book_names ? $book_names['short'][58] : ($book_cn[58] ?? 'Heb');
+    $general_end = $book_names ? $book_names['short'][66] : ($book_cn[66] ?? 'Rev');
+    $general_text = t('general_epistles') . " ($general_start-$general_end)";
+    ?>
+    <option value="1-5" <?php if ($books == "1-5") echo "SELECTED"; ?>><?php echo htmlspecialchars($law_text); ?></option>
+    <option value="6-17" <?php if ($books == "6-17") echo "SELECTED"; ?>><?php echo htmlspecialchars($hist_text); ?></option>
+    <option value="18-22" <?php if ($books == "18-22") echo "SELECTED"; ?>><?php echo htmlspecialchars($poetry_text); ?></option>
+    <option value="23-27" <?php if ($books == "23-27") echo "SELECTED"; ?>><?php echo htmlspecialchars($major_text); ?></option>
+    <option value="28-39" <?php if ($books == "28-39") echo "SELECTED"; ?>><?php echo htmlspecialchars($minor_text); ?></option>
+    <option value="40-44" <?php if ($books == "40-44") echo "SELECTED"; ?>><?php echo htmlspecialchars($gospels_text); ?></option>
+    <option value="45-57" <?php if ($books == "45-57") echo "SELECTED"; ?>><?php echo htmlspecialchars($pauls_text); ?></option>
+    <option value="58-66" <?php if ($books == "58-66") echo "SELECTED"; ?>><?php echo htmlspecialchars($general_text); ?></option>
+    <?php for ($i = 1; $i <= 66; $i++) { 
+        // Get book names in current language
+        if ($book_names) {
+            $book_long = $book_names['long'][$i] ?? '';
+            $book_short_display = $book_names['short'][$i] ?? '';
+        } else {
+            // Fallback
+            $book_long = $book_chinese[$i] ?? '';
+            $book_short_display = $book_cn[$i] ?? '';
+        }
+        $book_option_text = $book_long . " ($book_short_display)";
+    ?>
+        <option value="<?php echo $i; ?>" <?php if ($books == $i) echo "SELECTED"; ?>><?php echo htmlspecialchars($book_option_text); ?></option>
     <?php } ?>
 </select>
 <?php if ($portable) echo "<br/>"; ?>
