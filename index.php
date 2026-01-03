@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Load language system (must be loaded before config.php)
+require_once(__DIR__ . '/lang.php');
+
 // Initialize variables to prevent undefined warnings
 $echo_string = '';
 $wiki_text = '';
@@ -36,7 +39,7 @@ $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜�
 $copyright_text = '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation'; // Copyright text
 
 function show_hint(): string {
-    return "提示：请输入圣经章节，如 'John 3:16' 或 '约 3:16'。";
+    return t('search_hint');
 }
 
 function show_banner(): string {
@@ -106,7 +109,7 @@ function search_wiki(string $q, int $p = 1): string {
                         $txt = mb_strcut($txt, 0, 2000, 'UTF-8') . "\n\n内容太长有删节";
                     }
                 } else {
-                    $txt = "没有查到搜索的词条，请更换关键词再搜索。" . show_hint() . show_banner();
+                    $txt = t('no_wiki_records') . show_hint() . show_banner();
                 }
             } else {
                 $txt = "没有查到搜索的词条，请更换关键词再搜索。" . show_hint() . show_banner();
@@ -469,7 +472,7 @@ if ($query) {
                             $sql_where .= " AND (chapter=$ir1) ";
                             $chapter = $ir1;
                         } else {
-                            $echo_string = "章节格式错误，可能章号不正确，正确格式参考： John 3";
+                            $echo_string = t('format_error') . " John 3";
                         }
                         if ($r2) {
                             $verses_temp = explode(",", $r2);
@@ -482,7 +485,7 @@ if ($query) {
                                 }
                                 $sql_where .= ") ";
                             } else {
-                                $echo_string = "章节格式错误，可能节号不正确，正确格式参考： John 3:16或者 John 3:16,19";
+                                $echo_string = t('verse_format_error') . " John 3:16或者 John 3:16,19";
                             }
                         }
                     } else {
@@ -491,7 +494,7 @@ if ($query) {
                                 $sql_where .= " AND (chapter BETWEEN $ir1 AND $ir3)";
                                 $chapter = $ir1;
                             } else {
-                                $echo_string = "章节格式错误，可能章号不正确，正确格式参考： John 3-4";
+                                $echo_string = t('format_error') . " John 3-4";
                             }
                         } elseif ($r2 && !$r4) {
                             [$chapter_temp, $verse_string_temp] = array_pad(explode(":", $references, 2), 2, '');
@@ -511,7 +514,7 @@ if ($query) {
                                 }
                                 $sql_where .= ") ";
                             } else {
-                                $echo_string = "章节格式错误，可能章号或者节号不正确，正确格式参考：John 3:16-18 或 John 3:16-18,19-21 或 John 3:16-18,20";
+                                $echo_string = t('verse_format_error') . " John 3:16-18 或 John 3:16-18,19-21 或 John 3:16-18,20";
                             }
                         } elseif (!$r2 && $ir3 && $ir4) {
                             $irr = $ir3 - 1;
@@ -520,7 +523,7 @@ if ($query) {
                             $verse = 1;
                             $verse2 = $ir4;
                         } else {
-                            $echo_string = "章节格式错误，可能章号不正确，正确格式参考：John 3-5:6";
+                            $echo_string = t('format_error') . " John 3-5:6";
                         }
                     }
                     break;
@@ -581,7 +584,7 @@ if ($query) {
                             }
                             $sql_where .= ") ";
                         } else {
-                            $echo_string = "章节格式错误，可能章号或者节号不正确，正确格式参考：John 3:16-18 或 John 3:16-18,19-21 或 John 3:16-18,20";
+                            $echo_string = t('verse_format_error') . " John 3:16-18 或 John 3:16-18,19-21 或 John 3:16-18,20";
                         }
                     } elseif (!$r2 && $ir3 && $ir4) {
                         $irr = $ir3 - 1;
@@ -590,7 +593,7 @@ if ($query) {
                         $verse = 1;
                         $verse2 = $ir4;
                     } else {
-                        $echo_string = "章节格式错误，可能章号不正确，正确格式参考：John 3-5:6";
+                        $echo_string = t('format_error') . " John 3-5:6";
                     }
                 }
             }
@@ -716,17 +719,17 @@ if ($mode === 'QUERY' && $do_query) {
                 $i++;
                 $count = $i;
                 if ($i >= $max_record_count) {
-                    $echo_string .= "<h2>结果超出<b>$max_record_count</b>条记录，请增加关键词或者设定查询范围来准确查询</h2>";
+                    $echo_string .= "<h2>" . t('too_many_records', $max_record_count) . "</h2>";
                     break;
                 }
             }
             $querystr = rtrim($querystr, ',');
             if ($querystr) {
                 $index = $querystr;
-                $echo_string .= "<p>共查到<b>$count</b>条记录：</p>";
+                $echo_string .= "<p>" . t('found_records', $count) . "</p>";
             } else {
                 $index = '';
-                $echo_string .= "<h2>没有查到记录，请修改搜索条件重新搜索</h2>";
+                $echo_string .= "<h2>" . t('no_records') . "</h2>";
             }
             $result->free();
         } catch (Exception $e) {
@@ -901,7 +904,7 @@ $sql = '';
 
 if ($index) {
     if (empty($bible_books)) {
-        $echo_string = "请至少选择一个圣经译本";
+        $echo_string = t('no_translation_selected');
         $sql = '';
     } else {
         $sql = "SELECT bible_books.* ";
@@ -911,7 +914,7 @@ if ($index) {
                 $sql .= ", $bible_book.Scripture AS text_$bible_book ";
                 $book_count++;
                 if ($book_count > $max_book_count) {
-                    $echo_string .= "<h2>选择查询的圣经译本超出<b>$max_book_count</b>个，请缩减同时查询的译本个数以降低服务器开销</h2>";
+                    $echo_string .= "<h2>" . t('too_many_translations', $max_book_count) . "</h2>";
                     break;
                 }
             }
@@ -940,7 +943,7 @@ if ($index) {
             }
         }
         if (!$has_verses) {
-            $echo_string = "索引格式错误，请检查输入的索引格式";
+            $echo_string = t('index_format_error');
             $sql = '';
         } else {
             $sql .= ") ";
@@ -949,7 +952,7 @@ if ($index) {
 } else {
     if (($mode === 'QUERY' && !$echo_string) || $mode === 'READ') {
         if (empty($bible_books)) {
-            $echo_string = "请至少选择一个圣经译本";
+            $echo_string = t('no_translation_selected');
             $sql = '';
         } else {
             $sql = "SELECT bible_books.* ";
@@ -997,7 +1000,19 @@ if ((isset($_REQUEST['debug']) || isset($_GET['debug'])) && !empty($sql)) {
 // Execute SQL query if we have SQL and either:
 // 1. We have an index (search results or verse references), OR
 // 2. We don't have an error message in echo_string
-if (!empty($sql) && ($index || empty($echo_string) || strpos($echo_string, '共查到') !== false)) {
+// Check if echo_string contains "found records" message (translated) or is empty
+// Check for translated "found records" message in all languages
+$found_patterns = ['共查到', 'Found', '<b>'];
+$has_found_message = false;
+if (!empty($echo_string)) {
+    foreach ($found_patterns as $pattern) {
+        if (strpos($echo_string, $pattern) !== false) {
+            $has_found_message = true;
+            break;
+        }
+    }
+}
+if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
     try {
         $result = $db->query($sql);
         if ($result === false) {
@@ -1033,7 +1048,7 @@ if (!empty($sql) && ($index || empty($echo_string) || strpos($echo_string, '共�
         }
         
         // Add section header for verse-by-verse display
-        $text_cmp .= "<h2>逐节对照 Verse-by-Verse Comparison</h2>\n";
+        $text_cmp .= "<h2>" . t('verse_by_verse_full') . "</h2>\n";
 
         while ($row = $result->fetch_assoc()) {
             $bid = isset($row['book']) ? (int)$row['book'] : 0;
@@ -1399,9 +1414,9 @@ if (!empty($sql) && ($index || empty($echo_string) || strpos($echo_string, '共�
             $text_cmp .= "</ul>\n";
 
             if (!$portable) {
-                $quick_link_text = "直达 Quick Link: ";
-                $text_cmp .= "<p>本节研经资料 Bible Study ";
-                $text_cmp .= "<select name=\"$osis\" onchange=\"javascript:handleSelect(this)\">\n<option value=\"\">请选择 Please Select</option>\n";
+                $quick_link_text = t('quick_link_full') . " ";
+                $text_cmp .= "<p>" . t('bible_study_full') . " ";
+                $text_cmp .= "<select name=\"$osis\" onchange=\"javascript:handleSelect(this)\">\n<option value=\"\">" . t('please_select_full') . "</option>\n";
                 $links = [
                     ["http://www.blueletterbible.org/Bible.cfm?b=" . ($book_en[$bid] ?? '') . "&c=$cid&v=$vid", "Blue Letter Bible"],
                     ["http://www.yawill.com/modonline.php?book=$bid&chapter=$cid&node=$vid", "Yawill.com多版本对照"],
@@ -1424,7 +1439,7 @@ if (!empty($sql) && ($index || empty($echo_string) || strpos($echo_string, '共�
                     $quick_link_text .= "<a href=\"" . htmlspecialchars($link[0]) . "\" target=\"_blank\">" . htmlspecialchars($link[1]) . "</a> ";
                 }
                 $text_cmp .= "</select>$quick_link_text";
-                $text_cmp .= " <small><a href=\"bible.php?cmd=like&b=$bid&c=$cid&v=$vid\"><img src='like.png' width=14 height=14 border=0 alt='Like'/>喜爱本节 Like the Verse</a>";
+                $text_cmp .= " <small><a href=\"bible.php?cmd=like&b=$bid&c=$cid&v=$vid\"><img src='like.png' width=14 height=14 border=0 alt='Like'/>" . t('like_verse_full') . "</a>";
                 if ($likes > 0) {
                     $text_cmp .= " ($likes)";
                 }
@@ -1448,7 +1463,7 @@ if (!empty($sql) && ($index || empty($echo_string) || strpos($echo_string, '共�
         // Build block display HTML for each translation
         $block_display = '';
         if (!empty($block_texts)) {
-            $block_display .= "<h2>整章/整段显示 Whole Chapter/Block Display</h2>\n";
+            $block_display .= "<h2>" . t('whole_chapter_full') . "</h2>\n";
             foreach ($bible_books as $bible_book) {
                 if ($bible_book && !empty($block_texts[$bible_book])) {
                     $translation_name = strtoupper($bible_book);
@@ -1550,20 +1565,21 @@ function show_form(string $seq = '0'): void {
 <?php } else { ?>
     <input type="text" size="80" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>">
 <?php } ?>
-<input type="submit" value="研读 STUDY">
+<input type="submit" value="<?php echo t('study_full'); ?>">
 <?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)">选项 Options
-<input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>>便携 Portable
-<a href="help.php"> 帮助 Help</a>
-<small><a href="copyright.php">版权 Copyright</a></small>
-<small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">源码 Source Code</a></small>
+<input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)"><?php echo t('options_full'); ?>
+<input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
+<a href="help.php"> <?php echo t('help_full'); ?></a>
+<small><a href="copyright.php"><?php echo t('copyright_full'); ?></a></small>
+<?php echo getLanguageSwitcher(); ?>
+<small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo t('source_code_full'); ?></a></small>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
-<br/>书卷 Books
+<br/><?php echo t('books_full'); ?>
 <select name="b">
-    <option value="0" <?php if ($books == 0) echo "SELECTED"; ?>>整本圣经 Whole Bible</option>
+    <option value="0" <?php if ($books == 0) echo "SELECTED"; ?>><?php echo t('whole_bible_full'); ?></option>
     <option value="100" <?php if ($books == 100) echo "SELECTED"; ?>>基督徒百科 CCWiki</option>
-    <option value="1-39" <?php if ($books == "1-39") echo "SELECTED"; ?>>旧约全书 Old Testament</option>
-    <option value="40-66" <?php if ($books == "40-66") echo "SELECTED"; ?>>新约全书 New Testament</option>
+    <option value="1-39" <?php if ($books == "1-39") echo "SELECTED"; ?>><?php echo t('old_testament_full'); ?></option>
+    <option value="40-66" <?php if ($books == "40-66") echo "SELECTED"; ?>><?php echo t('new_testament_full'); ?></option>
     <option value="1-5" <?php if ($books == "1-5") echo "SELECTED"; ?>>摩西五经 Law (Gen - Deut)</option>
     <option value="6-17" <?php if ($books == "6-17") echo "SELECTED"; ?>>历史书 History (Josh - Esth)</option>
     <option value="18-22" <?php if ($books == "18-22") echo "SELECTED"; ?>>诗歌智慧书 Poetry & Wisdom (Job - Song)</option>
@@ -1577,23 +1593,23 @@ function show_form(string $seq = '0'): void {
     <?php } ?>
 </select>
 <?php if ($portable) echo "<br/>"; ?>
-多 Multi<select name="m">
-    <option value="0" <?php if ($multi_verse == 0) echo "SELECTED"; ?>>单节 Single Verse</option>
-    <option value="1" <?php if ($multi_verse == 1) echo "SELECTED"; ?>>多节 Multi Verse</option>
-</select>节 VV
-扩展 Ext<select name="e">
+<?php echo t('multi_full'); ?><select name="m">
+    <option value="0" <?php if ($multi_verse == 0) echo "SELECTED"; ?>><?php echo t('single_verse_full'); ?></option>
+    <option value="1" <?php if ($multi_verse == 1) echo "SELECTED"; ?>><?php echo t('multi_verse_full'); ?></option>
+</select><?php echo t('verses_full'); ?>
+<?php echo t('extend_full'); ?><select name="e">
     <option value="0" <?php if (!$extend || $extend == 0) echo "SELECTED"; ?>>0</option>
     <option value="1" <?php if ($extend == 1) echo "SELECTED"; ?>>1</option>
     <option value="2" <?php if ($extend == 2) echo "SELECTED"; ?>>2</option>
     <option value="3" <?php if ($extend == 3) echo "SELECTED"; ?>>3</option>
     <option value="4" <?php if ($extend == 4) echo "SELECTED"; ?>>4</option>
     <option value="5" <?php if ($extend == 5) echo "SELECTED"; ?>>5</option>
-</select>节 VV
-<input type='checkbox' name='cn' value='1' <?php if ($cn) echo 'checked'; ?>>简CN
-<input type='checkbox' name='tw' value='1' <?php if ($tw) echo 'checked'; ?>>繁TW
-<input type='checkbox' name='en' value='1' <?php if ($en) echo 'checked'; ?>>英EN
+</select><?php echo t('verses_full'); ?>
+<input type='checkbox' name='cn' value='1' <?php if ($cn) echo 'checked'; ?>><?php echo t('simplified_full'); ?>
+<input type='checkbox' name='tw' value='1' <?php if ($tw) echo 'checked'; ?>><?php echo t('traditional_full'); ?>
+<input type='checkbox' name='en' value='1' <?php if ($en) echo 'checked'; ?>><?php echo t('english_full'); ?>
 <br/>
-<input type='checkbox' name='strongs' value='strongs' <?php if ($strongs) echo 'checked'; ?>>带原文编号 W/ Strong's Code*
+<input type='checkbox' name='strongs' value='strongs' <?php if ($strongs) echo 'checked'; ?>><?php echo t('strongs_code_full'); ?>
 <input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>>简体和合本CUVS*
 <input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>>繁体和合本CUVT*
 <?php if ($portable) echo "<br/>"; ?>
