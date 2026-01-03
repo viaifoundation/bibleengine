@@ -782,6 +782,10 @@ if ($book && isset($book_chinese[$book], $book_english[$book])) {
     }
 } else {
     $show_verse = false;
+    // If we have search results (index is set), we should show verses
+    if ($index) {
+        $show_verse = true;
+    }
 }
 
 // Build title - prefer original query if it looks like a verse reference
