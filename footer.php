@@ -5,7 +5,7 @@ $copyright_display = isset($copyright_text) ? $copyright_text : '2004-2024 歌�
 $copyright_display = str_replace('歌珊地科技 Goshen Tech', '<a href="https://geshandi.com" target="_blank">歌珊地科技 Goshen Tech</a>', $copyright_display);
 $copyright_display = str_replace('唯爱AI基金会 VI AI Foundation', '<a href="https://viaifoundation.org" target="_blank">唯爱AI基金会 VI AI Foundation</a>', $copyright_display);
 echo $copyright_display;
-?> <a href="<?php echo $long_url_base?>"><?php echo $long_url_base?></a> | <a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank">源码 Source Code</a></div></p>
+?> <a href="<?php echo isset($long_url_base) ? $long_url_base : 'https://bibleengine.ai'; ?>"><?php echo isset($long_url_base) ? $long_url_base : 'https://bibleengine.ai'; ?></a> | <a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo function_exists('t') ? t('source_code_full') : '源码 Source Code'; ?></a></div></p>
 <?php
 include("blogroll.php");
 ?>

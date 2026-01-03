@@ -326,7 +326,7 @@ function getLanguageSwitcher(): string {
     $current_url = $_SERVER['REQUEST_URI'];
     $separator = strpos($current_url, '?') !== false ? '&' : '?';
     
-    $switcher = '<select name="lang" onchange="window.location.href=\'' . htmlspecialchars($current_url . $separator . 'lang=\' + this.value" style="display:inline;font-size:12px;">';
+    $switcher = '<select name="lang" onchange="window.location.href=\'' . htmlspecialchars($current_url . $separator . 'lang=') . '\' + this.value" style="display:inline;font-size:12px;">';
     $switcher .= '<option value="zh_tw"' . ($current_lang === 'zh_tw' ? ' selected' : '') . '>繁體中文</option>';
     $switcher .= '<option value="zh_cn"' . ($current_lang === 'zh_cn' ? ' selected' : '') . '>简体中文</option>';
     $switcher .= '<option value="en"' . ($current_lang === 'en' ? ' selected' : '') . '>English</option>';

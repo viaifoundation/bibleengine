@@ -9,19 +9,21 @@ else
 	$url = "index.php?b=$book&c=$chapter&v=$verse";
 if($cmd=='like' && $book && $verse && $chapter)
 {
-	//require('dbconfig.php');
-	//$db = mysql_connect($dbhost, $dbuser, $dbpassword)
-	//or die("Connection Error: " . mysql_error());
-
-	//mysql_select_db($database) or die("Error conecting to db.");
-	//mysql_query("SET NAMES utf8", $db);
-	$db = new SaeMysql();
-	$sql="SET NAMES utf8";
-	$db->runSql( $sql );
-	$sql="UPDATE bible_books set likes = likes + 1 where book=$book and chapter=$chapter and verse=$verse";
-
-	//$result = mysql_query( $sql ) or die("Could not execute query.".mysql_error());
-	$db->runSql( $sql );
+	require_once(__DIR__ . '/dbconfig.php');
+	require_once(__DIR__ . '/config.php');
+	
+	// Use mysqli instead of SaeMysql
+	$db = new mysqli($dbhost, $dbuser, $dbpassword, $database, (int)($dbport ?? 3306));
+	if ($db->connect_error) {
+		error_log("Database connection error: " . $db->connect_error);
+		// Don't die, just redirect without updating likes
+	} else {
+		$db->set_charset('utf8mb4');
+		$db->query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+		$sql = "UPDATE bible_books SET likes = likes + 1 WHERE book=" . (int)$book . " AND chapter=" . (int)$chapter . " AND verse=" . (int)$verse;
+		$db->query($sql);
+		$db->close();
+	}
 }
 $url = "Location: $url";
 header($url);
