@@ -1069,6 +1069,14 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             }
         }
         
+        // Detect if we're in whole chapter mode
+        // Whole chapter mode: not a search result ($index is empty) and we have a specific book and chapter
+        $is_whole_chapter = (!$index && $book > 0 && $chapter > 0);
+        
+        // Track unique books and chapters during processing to verify whole chapter mode
+        $unique_books = [];
+        $unique_chapters = [];
+        
         // Add section header for verse-by-verse display
         $text_cmp .= "<h2>" . t('verse_by_verse_full') . "</h2>\n";
 
@@ -1077,6 +1085,15 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             $cid = isset($row['chapter']) ? (int)$row['chapter'] : 0;
             $vid = isset($row['verse']) ? (int)$row['verse'] : 0;
             $likes = isset($row['likes']) ? (int)$row['likes'] : 0;
+            
+            // Track unique books and chapters to detect whole chapter mode
+            if ($bid > 0) {
+                $unique_books[$bid] = true;
+                if ($cid > 0) {
+                    $unique_chapters["$bid:$cid"] = true;
+                }
+            }
+            
             // Fix encoding issues - ensure all text is properly UTF-8
             $txt_tw = isset($row['text_cuvt']) ? $row['text_cuvt'] : '';
             $txt_cn = isset($row['text_cuvs']) ? $row['text_cuvs'] : '';
@@ -1288,8 +1305,18 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
 
             // SECTION 1: Verse-by-verse display - all enabled translations for this verse
             // Add clickable verse reference before the translations list
+            // Use current language for book short name
+            $book_names = function_exists('getBookNames') ? getBookNames() : null;
+            if ($book_names) {
+                $book_short_current = $book_names['short'][$bid] ?? ($book_short[$bid] ?? '');
+            } else {
+                // Fallback: use book_cn for Chinese, book_short for English
+                $book_short_current = function_exists('getCurrentLang') && getCurrentLang() === 'en' 
+                    ? ($book_short[$bid] ?? '') 
+                    : ($book_cn[$bid] ?? '');
+            }
             $verse_ref = ($book_short[$bid] ?? '') . " $cid:$vid";
-            $verse_ref_display = ($book_cn[$bid] ?? '') . " $cid:$vid";
+            $verse_ref_display = $book_short_current . " $cid:$vid";
             if ($portable) {
                 $text_cmp .= "<p><strong>" . htmlspecialchars($verse_ref_display) . "</strong></p>\n";
             } elseif ($short_url_base) {
@@ -1413,11 +1440,31 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                     $text_cmp .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     
                     // Also build block text for this translation (for SECTION 2: Block/Chapter display)
-                    // Add verse reference link (full format) but display only verse number
+                    // Add verse reference link - show only verse number if whole chapter, otherwise show book shortname + chapter:verse
                     // Only build if this translation is enabled and block_texts array has this key
                     if (isset($block_texts[$bible_book])) {
-                        $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link
-                        $verse_number_display = (string)$vid; // Only verse number for display (cast to string)
+                        // Get book short name in current language
+                        $book_names = function_exists('getBookNames') ? getBookNames() : null;
+                        if ($book_names) {
+                            $book_short_current = $book_names['short'][$bid] ?? ($book_short[$bid] ?? '');
+                        } else {
+                            // Fallback: use book_cn for Chinese, book_short for English
+                            $book_short_current = function_exists('getCurrentLang') && getCurrentLang() === 'en' 
+                                ? ($book_short[$bid] ?? '') 
+                                : ($book_cn[$bid] ?? '');
+                        }
+                        
+                        $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link (always use OSIS)
+                        
+                        // Determine display format based on whole chapter mode
+                        if ($is_whole_chapter) {
+                            // Whole chapter: show only verse number
+                            $verse_number_display = (string)$vid;
+                        } else {
+                            // Multiple chapters/books: show book shortname + chapter:verse
+                            $verse_number_display = $book_short_current . " $cid:$vid";
+                        }
+                        
                         // Ensure $osis is defined (it should be defined earlier in the loop)
                         $osis_block = ($book_short[$bid] ?? '') . ".$cid";
                         if ($vid) {
@@ -1480,6 +1527,12 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             }
         }
         $result->free();
+        
+        // Verify whole chapter mode based on actual data processed
+        // If we tracked multiple books or chapters, override the initial assumption
+        if ($is_whole_chapter && (count($unique_books) > 1 || count($unique_chapters) > 1)) {
+            $is_whole_chapter = false;
+        }
         
         // SECTION 2: Block/Chapter display - one block per enabled translation showing all verses
         // Build block display HTML for each translation
