@@ -303,6 +303,9 @@ if (!$query) {
     $query = $votd_string ?? '';
 }
 
+// Preserve original query for title before processing
+$original_query = $query;
+
 $query = str_replace(['　', '：', '，', '.', '—', '－', '–', '；', '／'], [' ', ':', ',', ' ', '-', '-', '-', ';', '/'], $query);
 preg_match("/@([^ ]+) /", $query, $query_option_array);
 $query_options = $query_option_array[1] ?? '';
@@ -737,6 +740,7 @@ if ($mode === 'QUERY' && in_array($api, ['json', 'text', 'plain', 'html'])) {
     }
 }
 
+// Build english_title from book/chapter/verse (updated after query parsing)
 $english_title = isset($book_chinese[$book], $book_english[$book]) ? $book_chinese[$book] . " " . $book_english[$book] : '';
 $short_url_title = "$short_url_base/" . ($book_short[$book] ?? '');
 if ($chapter) {
@@ -758,7 +762,18 @@ if ($verse2) {
     $short_url_title .= "-$verse2";
 }
 
-$title = $query ?: $english_title;
+// Build title - prefer original query if it looks like a verse reference (e.g., "Deut 2:9")
+// Otherwise use english_title if available
+if ($original_query && preg_match('/^[a-zA-Z\u4e00-\u9fff]+[\s:]+[\d:,-]+/', $original_query)) {
+    // Query looks like a verse reference (e.g., "Deut 2:9", "约 3:16")
+    $title = $original_query;
+} elseif ($english_title) {
+    // Use formatted english title (e.g., "申命记 Deuteronomy 2:9")
+    $title = $english_title;
+} else {
+    // Fallback to original query
+    $title = $original_query ?: '';
+}
 $title .= " - $sitename";
 
 $book_menu = "<p>旧约 (OT) ";
@@ -1394,7 +1409,7 @@ $cid1 = isset($cid) ? $cid - 1 : 0;
 echo "</div></center>";
 
 if ($query && $echo_string) {
-    echo htmlspecialchars($echo_string);
+    echo $echo_string; // Output HTML directly to allow <p>, <b>, <strong> tags
 }
 ?>
 <center><div align="center"><p>
