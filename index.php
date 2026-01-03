@@ -998,6 +998,18 @@ if (($index || !$echo_string) && !empty($sql)) {
         $book_chinese_val3 = $book_chinese[$book] ?? '';
         $wiki_text = "<p> </p> ==" . $book_chinese_val3 . " $chapter 目录==<p> </p>\n";
         $verse_number = 0;
+        
+        // Initialize arrays to store block text for each translation
+        // This will be used for the block/chapter display section
+        $block_texts = [];
+        foreach ($bible_books as $bible_book) {
+            if ($bible_book) {
+                $block_texts[$bible_book] = '';
+            }
+        }
+        
+        // Add section header for verse-by-verse display
+        $text_cmp .= "<h2>逐节对照 Verse-by-Verse Comparison</h2>\n";
 
         while ($row = $result->fetch_assoc()) {
             $bid = isset($row['book']) ? (int)$row['book'] : 0;
@@ -1115,8 +1127,17 @@ if (($index || !$echo_string) && !empty($sql)) {
             $background = ($verse_number % 2) ? " class=light" : " class=dark";
             $text_cmp .= "<table border=0 width=100%><tr><td $background>";
 
-            // All translations are now treated equally and displayed in the list below
-            // CUVS, CUVT, and KJV are no longer shown separately - they appear in the list like all other translations
+            // SECTION 1: Verse-by-verse display - all enabled translations for this verse
+            // Add clickable verse reference before the translations list
+            $verse_ref = ($book_short[$bid] ?? '') . " $cid:$vid";
+            $verse_ref_display = ($book_cn[$bid] ?? '') . " $cid:$vid";
+            if ($portable) {
+                $text_cmp .= "<p><strong>" . htmlspecialchars($verse_ref_display) . "</strong></p>\n";
+            } elseif ($short_url_base) {
+                $text_cmp .= "<p><strong><a href=\"$short_url_base/$osis.htm\">" . htmlspecialchars($verse_ref_display) . "</a></strong></p>\n";
+            } else {
+                $text_cmp .= "<p><strong><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($verse_ref_display) . "</a></strong></p>\n";
+            }
             $text_cmp .= "<ul>\n";
             foreach ($bible_books as $bible_book) {
                 if ($bible_book) {
@@ -1182,6 +1203,17 @@ if (($index || !$echo_string) && !empty($sql)) {
                     }
                     // Output without htmlspecialchars to allow HTML tags like <p>, <b>, <strong>
                     $text_cmp .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
+                    
+                    // Also build block text for this translation (for SECTION 2: Block/Chapter display)
+                    // Add verse reference and text to the block
+                    $verse_ref = ($book_short[$bid] ?? '') . " $cid:$vid";
+                    if ($portable) {
+                        $block_texts[$bible_book] .= " <sup>" . htmlspecialchars($verse_ref) . "</sup> " . $text_string . " ";
+                    } elseif ($short_url_base) {
+                        $block_texts[$bible_book] .= " <sup><a href=\"$short_url_base/$osis.htm\">" . htmlspecialchars($verse_ref) . "</a></sup> " . $text_string . " ";
+                    } else {
+                        $block_texts[$bible_book] .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($verse_ref) . "</a></sup> " . $text_string . " ";
+                    }
                 }
             }
             $text_cmp .= "</ul>\n";
@@ -1231,21 +1263,48 @@ if (($index || !$echo_string) && !empty($sql)) {
             }
         }
         $result->free();
+        
+        // SECTION 2: Block/Chapter display - one block per enabled translation showing all verses
+        // Build block display HTML for each translation
+        $block_display = '';
+        if (!empty($block_texts)) {
+            $block_display .= "<h2>整章/整段显示 Whole Chapter/Block Display</h2>\n";
+            foreach ($bible_books as $bible_book) {
+                if ($bible_book && !empty($block_texts[$bible_book])) {
+                    $translation_name = strtoupper($bible_book);
+                    // Map translation codes to full names
+                    $translation_names = [
+                        'CUVS' => '简体和合本 CUVS',
+                        'CUVT' => '繁体和合本 CUVT',
+                        'KJV' => '英王钦定本 KJV',
+                        'NASB' => '新美国标准圣经 NASB',
+                        'ESV' => '英文标准版本 ESV',
+                        'CUVC' => '文理和合 CUVC',
+                        'NCVS' => '新译本 NCVS',
+                        'LCVS' => '吕振中 LCVS',
+                        'CCSB' => '思高本 CCSB',
+                        'CLBS' => '当代圣经 CLBS',
+                        'CKJVS' => '简体钦定本 CKJVS',
+                        'CKJVT' => '繁体钦定本 CKJVT',
+                        'PINYIN' => '拼音 pinyin',
+                        'UKJV' => '更新钦定 UKJV',
+                        'KJV1611' => '1611钦定 KJV1611',
+                        'BBE' => '简易英文 BBE'
+                    ];
+                    $display_name = $translation_names[$translation_name] ?? $translation_name;
+                    
+                    $block_display .= "<h3>" . htmlspecialchars($display_name) . "</h3>\n";
+                    $block_display .= "<p>" . $block_texts[$bible_book] . "</p>\n";
+                    $block_display .= "<p> </p>\n";
+                }
+            }
+        }
+        // Append block display to text_cmp
+        $text_cmp .= $block_display;
+        
     } catch (Exception $e) {
         $echo_string = "Database query error: " . htmlspecialchars($e->getMessage());
     }
-}
-
-// These are no longer displayed separately - all translations are shown equally in the list
-// $text_tw, $text_cn, and $text_en are still used for the top/bottom summary sections if needed
-if ($text_tw) {
-    $text_tw = "<p>" . $text_tw . " (繁體和合本 CUVT)</p>";
-}
-if ($text_cn) {
-    $text_cn = "<p>" . $text_cn . " (和合本 CUV)</p>";
-}
-if ($text_en) {
-    $text_en = "<p>" . $text_en . " (King James Version KJV)</p>";
 }
 
 if ($mode === 'QUERY' && in_array($api, ['plain', 'html'])) {
@@ -1429,36 +1488,12 @@ if ($query && $echo_string) {
 <a href="javascript:FontZoom(16)">更大 XL</a>】
 </p></div></center>
 <?php
-if (!$show_verse && !$portable) {
-    if ($cn) {
-        echo "<p> </p>";
-        echo $text_cn;
-    }
-    if ($tw) {
-        echo "<p> </p>\n";
-        echo $text_tw;
-    }
-    if ($en) {
-        echo "<p> </p>\n";
-        echo $text_en;
-    }
-} else {
+// Removed duplicate display of CUVS, CUVT, and KJV - they're now shown in the list like all other translations
+if ($show_verse || $portable) {
     echo "<p> </p>\n";
     echo $text_cmp;
     echo "<p> </p>\n";
-    echo "<p> </p>\n";
-    if ($cn) {
-        echo $text_cn;
-    }
-    echo "<p> </p>\n";
-    if ($tw) {
-        echo $text_tw;
-    }
-    echo "<p> </p>\n";
-    if ($en) {
-        echo $text_en;
-    }
-    echo "<p> </p>\n";
+    // Removed duplicate display of CUVS, CUVT, and KJV - they're now shown in the list like all other translations
 }
 
 if ($wiki) {
