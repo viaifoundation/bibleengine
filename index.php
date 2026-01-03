@@ -848,16 +848,20 @@ $book_english_val = $book_english[$book] ?? '';
 $book_short_val = $book_short[$book] ?? '';
 $book_count_val = $book_count[$book] ?? 0;
 
-$chapter_menu = isset($book_chinese[$book], $book_cn[$book], $book_english[$book], $book_short[$book]) ? "{$book_chinese[$book]}({$book_cn[$book]}) {$book_english[$book]}({$book_short[$book]}) " : '';
+// Build chapter menu with consistent format: "创世记(创) Genesis(Gen)  1  2  3..."
+$chapter_menu = '';
+if (isset($book_chinese[$book], $book_cn[$book], $book_english[$book], $book_short[$book])) {
+    $chapter_menu = "{$book_chinese[$book]}({$book_cn[$book]}) {$book_english[$book]}({$book_short[$book]}) ";
+}
 $wiki_chapter_menu = "<p>=={$book_chinese_val}目录==</p><p> </p>\n";
 for ($i = 1; $i <= $book_count_val; $i++) {
     if ($i == $chapter) {
         $chapter_menu .= "<strong>";
     }
     if ($short_url_base) {
-        $chapter_menu .= "<a href=\"$short_url_base/{$book_short_val}.$i.htm\" title=\"{$book_chinese_val} $i   {$book_english_val} $i\"> &nbsp;$i </a> ";
+        $chapter_menu .= "<a href=\"$short_url_base/{$book_short_val}.$i.htm\" title=\"{$book_chinese_val} $i   {$book_english_val} $i\"> $i </a>";
     } else {
-        $chapter_menu .= "<a href=\"$script?q={$book_short_val} $i\" title=\"{$book_chinese_val} $i   {$book_english_val} $i\"> &nbsp;$i </a> ";
+        $chapter_menu .= "<a href=\"$script?q={$book_short_val} $i\" title=\"{$book_chinese_val} $i   {$book_english_val} $i\"> $i </a>";
     }
     if ($chapter) {
         $wiki_chapter_menu .= "<p>[[MHC:{$book_chinese_val} $i | {$book_cn_val} $i]]</p>\n";
@@ -867,8 +871,10 @@ for ($i = 1; $i <= $book_count_val; $i++) {
     if ($i == $chapter) {
         $chapter_menu .= "</strong>";
     }
-    $chapter_menu .= "\n";
+    // Add space after each chapter number (but not newline)
+    $chapter_menu .= " ";
     $wiki_chapter_menu .= "\n";
+    // Only add line breaks when viewing all chapters (not a specific chapter)
     if (!$chapter && ($i % 5) == 0) {
         $chapter_menu .= "<br/>\n";
         $wiki_chapter_menu .= "<br/>\n";
@@ -1205,14 +1211,15 @@ if (($index || !$echo_string) && !empty($sql)) {
                     $text_cmp .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     
                     // Also build block text for this translation (for SECTION 2: Block/Chapter display)
-                    // Add verse reference and text to the block
-                    $verse_ref = ($book_short[$bid] ?? '') . " $cid:$vid";
+                    // Add verse reference link (full format) but display only verse number
+                    $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link
+                    $verse_number_display = $vid; // Only verse number for display
                     if ($portable) {
-                        $block_texts[$bible_book] .= " <sup>" . htmlspecialchars($verse_ref) . "</sup> " . $text_string . " ";
+                        $block_texts[$bible_book] .= " <sup>" . htmlspecialchars($verse_number_display) . "</sup> " . $text_string . " ";
                     } elseif ($short_url_base) {
-                        $block_texts[$bible_book] .= " <sup><a href=\"$short_url_base/$osis.htm\">" . htmlspecialchars($verse_ref) . "</a></sup> " . $text_string . " ";
+                        $block_texts[$bible_book] .= " <sup><a href=\"$short_url_base/$osis.htm\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
                     } else {
-                        $block_texts[$bible_book] .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($verse_ref) . "</a></sup> " . $text_string . " ";
+                        $block_texts[$bible_book] .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
                     }
                 }
             }
