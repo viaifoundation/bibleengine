@@ -1,6 +1,467 @@
+/* ============================================
+   Modern Responsive Design - Goshen Bible Engine
+   ============================================ */
+
+/* CSS Variables for Theming */
+:root {
+	--primary-color: #2563eb;
+	--primary-hover: #1d4ed8;
+	--secondary-color: #64748b;
+	--accent-color: #f59e0b;
+	--text-primary: #1e293b;
+	--text-secondary: #64748b;
+	--text-muted: #94a3b8;
+	--bg-primary: #ffffff;
+	--bg-secondary: #f8fafc;
+	--bg-tertiary: #f1f5f9;
+	--border-color: #e2e8f0;
+	--border-radius: 8px;
+	--border-radius-sm: 4px;
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--transition: all 0.2s ease-in-out;
+	--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", 新宋体, 宋体, 宋體;
+	--font-size-base: 16px;
+	--line-height-base: 1.6;
+	--spacing-xs: 0.25rem;
+	--spacing-sm: 0.5rem;
+	--spacing-md: 1rem;
+	--spacing-lg: 1.5rem;
+	--spacing-xl: 2rem;
+	--spacing-2xl: 3rem;
+}
+
+/* Reset and Base Styles */
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: var(--font-size-base);
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--bg-primary);
+	color: var(--text-primary);
+	font-family: var(--font-sans);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	word-break: break-word;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 0;
+	margin-bottom: var(--spacing-md);
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--text-primary);
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-lg);
+	padding-bottom: var(--spacing-sm);
+	border-bottom: 2px solid var(--border-color);
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: var(--spacing-lg);
+	margin-bottom: var(--spacing-md);
+}
+
+p {
+	margin-top: var(--spacing-sm);
+	margin-bottom: var(--spacing-sm);
+}
+
+/* Links */
+a {
+	color: var(--primary-color);
+	text-decoration: none;
+	transition: var(--transition);
+}
+
+a:hover, a:active {
+	color: var(--primary-hover);
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #7c3aed;
+}
+
+/* Forms */
+form {
+	margin: var(--spacing-lg) 0;
+}
+
+input[type="text"],
+input[type="search"],
+select,
+textarea {
+	width: 100%;
+	max-width: 100%;
+	padding: var(--spacing-sm) var(--spacing-md);
+	font-size: var(--font-size-base);
+	font-family: var(--font-sans);
+	line-height: 1.5;
+	color: var(--text-primary);
+	background-color: var(--bg-primary);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-sm);
+	transition: var(--transition);
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+input[type="submit"],
+button {
+	display: inline-block;
+	padding: var(--spacing-sm) var(--spacing-lg);
+	font-size: var(--font-size-base);
+	font-family: var(--font-sans);
+	font-weight: 500;
+	color: #ffffff;
+	background-color: var(--primary-color);
+	border: none;
+	border-radius: var(--border-radius-sm);
+	cursor: pointer;
+	transition: var(--transition);
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+input[type="submit"]:hover,
+button:hover {
+	background-color: var(--primary-hover);
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-md);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	width: auto;
+	margin-right: var(--spacing-xs);
+	cursor: pointer;
+}
+
+/* Container and Layout */
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+	.container {
+		padding: 0 var(--spacing-xl);
+	}
+}
+
+/* Verse Display */
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul li {
+	margin-bottom: var(--spacing-md);
+	padding: var(--spacing-md);
+	background-color: var(--bg-secondary);
+	border-left: 3px solid var(--primary-color);
+	border-radius: var(--border-radius-sm);
+	transition: var(--transition);
+}
+
+ul li:hover {
+	background-color: var(--bg-tertiary);
+	box-shadow: var(--shadow-sm);
+}
+
+/* Verse Reference Links */
+strong a,
+a strong {
+	font-weight: 600;
+	color: var(--primary-color);
+}
+
+/* Bible Text Styling */
+sup {
+	font-size: 0.75em;
+	vertical-align: super;
+	line-height: 0;
+}
+
+sup a {
+	color: var(--text-secondary);
+	font-weight: 500;
+}
+
+sup a:hover {
+	color: var(--primary-color);
+}
+
+/* Strong's Code Links */
+a[href*="bible.fhl.net"] {
+	color: var(--accent-color);
+	font-weight: 500;
+	font-size: 0.9em;
+}
+
+a[href*="bible.fhl.net"]:hover {
+	color: #d97706;
+	text-decoration: underline;
+}
+
+/* Formatting Tags */
+span[style*="color:red"] {
+	color: #dc2626 !important;
+	font-weight: 500;
+}
+
+span[style*="color:orange"] {
+	color: #ea580c !important;
+	font-weight: 500;
+}
+
+span.footnote {
+	color: var(--text-secondary);
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+i, em {
+	font-style: italic;
+}
+
+/* Tables */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: var(--spacing-lg) 0;
+}
+
+td, th {
+	padding: var(--spacing-sm) var(--spacing-md);
+	text-align: left;
+	border-bottom: 1px solid var(--border-color);
+}
+
+th {
+	font-weight: 600;
+	background-color: var(--bg-secondary);
+	color: var(--text-primary);
+}
+
+/* Book and Chapter Menus */
+.book-menu,
+.chapter-menu {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xs);
+	margin: var(--spacing-lg) 0;
+	padding: var(--spacing-md);
+	background-color: var(--bg-secondary);
+	border-radius: var(--border-radius);
+}
+
+.book-menu a,
+.chapter-menu a {
+	display: inline-block;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	color: var(--text-primary);
+	background-color: var(--bg-primary);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-sm);
+	transition: var(--transition);
+	text-decoration: none;
+}
+
+.book-menu a:hover,
+.chapter-menu a:hover {
+	background-color: var(--primary-color);
+	color: #ffffff;
+	border-color: var(--primary-color);
+	text-decoration: none;
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-sm);
+}
+
+/* Search Form Styling */
+form[method="GET"] {
+	background-color: var(--bg-secondary);
+	padding: var(--spacing-lg);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow-sm);
+	margin-bottom: var(--spacing-xl);
+}
+
+form[method="GET"] input[type="text"] {
+	max-width: 600px;
+	margin-right: var(--spacing-sm);
+}
+
+form[method="GET"] > * {
+	margin-bottom: var(--spacing-sm);
+}
+
+/* Options Panel */
+#options0, #options1 {
+	display: inline-block;
+	margin-top: var(--spacing-md);
+	padding: var(--spacing-md);
+	background-color: var(--bg-tertiary);
+	border-radius: var(--border-radius-sm);
+}
+
+#options0 label,
+#options1 label {
+	display: inline-block;
+	margin-right: var(--spacing-md);
+	margin-bottom: var(--spacing-sm);
+	cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+	:root {
+		--font-size-base: 14px;
+		--spacing-md: 0.75rem;
+		--spacing-lg: 1rem;
+		--spacing-xl: 1.5rem;
+	}
+
+	h2 {
+		font-size: 1.25rem;
+	}
+
+	h3 {
+		font-size: 1.125rem;
+	}
+
+	.container {
+		padding: 0 var(--spacing-md);
+	}
+
+	form[method="GET"] input[type="text"] {
+		width: 100%;
+		max-width: 100%;
+		margin-right: 0;
+		margin-bottom: var(--spacing-sm);
+	}
+
+	input[type="submit"],
+	button {
+		width: 100%;
+		margin-top: var(--spacing-sm);
+	}
+
+	.book-menu,
+	.chapter-menu {
+		padding: var(--spacing-sm);
+	}
+
+	.book-menu a,
+	.chapter-menu a {
+		padding: var(--spacing-xs);
+		font-size: 0.875rem;
+	}
+
+	ul li {
+		padding: var(--spacing-sm);
+	}
+
+	table {
+		font-size: 0.875rem;
+	}
+
+	td, th {
+		padding: var(--spacing-xs) var(--spacing-sm);
+	}
+}
+
+@media (min-width: 768px) {
+	form[method="GET"] {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacing-md);
+	}
+
+	form[method="GET"] input[type="text"] {
+		flex: 1;
+		min-width: 300px;
+	}
+}
+
+/* Print Styles */
+@media print {
+	body {
+		background-color: #ffffff;
+		color: #000000;
+	}
+
+	a {
+		color: #000000;
+		text-decoration: underline;
+	}
+
+	.book-menu,
+	.chapter-menu,
+	form {
+		display: none;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Focus Styles for Accessibility */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 2px;
+}
+
+/* ============================================
+   Legacy Styles (Maintained for Compatibility)
+   ============================================ */
+
 P, UL, OL, LI, DL, DD, DT, TD, TH, TR, Table, SPAN, BLOCKQUOTE,Form, DIV {
-		font-family: Arial, geneva, sans-serif,新宋体,宋体,宋體;
-		font-size: 10pt;
+		font-family: var(--font-sans);
+		font-size: var(--font-size-base);
 		
 }
 

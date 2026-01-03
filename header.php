@@ -9,6 +9,7 @@ $https = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : '';
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 	<meta content="zh-cn" http-equiv="Content-Language"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
 	<link rel="shortcut icon" href="<?php echo $img_url?>/favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="<?php echo $img_url?>/favicon.png" type="image/png" />
 	<link rel="icon" href="<?php echo $img_url?>/favicon.ico" type="image/x-icon"/>

@@ -1363,10 +1363,10 @@ function toggleOptions(elm, idx) {
 </script>
 <style type="text/css">
 .light {
-    background-color: #ffffff;
+    background-color: var(--bg-primary, #ffffff);
 }
 .dark {
-    background-color: #eeeeee;
+    background-color: var(--bg-tertiary, #f1f5f9);
 }
 </style>
 </head>
