@@ -1489,24 +1489,24 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             foreach ($bible_books as $bible_book) {
                 if ($bible_book && !empty($block_texts[$bible_book])) {
                     $translation_name = strtoupper($bible_book);
-                    // Map translation codes to full names using translations, with short code appended
+                    // Map translation codes to full names using translations, with short code in parentheses
                     $translation_names = [
-                        'CUVS' => t('trans_cuvs') . ' CUVS',
-                        'CUVT' => t('trans_cuvt') . ' CUVT',
-                        'KJV' => t('trans_kjv') . ' KJV',
-                        'NASB' => t('trans_nasb') . ' NASB',
-                        'ESV' => t('trans_esv') . ' ESV',
-                        'CUVC' => t('trans_cuvc') . ' CUVC',
-                        'NCVS' => t('trans_ncvs') . ' NCVS',
-                        'LCVS' => t('trans_lcvs') . ' LCVS',
-                        'CCSB' => t('trans_ccsb') . ' CCSB',
-                        'CLBS' => t('trans_clbs') . ' CLBS',
-                        'CKJVS' => t('trans_ckjvs') . ' CKJVS',
-                        'CKJVT' => t('trans_ckjvt') . ' CKJVT',
-                        'PINYIN' => t('trans_pinyin') . ' pinyin',
-                        'UKJV' => t('trans_ukjv') . ' UKJV',
-                        'KJV1611' => t('trans_kjv1611') . ' KJV1611',
-                        'BBE' => t('trans_bbe') . ' BBE'
+                        'CUVS' => t('trans_cuvs') . ' (CUVS)',
+                        'CUVT' => t('trans_cuvt') . ' (CUVT)',
+                        'KJV' => t('trans_kjv') . ' (KJV)',
+                        'NASB' => t('trans_nasb') . ' (NASB)',
+                        'ESV' => t('trans_esv') . ' (ESV)',
+                        'CUVC' => t('trans_cuvc') . ' (CUVC)',
+                        'NCVS' => t('trans_ncvs') . ' (NCVS)',
+                        'LCVS' => t('trans_lcvs') . ' (LCVS)',
+                        'CCSB' => t('trans_ccsb') . ' (CCSB)',
+                        'CLBS' => t('trans_clbs') . ' (CLBS)',
+                        'CKJVS' => t('trans_ckjvs') . ' (CKJVS)',
+                        'CKJVT' => t('trans_ckjvt') . ' (CKJVT)',
+                        'PINYIN' => t('trans_pinyin') . ' (pinyin)',
+                        'UKJV' => t('trans_ukjv') . ' (UKJV)',
+                        'KJV1611' => t('trans_kjv1611') . ' (KJV1611)',
+                        'BBE' => t('trans_bbe') . ' (BBE)'
                     ];
                     $display_name = $translation_names[$translation_name] ?? $translation_name;
                     
@@ -1632,26 +1632,26 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='en' value='1' <?php if ($en) echo 'checked'; ?>><?php echo t('english_full'); ?>
 <br/>
 <input type='checkbox' name='strongs' value='strongs' <?php if ($strongs) echo 'checked'; ?>><?php echo t('strongs_code_full'); ?>
-<input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>><?php echo t('trans_cuvs'); ?> CUVS*
-<input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>><?php echo t('trans_cuvt'); ?> CUVT*
+<input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>><?php echo t('trans_cuvs'); ?> (CUVS)*
+<input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>><?php echo t('trans_cuvt'); ?> (CUVT)*
 <?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='kjv' value='kjv' <?php if ($kjv) echo 'checked'; ?>><?php echo t('trans_kjv'); ?> KJV*
-<input type='checkbox' name='nasb' value='nasb' <?php if ($nasb) echo 'checked'; ?>><?php echo t('trans_nasb'); ?> NASB*
-<input type='checkbox' name='esv' value='esv' <?php if ($esv) echo 'checked'; ?>><?php echo t('trans_esv'); ?> ESV
+<input type='checkbox' name='kjv' value='kjv' <?php if ($kjv) echo 'checked'; ?>><?php echo t('trans_kjv'); ?> (KJV)*
+<input type='checkbox' name='nasb' value='nasb' <?php if ($nasb) echo 'checked'; ?>><?php echo t('trans_nasb'); ?> (NASB)*
+<input type='checkbox' name='esv' value='esv' <?php if ($esv) echo 'checked'; ?>><?php echo t('trans_esv'); ?> (ESV)
 <br/>
-<input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>><?php echo t('trans_cuvc'); ?> CUVC
-<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?> NCVS
-<input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>><?php echo t('trans_lcvs'); ?> LCVS
-<input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>><?php echo t('trans_ccsb'); ?> CCSB
+<input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>><?php echo t('trans_cuvc'); ?> (CUVC)
+<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?> (NCVS)
+<input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>><?php echo t('trans_lcvs'); ?> (LCVS)
+<input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>><?php echo t('trans_ccsb'); ?> (CCSB)
 <?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>><?php echo t('trans_clbs'); ?> CLBS
-<input type='checkbox' name='ckjvs' value='ckjvs' <?php if ($ckjvs) echo 'checked'; ?>><?php echo t('trans_ckjvs'); ?> CKJVS
-<input type='checkbox' name='ckjvt' value='ckjvt' <?php if ($ckjvt) echo 'checked'; ?>><?php echo t('trans_ckjvt'); ?> CKJVT
+<input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>><?php echo t('trans_clbs'); ?> (CLBS)
+<input type='checkbox' name='ckjvs' value='ckjvs' <?php if ($ckjvs) echo 'checked'; ?>><?php echo t('trans_ckjvs'); ?> (CKJVS)
+<input type='checkbox' name='ckjvt' value='ckjvt' <?php if ($ckjvt) echo 'checked'; ?>><?php echo t('trans_ckjvt'); ?> (CKJVT)
 <br/>
-<input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>><?php echo t('trans_pinyin'); ?> pinyin
-<input type='checkbox' name='ukjv' value='ukjv' <?php if ($ukjv) echo 'checked'; ?>><?php echo t('trans_ukjv'); ?> UKJV
-<input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?> KJV1611
-<input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>><?php echo t('trans_bbe'); ?> BBE
+<input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>><?php echo t('trans_pinyin'); ?> (pinyin)
+<input type='checkbox' name='ukjv' value='ukjv' <?php if ($ukjv) echo 'checked'; ?>><?php echo t('trans_ukjv'); ?> (UKJV)
+<input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?> (KJV1611)
+<input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>><?php echo t('trans_bbe'); ?> (BBE)
 </div>
 </form>
 </div></center>
