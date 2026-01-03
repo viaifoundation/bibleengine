@@ -324,7 +324,8 @@ if ($query_options) {
 
 $queries = explode(" ", $query_without_options);
 
-$cuvs = isset($_REQUEST['cuvs']) ? "cuvs" : "";
+// CUVS and KJV are enabled by default
+$cuvs = (isset($_REQUEST['cuvs']) && ($_REQUEST['cuvs'] === '' || $_REQUEST['cuvs'] === '0')) ? "" : "cuvs";
 $cuvt = isset($_REQUEST['cuvt']) ? "cuvt" : "";
 $cuvc = isset($_REQUEST['cuvc']) ? "cuvc" : "";
 $ncvs = isset($_REQUEST['ncvs']) ? "ncvs" : "";
@@ -332,7 +333,7 @@ $pinyin = isset($_REQUEST['pinyin']) ? "pinyin" : "";
 $lcvs = isset($_REQUEST['lcvs']) ? "lcvs" : "";
 $ccsb = isset($_REQUEST['ccsb']) ? "ccsb" : "";
 $clbs = isset($_REQUEST['clbs']) ? "clbs" : "";
-$kjv = isset($_REQUEST['kjv']) ? "kjv" : "";
+$kjv = (isset($_REQUEST['kjv']) && ($_REQUEST['kjv'] === '' || $_REQUEST['kjv'] === '0')) ? "" : "kjv";
 $nasb = isset($_REQUEST['nasb']) ? "nasb" : "";
 $esv = isset($_REQUEST['esv']) ? "esv" : "";
 $ukjv = isset($_REQUEST['ukjv']) ? "ukjv" : "";
@@ -971,6 +972,54 @@ if (($index || !$echo_string) && !empty($sql)) {
                 $txt_en = "<strong>$txt_en</strong>";
             }
 
+            // Process or remove Strong's codes based on $strongs setting
+            if ($strongs) {
+                // Process Strong's codes - convert tags to links
+                // Process formatting tags first
+                $txt_tw = str_replace(['<FR>', '<Fr>'], ['<span style="color:red;">', '</span>'], $txt_tw);
+                $txt_cn = str_replace(['<FR>', '<Fr>'], ['<span style="color:red;">', '</span>'], $txt_cn);
+                $txt_en = str_replace(['<FR>', '<Fr>'], ['<span style="color:red;">', '</span>'], $txt_en);
+                
+                $txt_tw = str_replace(['<FO>', '<Fo>'], ['<span style="color:orange;">', '</span>'], $txt_tw);
+                $txt_cn = str_replace(['<FO>', '<Fo>'], ['<span style="color:orange;">', '</span>'], $txt_cn);
+                $txt_en = str_replace(['<FO>', '<Fo>'], ['<span style="color:orange;">', '</span>'], $txt_en);
+                
+                $txt_tw = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $txt_tw);
+                $txt_cn = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $txt_cn);
+                $txt_en = str_replace(['<FI>', '<Fi>'], ['<i>', '</i>'], $txt_en);
+                
+                // Process Strong's codes - add in parentheses as links
+                // Process <WG...> format (Greek, long form)
+                $txt_tw = preg_replace('/([^\s<>]+)<WG(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">G${2}</a>)', $txt_tw);
+                $txt_cn = preg_replace('/([^\s<>]+)<WG(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">G${2}</a>)', $txt_cn);
+                $txt_en = preg_replace('/([^\s<>]+)<WG(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">G${2}</a>)', $txt_en);
+                
+                // Process <WH...> format (Hebrew, long form)
+                $txt_tw = preg_replace('/([^\s<>]+)<WH(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">H${2}</a>)', $txt_tw);
+                $txt_cn = preg_replace('/([^\s<>]+)<WH(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">H${2}</a>)', $txt_cn);
+                $txt_en = preg_replace('/([^\s<>]+)<WH(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">H${2}</a>)', $txt_en);
+                
+                // Process <G...> format (Greek, short form)
+                $txt_tw = preg_replace('/(?<!>)([^\s<>]+)<G(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">G${2}</a>)', $txt_tw);
+                $txt_cn = preg_replace('/(?<!>)([^\s<>]+)<G(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">G${2}</a>)', $txt_cn);
+                $txt_en = preg_replace('/(?<!>)([^\s<>]+)<G(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=0&k=${2}" target="_blank">G${2}</a>)', $txt_en);
+                
+                // Process <H...> format (Hebrew, short form)
+                $txt_tw = preg_replace('/(?<!>)([^\s<>]+)<H(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">H${2}</a>)', $txt_tw);
+                $txt_cn = preg_replace('/(?<!>)([^\s<>]+)<H(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">H${2}</a>)', $txt_cn);
+                $txt_en = preg_replace('/(?<!>)([^\s<>]+)<H(\d{1,4})>/i', '${1} (<a href="http://bible.fhl.net/new/s.php?N=1&k=${2}" target="_blank">H${2}</a>)', $txt_en);
+                
+                // Fix font color attributes
+                $txt_tw = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_tw);
+                $txt_cn = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_cn);
+                $txt_en = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_en);
+            } else {
+                // Remove Strong's code tags if not enabled
+                $txt_tw = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $txt_tw);
+                $txt_cn = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $txt_cn);
+                $txt_en = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $txt_en);
+            }
+
             $osis_cn = ($book_cn[$bid] ?? '') . " $cid";
             $osis = ($book_short[$bid] ?? '') . ".$cid";
             if ($vid) {
@@ -979,17 +1028,17 @@ if (($index || !$echo_string) && !empty($sql)) {
             }
 
             if ($portable) {
-                $text_tw .= " <sup>" . ($book_tw[$bid] ?? '') . " $cid:$vid</sup> " . htmlspecialchars($txt_tw) . "\n";
-                $text_cn .= " <sup>" . ($book_cn[$bid] ?? '') . " $cid:$vid</sup> " . htmlspecialchars($txt_cn) . "\n";
-                $text_en .= " <sup>" . ($book_short[$bid] ?? '') . " $cid:$vid</sup> " . htmlspecialchars($txt_en) . "\n";
+                $text_tw .= " <sup>" . ($book_tw[$bid] ?? '') . " $cid:$vid</sup> " . ($strongs ? $txt_tw : htmlspecialchars($txt_tw)) . "\n";
+                $text_cn .= " <sup>" . ($book_cn[$bid] ?? '') . " $cid:$vid</sup> " . ($strongs ? $txt_cn : htmlspecialchars($txt_cn)) . "\n";
+                $text_en .= " <sup>" . ($book_short[$bid] ?? '') . " $cid:$vid</sup> " . ($strongs ? $txt_en : htmlspecialchars($txt_en)) . "\n";
             } elseif ($short_url_base) {
-                $text_tw .= " <sup><a href=\"$short_url_base/$osis.htm\">" . ($book_tw[$bid] ?? '') . " $cid:$vid</a></sup> " . htmlspecialchars($txt_tw) . "\n";
-                $text_cn .= " <sup><a href=\"$short_url_base/$osis.htm\">" . ($book_cn[$bid] ?? '') . " $cid:$vid</a></sup> " . htmlspecialchars($txt_cn) . "\n";
-                $text_en .= " <sup><a href=\"$short_url_base/$osis.htm\">" . ($book_short[$bid] ?? '') . " $cid:$vid</a></sup> " . htmlspecialchars($txt_en) . "\n";
+                $text_tw .= " <sup><a href=\"$short_url_base/$osis.htm\">" . ($book_tw[$bid] ?? '') . " $cid:$vid</a></sup> " . ($strongs ? $txt_tw : htmlspecialchars($txt_tw)) . "\n";
+                $text_cn .= " <sup><a href=\"$short_url_base/$osis.htm\">" . ($book_cn[$bid] ?? '') . " $cid:$vid</a></sup> " . ($strongs ? $txt_cn : htmlspecialchars($txt_cn)) . "\n";
+                $text_en .= " <sup><a href=\"$short_url_base/$osis.htm\">" . ($book_short[$bid] ?? '') . " $cid:$vid</a></sup> " . ($strongs ? $txt_en : htmlspecialchars($txt_en)) . "\n";
             } else {
-                $text_tw .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . ($book_tw[$bid] ?? '') . " $cid:$vid</a></sup> " . htmlspecialchars($txt_tw) . "\n";
-                $text_cn .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . ($book_cn[$bid] ?? '') . " $cid:$vid</a></sup> " . htmlspecialchars($txt_cn) . "\n";
-                $text_en .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . ($book_short[$bid] ?? '') . " $cid:$vid</a></sup> " . htmlspecialchars($txt_en) . "\n";
+                $text_tw .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . ($book_tw[$bid] ?? '') . " $cid:$vid</a></sup> " . ($strongs ? $txt_tw : htmlspecialchars($txt_tw)) . "\n";
+                $text_cn .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . ($book_cn[$bid] ?? '') . " $cid:$vid</a></sup> " . ($strongs ? $txt_cn : htmlspecialchars($txt_cn)) . "\n";
+                $text_en .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . ($book_short[$bid] ?? '') . " $cid:$vid</a></sup> " . ($strongs ? $txt_en : htmlspecialchars($txt_en)) . "\n";
             }
 
             $background = ($verse_number % 2) ? " class=light" : " class=dark";
@@ -1085,7 +1134,8 @@ if (($index || !$echo_string) && !empty($sql)) {
                         // Don't escape HTML since we've processed it
                         $text_cmp .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     } else {
-                        // Escape HTML for non-Strong's text
+                        // Remove Strong's code tags if not enabled, then escape HTML
+                        $text_string = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $text_string);
                         $text_cmp .= "<li><p>" . htmlspecialchars($text_string) . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     }
                 }

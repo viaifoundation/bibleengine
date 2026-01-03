@@ -756,7 +756,8 @@ $wlc=$_REQUEST['wlc'];
 $ckjvs=$_REQUEST['ckjvs'];
 $ckjvt=$_REQUEST['ckjvt'];
 */
-$cuvs=isset($_REQUEST['cuvs'])?"cuvs":"";
+// CUVS and KJV are enabled by default
+$cuvs=(isset($_REQUEST['cuvs']) && ($_REQUEST['cuvs'] === '' || $_REQUEST['cuvs'] === '0')) ? "" : "cuvs";
 $cuvt=isset($_REQUEST['cuvt'])?"cuvt":"";
 $cuvc=isset($_REQUEST['cuvc'])?"cuvc":"";
 $ncvs=isset($_REQUEST['ncvs'])?"ncvs":"";
@@ -764,7 +765,7 @@ $pinyin=isset($_REQUEST['pinyin'])?"pinyin":"";
 $lcvs=isset($_REQUEST['lcvs'])?"lcvs":"";
 $ccsb=isset($_REQUEST['ccsb'])?"ccsb":"";
 $clbs=isset($_REQUEST['clbs'])?"clbs":"";
-$kjv=isset($_REQUEST['kjv'])?"kjv":"";
+$kjv=(isset($_REQUEST['kjv']) && ($_REQUEST['kjv'] === '' || $_REQUEST['kjv'] === '0')) ? "" : "kjv";
 $nasb=isset($_REQUEST['nasb'])?"nasb":"";
 $esv=isset($_REQUEST['esv'])?"esv":"";
 $ukjv=isset($_REQUEST['ukjv'])?"ukjv":"";
@@ -1445,7 +1446,7 @@ if($index || !$echo_string)
 		$txt_cn = $row['txt_cn'] ?? '';
 		$txt_en = $row['txt_en'] ?? '';
 		
-		// Process HTML tags in verse text if Strong's is enabled
+		// Process or remove Strong's codes based on $strongs setting
 		if($strongs && $strongs !== '') {
 			// Process formatting tags first (before Strong's codes)
 			// Red letter (words of Christ) - <FR>...</Fr>
@@ -1522,6 +1523,11 @@ if($index || !$echo_string)
 			$txt_tw = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_tw);
 			$txt_cn = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_cn);
 			$txt_en = preg_replace('/<font color=([^>\s"`]+)>/i', '<font color="$1">', $txt_en);
+		} else {
+			// Remove Strong's code tags if not enabled
+			$txt_tw = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $txt_tw);
+			$txt_cn = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $txt_cn);
+			$txt_en = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $txt_en);
 		}
 		
 		foreach ($queries as $query_word){
@@ -1701,7 +1707,7 @@ if($index || !$echo_string)
 				if($bible_book)
 				{
 					$text_string= $row["text_$bible_book"] ?? '';
-					if($strongs && ( $bible_book == "cuvs" || $bible_book=="cuvt" || $bible_book == "kjv" || $bible_book == "nasb")){
+					if($strongs && $strongs !== '' && ( $bible_book == "cuvs" || $bible_book=="cuvt" || $bible_book == "kjv" || $bible_book == "nasb")){
 							// Process formatting tags first
 							// Red letter (words of Christ) - <FR>...</Fr>
 							$search_str = array('<FR>','<Fr>');
@@ -1761,8 +1767,11 @@ if($index || !$echo_string)
 							// Remove empty strong tags (with optional whitespace)
 							$text_string = preg_replace('/<strong>\s*<\/strong>/i', '', $text_string);
 							
+						} else {
+							// Remove Strong's code tags if not enabled
+							$text_string = preg_replace('/<[WH]?[GH]\d{1,4}>/i', '', $text_string);
 						}
-					$text_cmp .= "\n<li><p>" . $text_string . "<b>(" . strtoupper($bible_book) . ")</b></p></li>\n";
+					$text_cmp .= "\n<li><p>" . ($strongs && $strongs !== '' && ($bible_book == "cuvs" || $bible_book=="cuvt" || $bible_book == "kjv" || $bible_book == "nasb") ? $text_string : htmlspecialchars($text_string)) . "<b>(" . strtoupper($bible_book) . ")</b></p></li>\n";
 				}
 		}
 		$text_cmp .= "</ul>\n";
