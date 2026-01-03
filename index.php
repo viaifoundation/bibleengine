@@ -390,8 +390,11 @@ try {
     }
     // Use utf8mb4 for full UTF-8 support (including 4-byte characters)
     $db->set_charset('utf8mb4');
-    // Also set the connection collation
+    // Also set the connection collation and character set variables
     $db->query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $db->query("SET CHARACTER SET utf8mb4");
+    // Ensure binary mode is off for proper text handling
+    $db->query("SET sql_mode = ''");
 } catch (Exception $e) {
     die($e->getMessage());
 }
@@ -1031,36 +1034,52 @@ if (($index || !$echo_string) && !empty($sql)) {
             $txt_cn = isset($row['text_cuvs']) ? $row['text_cuvs'] : '';
             $txt_en = isset($row['text_kjv']) ? $row['text_kjv'] : '';
             
-            // Fix encoding for KJV text - handle corrupted characters (question marks)
-            // Common issue: text stored in latin1/cp1252 but retrieved as UTF-8
-            // The question marks () often appear when special characters (like curly quotes) are corrupted
+            // Fix encoding for KJV text using proper encoding detection and conversion
+            // The "ï¿½" sequence indicates UTF-8 replacement character (U+FFFD) misinterpreted as ISO-8859-1
+            // This happens when: UTF-8 bytes (EF BF BD) are read as ISO-8859-1 characters (ï, ¿, ½)
             if (!empty($txt_en)) {
-                // First, try to detect if the text has encoding issues
-                // Check for UTF-8 replacement character (U+FFFD) or suspicious question mark patterns
-                $utf8_replacement = "\xEF\xBF\xBD"; // UTF-8 bytes for replacement character
-                $has_question_marks = (strpos($txt_en, $utf8_replacement) !== false || 
-                                       (preg_match('/\?[^\s]*\?/', $txt_en) && 
-                                        preg_match('/[^\x00-\x7F]/', $txt_en) === 0));
+                // Step 1: Detect actual encoding issues
+                $utf8_replacement_bytes = "\xEF\xBF\xBD"; // UTF-8 replacement character
+                $has_replacement_sequence = (strpos($txt_en, 'ï¿½') !== false);
+                $has_replacement_char = (strpos($txt_en, $utf8_replacement_bytes) !== false);
+                $is_valid_utf8 = mb_check_encoding($txt_en, 'UTF-8');
                 
-                if ($has_question_marks || !mb_check_encoding($txt_en, 'UTF-8')) {
-                    // Try to fix by converting from common problematic encodings
-                    // Windows-1252 is often the culprit for KJV text with special characters
+                // Step 2: If we have "ï¿½", the data was likely stored correctly but connection charset is wrong
+                // OR the data is stored in ISO-8859-1 but we're reading it as UTF-8
+                if ($has_replacement_sequence) {
+                    // The "ï¿½" is actually the UTF-8 replacement character (EF BF BD) being displayed as ISO-8859-1
+                    // This means: either the data IS in UTF-8 with replacement chars, OR it's ISO-8859-1 being read as UTF-8
+                    // Try: Re-interpret the string as ISO-8859-1, then convert to UTF-8
+                    // This reverses the misinterpretation: if "ï¿½" came from EF BF BD read as ISO-8859-1,
+                    // we convert back: ISO-8859-1 -> binary -> UTF-8
+                    $test1 = @mb_convert_encoding($txt_en, 'UTF-8', 'ISO-8859-1');
+                    if ($test1 !== false && mb_check_encoding($test1, 'UTF-8') && 
+                        strpos($test1, 'ï¿½') === false && strpos($test1, $utf8_replacement_bytes) === false) {
+                        $txt_en = $test1;
+                    } else {
+                        // Alternative: The data might be in Windows-1252
+                        $test2 = @mb_convert_encoding($txt_en, 'UTF-8', 'Windows-1252');
+                        if ($test2 !== false && mb_check_encoding($test2, 'UTF-8') && 
+                            strpos($test2, 'ï¿½') === false && strpos($test2, $utf8_replacement_bytes) === false) {
+                            $txt_en = $test2;
+                        } else {
+                            // Last resort: Remove the replacement sequence (data loss, but cleaner display)
+                            $txt_en = str_replace('ï¿½', '', $txt_en);
+                            $txt_en = str_replace($utf8_replacement_bytes, '', $txt_en);
+                        }
+                    }
+                } elseif (!$is_valid_utf8) {
+                    // Text is not valid UTF-8, try to convert from common encodings
                     $encodings_to_try = ['Windows-1252', 'ISO-8859-1', 'CP1252'];
                     foreach ($encodings_to_try as $enc) {
-                        // Try converting assuming the text is in this encoding
                         $test = @mb_convert_encoding($txt_en, 'UTF-8', $enc);
                         if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
-                            // Check if conversion improved things (fewer question marks)
-                            // Only count if strings are not empty
-                            $original_qm = (!empty($txt_en)) ? (substr_count($txt_en, "\xEF\xBF\xBD") + substr_count($txt_en, '?')) : 0;
-                            $test_qm = (!empty($test)) ? (substr_count($test, "\xEF\xBF\xBD") + substr_count($test, '?')) : 0;
-                            if ($test_qm < $original_qm || !$has_question_marks) {
-                                $txt_en = $test;
-                                break;
-                            }
+                            $txt_en = $test;
+                            break;
                         }
                     }
                 }
+                // If text is already valid UTF-8 and has no replacement chars, leave it as is
             }
             
             // Also fix encoding for other translations
@@ -1194,11 +1213,33 @@ if (($index || !$echo_string) && !empty($sql)) {
                 if ($bible_book) {
                     $text_string = $row["text_$bible_book"] ?? '';
                     
-                    // Fix encoding issues for all Bible translations
+                    // Fix encoding issues for all Bible translations using proper encoding detection
                     if (!empty($text_string)) {
-                        // Check if text is valid UTF-8
-                        if (!mb_check_encoding($text_string, 'UTF-8')) {
-                            // Try to convert from common problematic encodings
+                        $utf8_replacement_bytes = "\xEF\xBF\xBD"; // UTF-8 replacement character
+                        $has_replacement_sequence = (strpos($text_string, 'ï¿½') !== false);
+                        $has_replacement_char = (strpos($text_string, $utf8_replacement_bytes) !== false);
+                        $is_valid_utf8 = mb_check_encoding($text_string, 'UTF-8');
+                        
+                        if ($has_replacement_sequence) {
+                            // Re-interpret as ISO-8859-1, then convert to UTF-8 (reverses the misinterpretation)
+                            $test1 = @mb_convert_encoding($text_string, 'UTF-8', 'ISO-8859-1');
+                            if ($test1 !== false && mb_check_encoding($test1, 'UTF-8') && 
+                                strpos($test1, 'ï¿½') === false && strpos($test1, $utf8_replacement_bytes) === false) {
+                                $text_string = $test1;
+                            } else {
+                                // Alternative: Try Windows-1252
+                                $test2 = @mb_convert_encoding($text_string, 'UTF-8', 'Windows-1252');
+                                if ($test2 !== false && mb_check_encoding($test2, 'UTF-8') && 
+                                    strpos($test2, 'ï¿½') === false && strpos($test2, $utf8_replacement_bytes) === false) {
+                                    $text_string = $test2;
+                                } else {
+                                    // Last resort: Remove replacement sequence (data loss, but cleaner display)
+                                    $text_string = str_replace('ï¿½', '', $text_string);
+                                    $text_string = str_replace($utf8_replacement_bytes, '', $text_string);
+                                }
+                            }
+                        } elseif (!$is_valid_utf8) {
+                            // Text is not valid UTF-8, try to convert from common encodings
                             $encodings_to_try = ['Windows-1252', 'ISO-8859-1', 'CP1252'];
                             foreach ($encodings_to_try as $enc) {
                                 $test = @mb_convert_encoding($text_string, 'UTF-8', $enc);
@@ -1207,29 +1248,8 @@ if (($index || !$echo_string) && !empty($sql)) {
                                     break;
                                 }
                             }
-                        } else {
-                            // Valid UTF-8 - check for question marks that might indicate corruption
-                            $utf8_replacement = "\xEF\xBF\xBD"; // UTF-8 bytes for replacement character
-                            $has_question_marks = (strpos($text_string, $utf8_replacement) !== false || 
-                                                 (preg_match('/\?[^\s]*\?/', $text_string) && 
-                                                  preg_match('/[^\x00-\x7F]/', $text_string) === 0));
-                            if ($has_question_marks) {
-                                // Try to fix by converting from common encodings
-                                $encodings_to_try = ['Windows-1252', 'ISO-8859-1', 'CP1252'];
-                                foreach ($encodings_to_try as $enc) {
-                                    $test = @mb_convert_encoding($text_string, 'UTF-8', $enc);
-                                    if ($test !== false && mb_check_encoding($test, 'UTF-8')) {
-                                        // Only count if strings are not empty (use UTF-8 replacement character bytes)
-                                        $original_qm = (!empty($text_string)) ? (substr_count($text_string, "\xEF\xBF\xBD") + substr_count($text_string, '?')) : 0;
-                                        $test_qm = (!empty($test)) ? (substr_count($test, "\xEF\xBF\xBD") + substr_count($test, '?')) : 0;
-                                        if ($test_qm < $original_qm) {
-                                            $text_string = $test;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
                         }
+                        // If text is already valid UTF-8 and has no replacement chars, leave it as is
                     }
                     
                     // Always process formatting tags (FI, FR, FO, font color)
@@ -1632,4 +1652,5 @@ if (!$portable) {
 }
 ?>
 </body>
+</html>
 </html>
