@@ -1704,6 +1704,8 @@ function handleAISearch(seq) {
                 aiButton.disabled = false;
             }
         });
+    
+    return false; // Prevent form submission
 }
 
 function displayAIResults(data, seq) {
