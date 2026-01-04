@@ -30,6 +30,7 @@ echo $wiki_help_url;
 <a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo function_exists('t') ? t('source_code_full') : '源码 Source Code'; ?></a>
 |
 <a href="https://viaifoundation.org" target="_blank"><?php echo function_exists('t') ? t('viai_foundation') : '唯爱AI基金会 VI AI Foundation'; ?></a>
+<?php if (function_exists('getEnvironmentSwitcher')) echo ' | ' . getEnvironmentSwitcher(); ?>
 <?php if (function_exists('getLanguageSwitcher')) echo ' | ' . getLanguageSwitcher(); ?>
  
 </div></center>
