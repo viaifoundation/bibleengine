@@ -1617,50 +1617,58 @@ function toggleOptions(elm, idx) {
 
 function handleAISearch(seq) {
     seq = seq || '0';
-    // Get AI form and query
-    var aiForm = document.getElementById('aiForm' + seq);
-    var aiQuery = document.getElementById('aiQuery' + seq);
+    // Get the search form and query input
+    var searchForm = document.getElementById('searchForm' + seq);
+    var searchQuery = document.getElementById('searchQuery' + seq);
     
-    if (!aiForm || !aiQuery) {
-        alert('AI form not found');
-        return;
+    if (!searchForm || !searchQuery) {
+        alert('Search form not found');
+        return false;
     }
     
-    var query = aiQuery.value.trim();
+    var query = searchQuery.value.trim();
     
     if (!query || query === '') {
         alert('<?php echo addslashes(t('search_hint')); ?>');
-        return;
+        return false;
     }
     
     // Build API URL with query parameter
     var params = new URLSearchParams();
     params.append('q', query);
     
-    // Optionally get translation settings from the main search form
-    var searchForm = document.getElementById('searchForm' + seq);
-    if (searchForm) {
-        // Add translation checkboxes from main form
-        var translationCheckboxes = document.querySelectorAll('input[type="checkbox"][name="cuvs"], input[type="checkbox"][name="cuvt"], input[type="checkbox"][name="kjv"], input[type="checkbox"][name="nasb"], input[type="checkbox"][name="esv"]');
-        translationCheckboxes.forEach(function(cb) {
-            if (cb.checked) {
-                params.append(cb.name, cb.value);
-            }
-        });
-        
-        // Add other options from main form
-        var otherCheckboxes = document.querySelectorAll('input[type="checkbox"][name="strongs"]');
-        otherCheckboxes.forEach(function(cb) {
-            if (cb.checked) {
-                params.append(cb.name, cb.value);
-            }
-        });
-        
-        // Add book filter if set
-        var bookSelect = searchForm.querySelector('select[name="b"]');
-        if (bookSelect && bookSelect.value) {
-            params.append('b', bookSelect.value);
+    // Get translation settings from the search form
+    // Add translation checkboxes from form
+    var translationCheckboxes = searchForm.querySelectorAll('input[type="checkbox"][name="cuvs"], input[type="checkbox"][name="cuvt"], input[type="checkbox"][name="kjv"], input[type="checkbox"][name="nasb"], input[type="checkbox"][name="esv"]');
+    translationCheckboxes.forEach(function(cb) {
+        if (cb.checked) {
+            params.append(cb.name, cb.value);
         }
+    });
+    
+    // Add other options from form
+    var otherCheckboxes = searchForm.querySelectorAll('input[type="checkbox"][name="strongs"]');
+    otherCheckboxes.forEach(function(cb) {
+        if (cb.checked) {
+            params.append(cb.name, cb.value);
+        }
+    });
+    
+    // Add book filter if set
+    var bookSelect = searchForm.querySelector('select[name="b"]');
+    if (bookSelect && bookSelect.value) {
+        params.append('b', bookSelect.value);
+    }
+    
+    // Add multi-verse and context if set
+    var multiVerse = searchForm.querySelector('select[name="m"]');
+    if (multiVerse && multiVerse.value) {
+        params.append('m', multiVerse.value);
+    }
+    
+    var context = searchForm.querySelector('select[name="e"]');
+    if (context && context.value) {
+        params.append('e', context.value);
     }
     
     // Show loading indicator
