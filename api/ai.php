@@ -53,8 +53,14 @@ try {
         }
     } elseif ($query) {
         // Process search query
-        // TODO: Implement search logic
-        // This is a placeholder structure
+        // TODO: Implement AI search logic
+        // For now, return a placeholder response
+        $results = [
+            [
+                'reference' => 'AI Search',
+                'text' => 'AI search functionality is under development. Your query: ' . htmlspecialchars($query)
+            ]
+        ];
     }
     
     // Format response based on API format
@@ -63,20 +69,21 @@ try {
             echo json_encode([
                 'success' => true,
                 'data' => $results,
-                'count' => count($results)
+                'count' => count($results),
+                'query' => $query
             ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             break;
             
         case 'text':
         case 'plain':
             foreach ($results as $result) {
-                echo $result['text'] . "\n";
+                echo ($result['reference'] ?? '') . ': ' . ($result['text'] ?? '') . "\n";
             }
             break;
             
         case 'html':
             foreach ($results as $result) {
-                echo "<p>" . htmlspecialchars($result['text']) . "</p>\n";
+                echo "<p><strong>" . htmlspecialchars($result['reference'] ?? '') . "</strong>: " . htmlspecialchars($result['text'] ?? '') . "</p>\n";
             }
             break;
             
