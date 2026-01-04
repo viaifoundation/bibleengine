@@ -40,6 +40,13 @@ RewriteCond %{REQUEST_URI} !^/index\.php [NC]
 RewriteRule ^([a-zA-Z0-9]{1,})\.html$ index.php?q=$1+1 [L,QSA]
 RewriteRule ^([a-zA-Z0-9]{1,})\.htm$ index.php?q=$1+1 [L,QSA]
 
+# API endpoints - clean URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/index\.php [NC]
+RewriteRule ^api/?$ api/index.php [L,QSA]
+RewriteRule ^api/ai/?$ api/ai.php [L,QSA]
+
 # Set HTTP_AUTHORIZATION environment variable (for API authentication)
 RewriteCond %{REQUEST_URI} !^/index\.php [NC]
 RewriteCond %{REQUEST_URI} (/|\.php|\.html|\.htm|\.feed|\.pdf|\.raw|/[^.]*)$ [NC]
