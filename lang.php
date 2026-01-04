@@ -147,9 +147,9 @@ $translations = [
         // Organization names
         'viai_foundation' => '唯愛AI基金會',
         'production' => '正式版',
-        'production_full' => '正式版 Production',
+        'production_full' => '正式版',
         'development' => '開發版',
-        'development_full' => '開發版 Development',
+        'development_full' => '開發版',
         'goshen_tech' => '歌珊地科技',
         
         // Font size
@@ -287,9 +287,9 @@ $translations = [
         // Organization names
         'viai_foundation' => '唯爱AI基金会',
         'production' => '正式版',
-        'production_full' => '正式版 Production',
+        'production_full' => '正式版',
         'development' => '开发版',
-        'development_full' => '开发版 Development',
+        'development_full' => '开发版',
         'goshen_tech' => '歌珊地科技',
         
         // Font size
