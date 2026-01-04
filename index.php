@@ -1684,7 +1684,15 @@ function handleAISearch(seq) {
     fetch('/api/ai?' + params.toString())
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                // Try to get error message from response
+                return response.text().then(text => {
+                    try {
+                        var errorData = JSON.parse(text);
+                        throw new Error(errorData.error || 'Network response was not ok');
+                    } catch (e) {
+                        throw new Error('Network error: ' + response.status + ' ' + response.statusText);
+                    }
+                });
             }
             return response.json();
         })
