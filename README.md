@@ -138,6 +138,49 @@ The `dbconfig.php` file should contain:
 - `$database`: Database name
 - `$dbport`: Database port (optional, defaults to 3306)
 
+### Environment Configuration (Production/Development)
+
+The application supports two environments with automatic detection:
+
+#### Production Environment
+- **Domain**: `https://bibleengine.ai`
+- **Branch**: `main`
+- **Purpose**: Stable, production-ready code
+- **Configuration**: Managed via `utils/env_config.php`
+  - `short_url_base`: `https://bibleengine.ai`
+  - `sitename`: `BibleEngine.ai`
+  - `engine_name_en`: `Goshen Bible Engine`
+
+#### Development Environment
+- **Domain**: `https://bibledev.com`
+- **Branch**: `dev`
+- **Purpose**: Experimental features and testing
+- **Configuration**: Managed via `utils/env_config.php`
+  - `short_url_base`: `https://bibledev.com`
+  - `sitename`: `BibleDev.com`
+  - `engine_name_en`: `Goshen Bible Engine (Dev)`
+
+#### Environment Detection
+
+The environment is automatically detected based on:
+1. **Hostname**: `bibledev.com` → dev, `bibleengine.ai` → prod
+2. **Environment Variable**: `BIBLEENGINE_ENV=dev` or `BIBLEENGINE_ENV=prod` (overrides hostname)
+
+#### Environment Switcher
+
+Users can switch between production and development environments using the navigation menu:
+- **On Production**: Shows "开发版" / "开发版" / "Development" link → switches to `bibledev.com`
+- **On Development**: Shows "正式版" / "正式版" / "Production" link → switches to `bibleengine.ai`
+- Query parameters are preserved when switching
+- Links appear in the navigation bar after the VI AI Foundation link
+
+#### Configuration File
+
+Environment-specific settings are managed in `utils/env_config.php`:
+- Automatically detects environment from hostname
+- Sets appropriate URLs, site names, and branding
+- Can be overridden with `BIBLEENGINE_ENV` environment variable
+
 ## Usage
 
 ### Web Interface
@@ -164,9 +207,14 @@ The API supports multiple output formats:
 - `api=html`: HTML formatted output
 - `api=json`: JSON response
 
-Example API call:
+**API Endpoints:**
+- Main API: `/api/` or `/api/index.php`
+- AI API: `/api/ai.php`
+
+Example API calls:
 ```
-/api.php?q=John 3:16&api=json
+/api/?q=John 3:16&api=json
+/api/ai?q=John 3:16&api=json
 ```
 
 ### WeChat Integration
@@ -185,21 +233,28 @@ bibleengine/
 ├── index.php              # Main web interface (responsive design)
 ├── m/
 │   └── index.php          # Legacy mobile interface (deprecated - use main interface)
-├── api.php                # API endpoint
+├── api/                   # API endpoints
+│   ├── index.php          # Main API endpoint (accessible as /api/)
+│   └── ai.php             # AI-enhanced API endpoint (accessible as /api/ai)
+├── legacy/                # Legacy/backup code
+│   ├── api.php            # Old API implementation
+│   └── api/               # Old WeChat API modules
+├── utils/                 # Utility modules
+│   ├── env_config.php     # Environment configuration (prod/dev)
+│   ├── db_utils.php       # Database utilities
+│   ├── text_utils.php     # Text processing utilities
+│   ├── book_utils.php       # Bible book name utilities
+│   └── wiki_utils.php     # Wiki utilities
 ├── config.php             # Configuration file
 ├── lang.php               # Internationalization (i18n) - language translations
 ├── dbconfig.php           # Database configuration (create this)
 ├── common.php             # Common functions and variables
 ├── header.php             # HTML header template
 ├── footer.php             # HTML footer template
-├── banner.php             # Site banner template
+├── banner.php             # Site banner template (includes environment switcher)
 ├── votd.php               # Verse of the day
 ├── wechat.php             # WeChat integration
 ├── weibo.php              # Weibo integration
-├── api/                   # API modules
-│   ├── wechat.php
-│   ├── wechat_bible.php
-│   └── wechat_wiki.php
 ├── css/                   # Stylesheets
 │   └── css.css
 └── js/                    # JavaScript files
