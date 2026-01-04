@@ -1791,7 +1791,6 @@ function show_form(string $seq = '0'): void {
     <input type="text" size="80" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery<?php echo $seq; ?>">
 <?php } ?>
 <input type="submit" value="<?php echo t('study_full'); ?>" id="searchButton<?php echo $seq; ?>">
-<input type="button" value="<?php echo t('ai_full'); ?>" id="aiButton<?php echo $seq; ?>" onclick="handleAISearch('<?php echo $seq; ?>')">
 <?php if ($portable) echo "<br/>"; ?>
 <input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)"><?php echo t('options_full'); ?>
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
