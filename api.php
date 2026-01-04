@@ -127,8 +127,8 @@ $book_tw=array("", "創", "出", "利", "民", "申", "書", "士", "得", "撒�
 $book_count=array(0, 50, 47, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22);
 
 $short_url_base="http://ccbible.me";
-$long_url_base="http://bible.godwithus.cn";
-$godwithus_base="http://godwithus.cn";
+$long_url_base="http://bible.bible.world";
+$godwithus_base="http://bible.world";
 $max_book_count = 7;
 $max_record_count =200;
 
@@ -1044,7 +1044,7 @@ function toggleOptions(elm)
 
 
 <p>&nbsp;</p>
-  <p>神同在圣经 Godwithus Bible <a href="http://bible.godwithus.cn">http://bible.godwithus.cn</a> <a href="http://ccbible.me">http://ccbible.me</a> 我的华人基督徒圣经 Chinese Christian Bible for Me. 
+  <p>神同在圣经 Godwithus Bible <a href="http://bible.bible.world">http://bible.bible.world</a> <a href="http://ccbible.me">http://ccbible.me</a> 我的华人基督徒圣经 Chinese Christian Bible for Me. 
 </p>
 
 
@@ -1052,7 +1052,7 @@ function toggleOptions(elm)
 <input type="text" size="80" maxlength="128" name="q" value="<?php echo $query ?>"> 
 <input  type="submit" value="查经 GO!"> 
 <input type='checkbox' name='o' id='o' value='o' <?php if($options) echo 'checked'?> onChange="javascript:toggleOptions(this)">选项 Options
-<a href="http://godwithus.cn/wiki/神同在圣经"> 帮助 Help</a>
+<a href="http://bible.world/wiki/神同在圣经"> 帮助 Help</a>
 
 <div id=options style="display:
 <?php 

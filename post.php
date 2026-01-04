@@ -14,7 +14,7 @@ $data = <<< EOD
       {
            "type":"view",
            "name":"Help",
-           "url":"http://godwithus.cn/wiki/BibleEngine"
+           "url":"http://bible.world/wiki/BibleEngine"
       }]
 }
 EOD;

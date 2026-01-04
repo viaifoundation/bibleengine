@@ -3,8 +3,8 @@ jQuery().ready(function(){
 	var lastsel = -1;			
 jQuery("#text").jqGrid({
 
-  	url:'http://godwithus.cc/bible.php?cmd=text',
-    //editurl: 'http://godwithus.cc/go.php',
+  	url:'http://bible.world/bible.php?cmd=text',
+    //editurl: 'http://bible.world/go.php',
     datatype: 'json',
     mtype: 'GET',
    	colNames:['ID','圣经经文'],
@@ -50,7 +50,7 @@ jQuery("#chapter").jqGrid({
 
 	hiddengrid:false,
 
-  	url:'http://godwithus.cc/bible.php?cmd=chapter',
+  	url:'http://bible.world/bible.php?cmd=chapter',
     datatype: 'json',
     mtype: 'GET',
    	colNames:['ID', '点击选择',''],
@@ -85,7 +85,7 @@ jQuery("#book").jqGrid({
 
 	hiddengrid:false,
 
-    url:'http://godwithus.cc/bible.php?cmd=book',
+    url:'http://bible.world/bible.php?cmd=book',
     datatype: 'json',
     mtype: 'GET',
    	colNames:['ID', '点击选择',''],
@@ -136,12 +136,12 @@ function go(cmd,id)
 {
 	if(cmd == "go")
 	{
-		window.open("http://godwithus.cc/go.php?cmd=go&id=" + id);
+		window.open("http://bible.world/go.php?cmd=go&id=" + id);
 		jQuery("#sites").jqGrid().trigger('reloadGrid');
 	}else if(cmd =="dig" || cmd =='bury'){
 		//alert(id);
 		//jQuery("#sites").jqGrid('setGridParam',{editurl:'/go.php?cmd=' + cmd + '&id=' + id});
-		url = 'http://godwithus.cc/go.php?cmd=' + cmd + '&id=' + id;
+		url = 'http://bible.world/go.php?cmd=' + cmd + '&id=' + id;
 		/*
 		jQuery("#sites").editRow(id,false);
 		jQuery("#sites").saveRow(id,saveresult,url);
@@ -160,7 +160,7 @@ function go(cmd,id)
 function godwithusbible()
 {
 	host = window.location.hostname.toLowerCase();
-	if( host != "godwithus.cc" && host != "www.godwithus.cc")
+	if( host != "bible.world" && host != "www.bible.world")
 		return;
 	jQuery("#godwithusbible").html("<center><div align=center><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"930\" align=\"center\">\
 		<tr align=center>\
@@ -178,6 +178,6 @@ function godwithusbible()
 		</td>\
 		</tr>\
 		</table>\
-		<p align=center><small>Powered by <a href=http://godwithus.cc target=_blank>Godwithus.cc</a> (C) 2004-2010</small></p></div></center>");
+		<p align=center><small>Powered by <a href=http://bible.world target=_blank>Godwithus.cc</a> (C) 2004-2010</small></p></div></center>");
 }
 //godwithussites();

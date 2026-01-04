@@ -52,8 +52,8 @@ function show_about()
 	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 歌珊地圣经引擎 BibleEngine ";
     $txt .= "\n\n我们的微博：@基督徒百科@歌珊地圣经引擎";
     $txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600　学习群226112909";
-    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 https://godwithus.cn//BibleEngine\n";
-	$txt .= "\n\n基督徒百科微信公众版词条 https://godwithus.cn//ccbible\n";
+    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 https://bible.world//BibleEngine\n";
+	$txt .= "\n\n基督徒百科微信公众版词条 https://bible.world//ccbible\n";
     $txt .= "\n\n联系方式：微博 @如鹰展翼而上 微信 michaelhuo 电邮 michaelhuo@gmail.com 要拉入微信学习群或it群请私信\n";
     $txt .= "\n请点击访问\n <a href=\"http://engine.geshandi.com\">圣经引擎微信触屏版</a>\n";
 	$txt .=  show_hint() . show_banner();
@@ -81,8 +81,8 @@ function show_helper()
 	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 歌珊地圣经引擎 BibleEngine";
     $txt .= "\n\n我们的微博：@基督徒百科@歌珊地圣经引擎";
     $txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600　学习群226112909";
-    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://godwithus.cn/BibleEngine\n";
-	$txt .= "\n\n基督徒百科微信公众版词条 http://godwithus.cn/ccbible\n";
+    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://bible.world/BibleEngine\n";
+	$txt .= "\n\n基督徒百科微信公众版词条 http://bible.world/ccbible\n";
     $txt .= "\n\n联系方式：微博 @如鹰展翼而上 微信 michaelhuo 电邮 michaelhuo@gmail.com QQ 38799316 要拉入微信学习群或it群请私信\n";
     $txt .= "\n请点击访问\n <a href=\"http://engine.geshandi.com\">圣经引擎微信触屏版</a>\n";
 	$txt .=  show_hint() . show_banner();
@@ -409,8 +409,8 @@ function search_wiki($q,$p=1)
 		$p=1;
 	$block_size=1800;
 	//$url="http://www.google.com/search?start=0&num=1&q=allinlinks%3A$q&client=google-csbe&output=json&cx=013709217911230285018:1botswmgae4&ie=utf8&oe=utf8";
-    //$url="http://godwithus.cn/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
-    $url="http://godwithus.cn/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
+    //$url="http://bible.world/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
+    $url="http://bible.world/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
 	$ch = curl_init($url); 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$response = curl_exec($ch);
@@ -440,7 +440,7 @@ function search_wiki($q,$p=1)
 	if(!$txt)
 	{
 	
-		$url ="http://godwithus.cn/w/api.php?action=query&list=search&format=xml&srlimit=max&srsearch=$q";
+		$url ="http://bible.world/w/api.php?action=query&list=search&format=xml&srlimit=max&srsearch=$q";
 		$ch = curl_init($url); 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		$response = curl_exec($ch);

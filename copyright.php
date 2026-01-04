@@ -61,10 +61,10 @@ var momotype = "0";
 
 			<p>神同在圣经使用帮助
 </p><p>神与我们同在网站圣经阅读、查询和定位工具
-</p><p>本页网址 <a href="http://wiki.godwithus.cc/wiki/%E7%A5%9E%E5%90%8C%E5%9C%A8%E5%9C%A3%E7%BB%8F" class="external free" title="http://wiki.godwithus.cc/wiki/神同在圣经" rel="nofollow">http://wiki.godwithus.cc/wiki/神同在圣经</a> 
+</p><p>本页网址 <a href="http://wiki.bible.world/wiki/%E7%A5%9E%E5%90%8C%E5%9C%A8%E5%9C%A3%E7%BB%8F" class="external free" title="http://wiki.bible.world/wiki/神同在圣经" rel="nofollow">http://wiki.bible.world/wiki/神同在圣经</a> 
 </p><p><br>
 使用说明：
-</p><p>1 网址 中国镜像 <a href="http://godwithus.cn/bible/" class="external free" title="http://godwithus.cn/bible/" rel="nofollow">http://godwithus.cn/bible/</a> 或者 美国镜像 <a href="http://godwithus.cc/bible/" class="external free" title="http://godwithus.cc/bible/" rel="nofollow">http://godwithus.cc/bible/</a>
+</p><p>1 网址 中国镜像 <a href="http://bible.world/bible/" class="external free" title="http://bible.world/bible/" rel="nofollow">http://bible.world/bible/</a> 或者 美国镜像 <a href="http://bible.world/bible/" class="external free" title="http://bible.world/bible/" rel="nofollow">http://bible.world/bible/</a>
 </p><p>2 版本 因为版权原因，只提供中文和合本CUV和英文英王钦定本KJV的在线阅读，但是同时提供指定章节到其他网站不同圣经版本译本的链接。等获得授权后会在线提供多版本的圣经对比阅读
 </p><p>3 阅读 可以选择不同的书卷，按照章阅读，同时提供中英文经文，每一节提供到节的链接，连过去后简体中文、繁体中文和合本和英文KJV版本对比阅读，提供该节的上下文经文。每一章或者每一节均提供到其他圣经网站对应章节的资链接料。
 </p><p>3.1 与圣经词典集成
@@ -94,7 +94,7 @@ var momotype = "0";
 </p>
 <pre>支持经文定位搜索，例如可以搜索 "约 3"则直接查看约翰福音3章，"约翰福音 3:16"为约翰福音3章16节，而 "John 3:16-18"为约翰福音3章16-18节。支持简体、翻译和英文的书卷名全称和缩写。
 </pre>
-<p>5 意见建议反馈 本网络模块旨在方便主内牧者和肢体查经服务，希望尽量满足肢体的需求和方便使用，如果您有任何的意见建议请发电邮反馈给Michael HUO  godwithus[AT]godwithus.cc。谢谢，感谢神。
+<p>5 意见建议反馈 本网络模块旨在方便主内牧者和肢体查经服务，希望尽量满足肢体的需求和方便使用，如果您有任何的意见建议请发电邮反馈给Michael HUO  godwithus[AT]bible.world。谢谢，感谢神。
 </p>
 <P>&nbsp;</P>
 <?php 
