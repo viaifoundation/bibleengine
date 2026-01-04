@@ -244,7 +244,7 @@ function search_wiki($q,$p=1)
 		$p=1;
 	$block_size=1800;
 	//$url="http://www.google.com/search?start=0&num=1&q=allinlinks%3A$q&client=google-csbe&output=json&cx=013709217911230285018:1botswmgae4&ie=utf8&oe=utf8";
-    //$url="http://godwithus.cn/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
+    //$url="http://bible.world/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
     $url="http://baike.jidutu.org/w/api.php?action=query&prop=revisions&rvprop=content|size&format=xml&redirects&titles=$q";	
 	$ch = curl_init($url); 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
@@ -276,7 +276,7 @@ function search_wiki($q,$p=1)
 	if(!$txt)
 	{
 	
-		$url ="http://godwithus.cn/w/api.php?action=query&list=search&format=xml&srlimit=max&srsearch=$q";
+		$url ="http://bible.world/w/api.php?action=query&list=search&format=xml&srlimit=max&srsearch=$q";
 		$ch = curl_init($url); 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		$response = curl_exec($ch);

@@ -1524,7 +1524,7 @@ function toggleOptions(elm)
 
 <p>&nbsp;</p>
   <p>歌珊地圣经引擎 Geshandi Bible Engile <a href="http://BibleEngine.com">BibleEngine.com</a>  <br/>
-  <a href="http://bible.geshandi.com">bible.geshandi.com</a> <a href="http://shengjing.geshandi.com">shengjing.geshandi.com</a>   <a href="http://b.ymnl.org">b.ymnl.org</a>   <a href="http://godwithus.cn/bible">godwithus.cn/bible</a>
+  <a href="http://bible.geshandi.com">bible.geshandi.com</a> <a href="http://shengjing.geshandi.com">shengjing.geshandi.com</a>   <a href="http://b.ymnl.org">b.ymnl.org</a>   <a href="http://bible.world/bible">bible.world/bible</a>
 <!-- (<a href="devel.php">Devel</a> | <a href="alpha.php">Alpha</a>  | <a href="beta.php">Beta</a>  | <a href="legacy.php">Legacy</a>) -->
 <br/>
 </p>

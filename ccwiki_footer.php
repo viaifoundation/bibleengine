@@ -12,7 +12,7 @@ _share_tencent_weibo({
 
 
 <!-- 1. 将以下代码插入到页面中的相应位置 -->
-<div id="qqwb_share__" data-appkey="801257648" data-icon="1" data-counter="0" data-content="基督徒百科" data-richcontent="基督徒百科|正统、归正的基督徒百科全书" data-pic="http://godwithus.cn/wiki.png|http://godwithus.cn/logo.png"></div>
+<div id="qqwb_share__" data-appkey="801257648" data-icon="1" data-counter="0" data-content="基督徒百科" data-richcontent="基督徒百科|正统、归正的基督徒百科全书" data-pic="http://bible.world/wiki.png|http://bible.world/logo.png"></div>
 
 <!-- 2. 将以下代码插入到</body>之前 -->
 <script src="http://mat1.gtimg.com/app/openjs/openjs.js#autoboot=no&debug=no"></script>
@@ -43,7 +43,7 @@ _share_tencent_weibo({
     count:'0', /**是否显示分享数，1显示(可选)*/
     appkey:'562992484', /**您申请的应用appkey,显示分享来源(可选)*/
     title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
-    pic:'http://godwithus.cn/wiki.png', /**分享图片的路径(可选)*/  
+    pic:'http://bible.world/wiki.png', /**分享图片的路径(可选)*/  
     ralateUid:'1797538110', /**关联用户的UID，分享微博会@该用户(可选)*/
 	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
     rnd:new Date().valueOf()
