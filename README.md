@@ -468,6 +468,35 @@ The application fully supports three languages with automatic language detection
 - **Book Names**: Long and short forms in selected language (e.g., "创世记 (创)" for zh_cn, "Genesis (Gen)" for en)
 - **Translation Names**: Full names in selected language with English short codes in parentheses
 
+## Branch Strategy
+
+The project uses a two-branch strategy for managing production and development:
+
+### Production Branch: `main`
+- **Domain**: `https://bibleengine.ai`
+- **Purpose**: Stable, production-ready code
+- **Deployment**: Production server
+- **Status**: Public-facing, stable releases
+
+### Development Branch: `dev`
+- **Domain**: `https://bibledev.com`
+- **Purpose**: Experimental features, testing, and development
+- **Deployment**: Development server
+- **Status**: May contain experimental features not yet ready for production
+
+### Workflow
+1. Development work happens on the `dev` branch
+2. Features are tested on `bibledev.com`
+3. Once stable, changes are merged from `dev` to `main`
+4. Production updates are deployed from `main` branch
+
+### Environment Switcher
+Users can easily switch between environments using the navigation menu:
+- The environment switcher automatically detects the current environment
+- Shows appropriate link (Production or Development) based on current domain
+- Preserves query parameters when switching
+- Displays in the selected UI language only (no bilingual mixing)
+
 ## Support
 
 For issues, questions, or contributions:
