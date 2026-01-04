@@ -319,6 +319,11 @@ This project has been updated for PHP 8 compatibility:
 - Proper UTF-8 encoding handling with `utf8mb4` charset
 - Character encoding detection and conversion for legacy data (ISO-8859-1, Windows-1252)
 
+### Code Variables
+
+- **Verse Context Variable**: The variable `$extend` has been renamed to `$context` throughout the codebase for better clarity and consistency
+- **Form Field**: The form field name remains `e` (short parameter name) for backward compatibility
+
 ### Character Encoding
 
 The engine includes robust character encoding handling:
@@ -352,6 +357,7 @@ Results are displayed in two sections:
 - **Default Translations**: CUVS (Simplified Chinese), CUVT (Traditional Chinese), and KJV (English) are enabled by default
 - **Strong's Codes**: Disabled by default (can be enabled via options)
 - **All translations are treated equally** - no special duplicate display for default translations
+- **Search Button**: Displays in selected language only (no bilingual mixing)
 
 ### UI Language Options
 
@@ -376,6 +382,9 @@ All options and labels are displayed in the selected language:
 - **Options Labels**:
   - "Multiple Verse" / "多节" / "多節"
   - "Verse Context" / "节上下文" / "節上下文"
+  
+- **Search Button**:
+  - "Search" / "搜索" / "搜尋" (single language, no bilingual mixing)
 
 ### Debugging
 

@@ -146,6 +146,10 @@ $translations = [
         
         // Organization names
         'viai_foundation' => '唯愛AI基金會',
+        'production' => '正式版',
+        'production_full' => '正式版 Production',
+        'development' => '開發版',
+        'development_full' => '開發版 Development',
         'goshen_tech' => '歌珊地科技',
         
         // Font size
@@ -282,6 +286,10 @@ $translations = [
         
         // Organization names
         'viai_foundation' => '唯爱AI基金会',
+        'production' => '正式版',
+        'production_full' => '正式版 Production',
+        'development' => '开发版',
+        'development_full' => '开发版 Development',
         'goshen_tech' => '歌珊地科技',
         
         // Font size
@@ -418,6 +426,10 @@ $translations = [
         
         // Organization names
         'viai_foundation' => 'VI AI Foundation',
+        'production' => 'Production',
+        'production_full' => 'Production',
+        'development' => 'Development',
+        'development_full' => 'Development',
         'goshen_tech' => 'Goshen Tech',
         
         // Font size
@@ -541,5 +553,40 @@ function getLanguageSwitcher(): string {
     $switcher .= '</span>';
     
     return $switcher;
+}
+
+/**
+ * Get environment switcher link (Production/Development)
+ * @return string HTML link to switch between prod and dev environments
+ */
+function getEnvironmentSwitcher(): string {
+    // Check if env_config.php functions are available
+    if (!function_exists('detectEnvironment')) {
+        require_once(__DIR__ . '/utils/env_config.php');
+    }
+    
+    $current_env = detectEnvironment();
+    $current_url = $_SERVER['REQUEST_URI'] ?? '/';
+    
+    // Preserve query parameters
+    $query_string = $_SERVER['QUERY_STRING'] ?? '';
+    if (!empty($query_string)) {
+        $current_url = strtok($current_url, '?'); // Remove existing query string
+        $query_string = '?' . $query_string;
+    } else {
+        $query_string = '';
+    }
+    
+    if ($current_env === 'dev') {
+        // Currently on dev, show link to production
+        $target_url = 'https://bibleengine.ai' . $current_url . $query_string;
+        $link_text = t('production_full');
+        return '<a href="' . htmlspecialchars($target_url) . '" title="' . htmlspecialchars(t('production')) . '">' . htmlspecialchars($link_text) . '</a>';
+    } else {
+        // Currently on prod, show link to development
+        $target_url = 'https://bibledev.com' . $current_url . $query_string;
+        $link_text = t('development_full');
+        return '<a href="' . htmlspecialchars($target_url) . '" title="' . htmlspecialchars(t('development')) . '">' . htmlspecialchars($link_text) . '</a>';
+    }
 }
 
