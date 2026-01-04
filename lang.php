@@ -115,6 +115,8 @@ $translations = [
         'strongs_code_full' => '帶原文編號 W/ Strong\'s Code*',
         'study' => '搜尋',
         'study_full' => '搜尋',
+        'ai' => 'AI',
+        'ai_full' => 'AI',
         
         // Bible study resources
         'bible_study' => '本節研經資料',
@@ -125,6 +127,12 @@ $translations = [
         'like_verse_full' => '喜愛本節 Like the Verse',
         'please_select' => '請選擇',
         'please_select_full' => '請選擇 Please Select',
+        'loading' => '載入中',
+        'loading_full' => '載入中 Loading...',
+        'error' => '錯誤',
+        'error_full' => '錯誤 Error',
+        'search_results' => '搜尋結果',
+        'search_results_full' => '搜尋結果 Search Results',
         
         // Errors
         'format_error' => '章節格式錯誤，可能章號不正確，正確格式參考：',
@@ -255,6 +263,8 @@ $translations = [
         'strongs_code_full' => '带原文编号 W/ Strong\'s Code*',
         'study' => '搜索',
         'study_full' => '搜索',
+        'ai' => 'AI',
+        'ai_full' => 'AI',
         
         // Bible study resources
         'bible_study' => '本节研经资料',
@@ -265,6 +275,12 @@ $translations = [
         'like_verse_full' => '喜爱本节 Like the Verse',
         'please_select' => '请选择',
         'please_select_full' => '请选择 Please Select',
+        'loading' => '加载中',
+        'loading_full' => '加载中 Loading...',
+        'error' => '错误',
+        'error_full' => '错误 Error',
+        'search_results' => '搜索结果',
+        'search_results_full' => '搜索结果 Search Results',
         
         // Errors
         'format_error' => '章节格式错误，可能章号不正确，正确格式参考：',
@@ -395,6 +411,8 @@ $translations = [
         'strongs_code_full' => 'W/ Strong\'s Code*',
         'study' => 'Search',
         'study_full' => 'Search',
+        'ai' => 'AI',
+        'ai_full' => 'AI',
         
         // Bible study resources
         'bible_study' => 'Bible Study',
@@ -405,6 +423,12 @@ $translations = [
         'like_verse_full' => 'Like the Verse',
         'please_select' => 'Please Select',
         'please_select_full' => 'Please Select',
+        'loading' => 'Loading',
+        'loading_full' => 'Loading...',
+        'error' => 'Error',
+        'error_full' => 'Error',
+        'search_results' => 'Search Results',
+        'search_results_full' => 'Search Results',
         
         // Errors
         'format_error' => 'Chapter format error. The chapter number may be incorrect. Correct format example:',

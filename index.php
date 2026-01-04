@@ -1614,6 +1614,156 @@ function toggleOptions(elm, idx) {
     var options = idx ? document.getElementById("options1") : document.getElementById("options0");
     options.style.display = elm.checked ? 'inline' : 'none';
 }
+
+function handleAISearch(seq) {
+    seq = seq || '0';
+    var form = document.getElementById('searchForm' + seq);
+    if (!form) {
+        alert('Form not found');
+        return;
+    }
+    
+    var formData = new FormData(form);
+    var query = formData.get('q');
+    
+    if (!query || query.trim() === '') {
+        alert('<?php echo addslashes(t('search_hint')); ?>');
+        return;
+    }
+    
+    // Build API URL with all form parameters
+    var params = new URLSearchParams();
+    
+    // Add query
+    params.append('q', query);
+    
+    // Add all form fields
+    for (var pair of formData.entries()) {
+        if (pair[0] !== 'q' && pair[0] !== 'o' && pair[1] !== '') {
+            params.append(pair[0], pair[1]);
+        }
+    }
+    
+    // Add options checkboxes
+    var optionsCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="o"]:checked');
+    if (optionsCheckboxes.length > 0) {
+        params.append('o', '1');
+    }
+    
+    // Add translation checkboxes
+    var translationCheckboxes = document.querySelectorAll('input[type="checkbox"][name="cuvs"], input[type="checkbox"][name="cuvt"], input[type="checkbox"][name="kjv"], input[type="checkbox"][name="nasb"], input[type="checkbox"][name="esv"]');
+    translationCheckboxes.forEach(function(cb) {
+        if (cb.checked) {
+            params.append(cb.name, cb.value);
+        }
+    });
+    
+    // Add other checkboxes
+    var otherCheckboxes = document.querySelectorAll('input[type="checkbox"]:not([name^="o"]):not([name="cuvs"]):not([name="cuvt"]):not([name="kjv"]):not([name="nasb"]):not([name="esv"]):not([name="p"])');
+    otherCheckboxes.forEach(function(cb) {
+        if (cb.checked) {
+            params.append(cb.name, cb.value);
+        }
+    });
+    
+    // Show loading indicator
+    var aiButton = document.getElementById('aiButton' + seq);
+    var originalValue = '';
+    if (aiButton) {
+        originalValue = aiButton.value;
+        aiButton.value = '<?php echo addslashes(t('loading') ?? 'Loading...'); ?>';
+        aiButton.disabled = true;
+    }
+    
+    // Make API call
+    fetch('/api/ai?' + params.toString())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Display AI results
+            displayAIResults(data, seq);
+            if (aiButton) {
+                aiButton.value = originalValue;
+                aiButton.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('<?php echo addslashes(t('error') ?? 'Error'); ?>: ' + error.message);
+            if (aiButton) {
+                aiButton.value = originalValue;
+                aiButton.disabled = false;
+            }
+        });
+}
+
+function displayAIResults(data, seq) {
+    seq = seq || '0';
+    // Create a container for AI results
+    var resultsContainer = document.getElementById('aiResults' + seq);
+    if (!resultsContainer) {
+        resultsContainer = document.createElement('div');
+        resultsContainer.id = 'aiResults' + seq;
+        resultsContainer.style.marginTop = '20px';
+        resultsContainer.style.padding = '20px';
+        resultsContainer.style.border = '1px solid #ccc';
+        resultsContainer.style.borderRadius = '5px';
+        resultsContainer.style.backgroundColor = '#f9f9f9';
+        
+        // Insert after the form
+        var form = document.getElementById('searchForm' + seq);
+        if (form && form.parentNode) {
+            form.parentNode.insertBefore(resultsContainer, form.nextSibling);
+        } else {
+            document.body.appendChild(resultsContainer);
+        }
+    }
+    
+    // Clear previous results
+    resultsContainer.innerHTML = '<h2>AI <?php echo addslashes(t('search_results') ?? 'Search Results'); ?></h2>';
+    
+    // Display results based on API response format
+    if (data.error) {
+        resultsContainer.innerHTML += '<p style="color: red;">' + data.error + '</p>';
+    } else if (data.data && data.data.length > 0) {
+        var resultsHtml = '<ul>';
+        data.data.forEach(function(result) {
+            resultsHtml += '<li>';
+            if (result.reference) {
+                resultsHtml += '<strong>' + result.reference + '</strong>: ';
+            }
+            if (result.text) {
+                resultsHtml += result.text;
+            }
+            resultsHtml += '</li>';
+        });
+        resultsHtml += '</ul>';
+        resultsContainer.innerHTML += resultsHtml;
+    } else if (data.results && data.results.length > 0) {
+        var resultsHtml = '<ul>';
+        data.results.forEach(function(result) {
+            resultsHtml += '<li>';
+            if (result.reference) {
+                resultsHtml += '<strong>' + result.reference + '</strong>: ';
+            }
+            if (result.text) {
+                resultsHtml += result.text;
+            }
+            resultsHtml += '</li>';
+        });
+        resultsHtml += '</ul>';
+        resultsContainer.innerHTML += resultsHtml;
+    } else {
+        resultsContainer.innerHTML += '<p><?php echo addslashes(t('no_records')); ?></p>';
+    }
+    
+    // Scroll to results
+    resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 </script>
 <style type="text/css">
 .light {
@@ -1634,13 +1784,14 @@ function show_form(string $seq = '0'): void {
            $wiki_base, $long_url_base, $short_url_base, $book_chinese, $book_english, $book_cn, $book_short, $context;
 ?>
 <center><div align="center">
-<form method="GET" action="<?php echo htmlspecialchars($script); ?>">
+<form method="GET" action="<?php echo htmlspecialchars($script); ?>" id="searchForm">
 <?php if ($portable) { ?>
-    <input type="text" size="40" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>">
+    <input type="text" size="40" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery">
 <?php } else { ?>
-    <input type="text" size="80" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>">
+    <input type="text" size="80" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery<?php echo $seq; ?>">
 <?php } ?>
-<input type="submit" value="<?php echo t('study_full'); ?>">
+<input type="submit" value="<?php echo t('study_full'); ?>" id="searchButton<?php echo $seq; ?>">
+<input type="button" value="<?php echo t('ai_full'); ?>" id="aiButton<?php echo $seq; ?>" onclick="handleAISearch('<?php echo $seq; ?>')">
 <?php if ($portable) echo "<br/>"; ?>
 <input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)"><?php echo t('options_full'); ?>
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
