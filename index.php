@@ -1912,6 +1912,7 @@ function show_form(string $seq = '0'): void {
 
 <!-- AI Search Form -->
 <br/>
+<p style="color: #666; font-size: 12px;">AI Search (<?php echo htmlspecialchars($seq); ?>)</p>
 <form method="GET" action="javascript:void(0);" id="aiForm<?php echo $seq; ?>" onsubmit="handleAISearch('<?php echo $seq; ?>'); return false;">
 <?php if ($portable) { ?>
     <input type="text" size="40" maxlength="128" name="q" value="" placeholder="AI <?php echo htmlspecialchars(t('search_hint')); ?>" id="aiQuery<?php echo $seq; ?>">
