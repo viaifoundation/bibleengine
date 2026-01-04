@@ -1617,54 +1617,51 @@ function toggleOptions(elm, idx) {
 
 function handleAISearch(seq) {
     seq = seq || '0';
-    var form = document.getElementById('searchForm' + seq);
-    if (!form) {
-        alert('Form not found');
+    // Get AI form and query
+    var aiForm = document.getElementById('aiForm' + seq);
+    var aiQuery = document.getElementById('aiQuery' + seq);
+    
+    if (!aiForm || !aiQuery) {
+        alert('AI form not found');
         return;
     }
     
-    var formData = new FormData(form);
-    var query = formData.get('q');
+    var query = aiQuery.value.trim();
     
-    if (!query || query.trim() === '') {
+    if (!query || query === '') {
         alert('<?php echo addslashes(t('search_hint')); ?>');
         return;
     }
     
-    // Build API URL with all form parameters
+    // Build API URL with query parameter
     var params = new URLSearchParams();
-    
-    // Add query
     params.append('q', query);
     
-    // Add all form fields
-    for (var pair of formData.entries()) {
-        if (pair[0] !== 'q' && pair[0] !== 'o' && pair[1] !== '') {
-            params.append(pair[0], pair[1]);
+    // Optionally get translation settings from the main search form
+    var searchForm = document.getElementById('searchForm' + seq);
+    if (searchForm) {
+        // Add translation checkboxes from main form
+        var translationCheckboxes = document.querySelectorAll('input[type="checkbox"][name="cuvs"], input[type="checkbox"][name="cuvt"], input[type="checkbox"][name="kjv"], input[type="checkbox"][name="nasb"], input[type="checkbox"][name="esv"]');
+        translationCheckboxes.forEach(function(cb) {
+            if (cb.checked) {
+                params.append(cb.name, cb.value);
+            }
+        });
+        
+        // Add other options from main form
+        var otherCheckboxes = document.querySelectorAll('input[type="checkbox"][name="strongs"]');
+        otherCheckboxes.forEach(function(cb) {
+            if (cb.checked) {
+                params.append(cb.name, cb.value);
+            }
+        });
+        
+        // Add book filter if set
+        var bookSelect = searchForm.querySelector('select[name="b"]');
+        if (bookSelect && bookSelect.value) {
+            params.append('b', bookSelect.value);
         }
     }
-    
-    // Add options checkboxes
-    var optionsCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="o"]:checked');
-    if (optionsCheckboxes.length > 0) {
-        params.append('o', '1');
-    }
-    
-    // Add translation checkboxes
-    var translationCheckboxes = document.querySelectorAll('input[type="checkbox"][name="cuvs"], input[type="checkbox"][name="cuvt"], input[type="checkbox"][name="kjv"], input[type="checkbox"][name="nasb"], input[type="checkbox"][name="esv"]');
-    translationCheckboxes.forEach(function(cb) {
-        if (cb.checked) {
-            params.append(cb.name, cb.value);
-        }
-    });
-    
-    // Add other checkboxes
-    var otherCheckboxes = document.querySelectorAll('input[type="checkbox"]:not([name^="o"]):not([name="cuvs"]):not([name="cuvt"]):not([name="kjv"]):not([name="nasb"]):not([name="esv"]):not([name="p"])');
-    otherCheckboxes.forEach(function(cb) {
-        if (cb.checked) {
-            params.append(cb.name, cb.value);
-        }
-    });
     
     // Show loading indicator
     var aiButton = document.getElementById('aiButton' + seq);
@@ -1911,6 +1908,17 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?> (KJV1611)
 <input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>><?php echo t('trans_bbe'); ?> (BBE)
 </div>
+</form>
+
+<!-- AI Search Form -->
+<br/>
+<form method="GET" action="javascript:void(0);" id="aiForm<?php echo $seq; ?>" onsubmit="handleAISearch('<?php echo $seq; ?>'); return false;">
+<?php if ($portable) { ?>
+    <input type="text" size="40" maxlength="128" name="q" value="" placeholder="AI <?php echo htmlspecialchars(t('search_hint')); ?>" id="aiQuery<?php echo $seq; ?>">
+<?php } else { ?>
+    <input type="text" size="80" maxlength="128" name="q" value="" placeholder="AI <?php echo htmlspecialchars(t('search_hint')); ?>" id="aiQuery<?php echo $seq; ?>">
+<?php } ?>
+<input type="button" value="<?php echo t('ai_full'); ?>" id="aiButton<?php echo $seq; ?>" onclick="handleAISearch('<?php echo $seq; ?>')">
 </form>
 </div></center>
 <?php
