@@ -1784,9 +1784,9 @@ function show_form(string $seq = '0'): void {
            $wiki_base, $long_url_base, $short_url_base, $book_chinese, $book_english, $book_cn, $book_short, $context;
 ?>
 <center><div align="center">
-<form method="GET" action="<?php echo htmlspecialchars($script); ?>" id="searchForm">
+<form method="GET" action="<?php echo htmlspecialchars($script); ?>" id="searchForm<?php echo $seq; ?>">
 <?php if ($portable) { ?>
-    <input type="text" size="40" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery">
+    <input type="text" size="40" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery<?php echo $seq; ?>">
 <?php } else { ?>
     <input type="text" size="80" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery<?php echo $seq; ?>">
 <?php } ?>
