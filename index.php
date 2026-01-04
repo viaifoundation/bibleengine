@@ -1788,6 +1788,7 @@ function show_form(string $seq = '0'): void {
     <input type="text" size="80" maxlength="128" name="q" value="<?php echo htmlspecialchars($query ?? ''); ?>" id="searchQuery<?php echo $seq; ?>">
 <?php } ?>
 <input type="submit" value="<?php echo t('study_full'); ?>" id="searchButton<?php echo $seq; ?>">
+<input type="button" value="<?php echo t('ai_full'); ?>" id="aiButton<?php echo $seq; ?>" onclick="handleAISearch('<?php echo $seq; ?>'); return false;" style="margin-left: 5px;">
 <?php if ($portable) echo "<br/>"; ?>
 <input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)"><?php echo t('options_full'); ?>
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
@@ -1908,18 +1909,6 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?> (KJV1611)
 <input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>><?php echo t('trans_bbe'); ?> (BBE)
 </div>
-</form>
-
-<!-- AI Search Form -->
-<br/>
-<p style="color: #666; font-size: 12px;">AI Search (<?php echo htmlspecialchars($seq); ?>)</p>
-<form method="GET" action="javascript:void(0);" id="aiForm<?php echo $seq; ?>" onsubmit="handleAISearch('<?php echo $seq; ?>'); return false;">
-<?php if ($portable) { ?>
-    <input type="text" size="40" maxlength="128" name="q" value="" placeholder="AI <?php echo htmlspecialchars(t('search_hint')); ?>" id="aiQuery<?php echo $seq; ?>">
-<?php } else { ?>
-    <input type="text" size="80" maxlength="128" name="q" value="" placeholder="AI <?php echo htmlspecialchars(t('search_hint')); ?>" id="aiQuery<?php echo $seq; ?>">
-<?php } ?>
-<input type="button" value="<?php echo t('ai_full'); ?>" id="aiButton<?php echo $seq; ?>" onclick="handleAISearch('<?php echo $seq; ?>')">
 </form>
 </div></center>
 <?php
