@@ -172,6 +172,7 @@ The application supports two environments with automatic detection:
   - `short_url_base`: `https://bibleengine.ai`
   - `sitename`: `BibleEngine.ai`
   - `engine_name_en`: `Goshen Bible Engine`
+- **Status**: Currently synchronized with `dev` branch (as of latest merge)
 
 #### Development Environment
 - **Domain**: `https://bibledev.com`
@@ -181,6 +182,15 @@ The application supports two environments with automatic detection:
   - `short_url_base`: `https://bibledev.com`
   - `sitename`: `BibleDev.com`
   - `engine_name_en`: `Goshen Bible Engine (Dev)`
+- **Status**: Active development branch. Changes are tested here before merging to `main`
+
+#### Branch Strategy
+- **Development Workflow**: 
+  - All new features and fixes are developed on the `dev` branch
+  - After testing on `bibledev.com`, changes are merged to `main` branch
+  - `main` branch is deployed to `bibleengine.ai` (production)
+- **Current Status**: `main` and `dev` branches are synchronized (as of latest merge)
+- **Next Steps**: Continue development on `dev` branch
 
 #### Environment Detection
 
@@ -269,8 +279,8 @@ bibleengine/
 │   ├── book_utils.php       # Bible book name utilities
 │   └── wiki_utils.php     # Wiki utilities
 ├── config/                # Sensitive configuration files (not in git)
-│   ├── dbconfig.php       # Database configuration (create this)
-│   └── apikeys.php         # Gemini API keys (create this for AI search)
+│   ├── dbconfig.php       # Database configuration (create this, chmod 600)
+│   └── apikeys.php         # API keys (Gemini, etc.) (create this, chmod 600)
 ├── gemini/                # Gemini AI integration
 │   ├── aiconfig.php       # Gemini API configuration
 │   ├── parser.php         # Bible query parser using Gemini AI
