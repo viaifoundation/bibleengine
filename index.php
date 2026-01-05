@@ -1885,11 +1885,11 @@ function show_form(string $seq = '0'): void {
     <?php } ?>
 </select>
 <?php if ($portable) echo "<br/>"; ?>
-<?php echo t('multi_full'); ?><select name="m" style="max-width: 150px; width: auto;">
+<?php echo t('multi_full'); ?> <select name="m" style="max-width: 150px; width: auto; margin-right: 10px;">
     <option value="0" <?php if ($multi_verse == 0) echo "SELECTED"; ?>><?php echo t('single_verse_full'); ?></option>
     <option value="1" <?php if ($multi_verse == 1) echo "SELECTED"; ?>><?php echo t('multi_verse_full'); ?></option>
-</select><?php echo t('verses_full'); ?>
-<?php echo t('extend_full'); ?> <select name="e" style="max-width: 80px; width: auto;">
+</select><?php echo t('verses_full'); ?> | 
+<?php echo t('extend_full'); ?> <select name="e" style="max-width: 80px; width: auto; margin-left: 5px;">
     <option value="0" <?php if (!$context || $context == 0) echo "SELECTED"; ?>>0</option>
     <option value="1" <?php if ($context == 1) echo "SELECTED"; ?>>1</option>
     <option value="2" <?php if ($context == 2) echo "SELECTED"; ?>>2</option>
