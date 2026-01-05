@@ -147,6 +147,8 @@ $translations = [
         'lang_en' => 'English',
         'language' => '語言',
         'language_full' => '語言 Language',
+        'translation_full' => '譯本',
+        'more_translations_full' => '更多譯本',
         
         // Bible sections
         'old_testament' => '舊約 (OT)',
@@ -295,6 +297,8 @@ $translations = [
         'lang_en' => 'English',
         'language' => '语言',
         'language_full' => '语言 Language',
+        'translation_full' => '译本',
+        'more_translations_full' => '更多译本',
         
         // Bible sections
         'old_testament' => '旧约 (OT)',
@@ -443,6 +447,8 @@ $translations = [
         'lang_en' => 'English',
         'language' => 'Language',
         'language_full' => 'Language',
+        'translation_full' => 'Translations',
+        'more_translations_full' => 'More Translations',
         
         // Bible sections
         'old_testament' => 'Old Testament (OT)',

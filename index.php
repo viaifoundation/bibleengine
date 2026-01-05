@@ -1812,7 +1812,7 @@ function show_form(string $seq = '0'): void {
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
 <br/><?php echo t('books_full'); ?>
-<select name="b">
+<select name="b" style="max-width: 250px; width: auto;">
     <option value="0" <?php if ($books == 0) echo "SELECTED"; ?>><?php echo t('whole_bible_full'); ?></option>
     <option value="100" <?php if ($books == 100) echo "SELECTED"; ?>>基督徒百科 CCWiki</option>
     <option value="1-39" <?php if ($books == "1-39") echo "SELECTED"; ?>><?php echo t('old_testament_full'); ?></option>
@@ -1897,31 +1897,35 @@ function show_form(string $seq = '0'): void {
     <option value="4" <?php if ($context == 4) echo "SELECTED"; ?>>4</option>
     <option value="5" <?php if ($context == 5) echo "SELECTED"; ?>>5</option>
 </select><?php echo t('verses_full'); ?>
-<input type='checkbox' name='cn' value='1' <?php if ($cn) echo 'checked'; ?>><?php echo t('simplified_full'); ?>
-<input type='checkbox' name='tw' value='1' <?php if ($tw) echo 'checked'; ?>><?php echo t('traditional_full'); ?>
+<div style="display: inline-block; vertical-align: top; margin-right: 15px;">
+<strong><?php echo t('language_full'); ?>:</strong><br/>
+<input type='checkbox' name='cn' value='1' <?php if ($cn) echo 'checked'; ?>><?php echo t('simplified_full'); ?><br/>
+<input type='checkbox' name='tw' value='1' <?php if ($tw) echo 'checked'; ?>><?php echo t('traditional_full'); ?><br/>
 <input type='checkbox' name='en' value='1' <?php if ($en) echo 'checked'; ?>><?php echo t('english_full'); ?>
-<br/>
-<input type='checkbox' name='strongs' value='strongs' <?php if ($strongs) echo 'checked'; ?>><?php echo t('strongs_code_full'); ?>
-<input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>><?php echo t('trans_cuvs'); ?> (CUVS)*
-<input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>><?php echo t('trans_cuvt'); ?> (CUVT)*
-<?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='kjv' value='kjv' <?php if ($kjv) echo 'checked'; ?>><?php echo t('trans_kjv'); ?> (KJV)*
-<input type='checkbox' name='nasb' value='nasb' <?php if ($nasb) echo 'checked'; ?>><?php echo t('trans_nasb'); ?> (NASB)*
+</div>
+<div style="display: inline-block; vertical-align: top; margin-right: 15px;">
+<strong><?php echo t('translation_full'); ?>:</strong><br/>
+<input type='checkbox' name='strongs' value='strongs' <?php if ($strongs) echo 'checked'; ?>><?php echo t('strongs_code_full'); ?><br/>
+<input type='checkbox' name='cuvs' value='cuvs' <?php if ($cuvs) echo 'checked'; ?>><?php echo t('trans_cuvs'); ?> (CUVS)*<br/>
+<input type='checkbox' name='cuvt' value='cuvt' <?php if ($cuvt) echo 'checked'; ?>><?php echo t('trans_cuvt'); ?> (CUVT)*<br/>
+<input type='checkbox' name='kjv' value='kjv' <?php if ($kjv) echo 'checked'; ?>><?php echo t('trans_kjv'); ?> (KJV)*<br/>
+<input type='checkbox' name='nasb' value='nasb' <?php if ($nasb) echo 'checked'; ?>><?php echo t('trans_nasb'); ?> (NASB)*<br/>
 <input type='checkbox' name='esv' value='esv' <?php if ($esv) echo 'checked'; ?>><?php echo t('trans_esv'); ?> (ESV)
-<br/>
-<input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>><?php echo t('trans_cuvc'); ?> (CUVC)
-<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?> (NCVS)
-<input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>><?php echo t('trans_lcvs'); ?> (LCVS)
-<input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>><?php echo t('trans_ccsb'); ?> (CCSB)
-<?php if ($portable) echo "<br/>"; ?>
-<input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>><?php echo t('trans_clbs'); ?> (CLBS)
-<input type='checkbox' name='ckjvs' value='ckjvs' <?php if ($ckjvs) echo 'checked'; ?>><?php echo t('trans_ckjvs'); ?> (CKJVS)
-<input type='checkbox' name='ckjvt' value='ckjvt' <?php if ($ckjvt) echo 'checked'; ?>><?php echo t('trans_ckjvt'); ?> (CKJVT)
-<br/>
-<input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>><?php echo t('trans_pinyin'); ?> (pinyin)
-<input type='checkbox' name='ukjv' value='ukjv' <?php if ($ukjv) echo 'checked'; ?>><?php echo t('trans_ukjv'); ?> (UKJV)
-<input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?> (KJV1611)
+</div>
+<div style="display: inline-block; vertical-align: top;">
+<strong><?php echo t('more_translations_full'); ?>:</strong><br/>
+<input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>><?php echo t('trans_cuvc'); ?> (CUVC)<br/>
+<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?> (NCVS)<br/>
+<input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>><?php echo t('trans_lcvs'); ?> (LCVS)<br/>
+<input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>><?php echo t('trans_ccsb'); ?> (CCSB)<br/>
+<input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>><?php echo t('trans_clbs'); ?> (CLBS)<br/>
+<input type='checkbox' name='ckjvs' value='ckjvs' <?php if ($ckjvs) echo 'checked'; ?>><?php echo t('trans_ckjvs'); ?> (CKJVS)<br/>
+<input type='checkbox' name='ckjvt' value='ckjvt' <?php if ($ckjvt) echo 'checked'; ?>><?php echo t('trans_ckjvt'); ?> (CKJVT)<br/>
+<input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>><?php echo t('trans_pinyin'); ?> (pinyin)<br/>
+<input type='checkbox' name='ukjv' value='ukjv' <?php if ($ukjv) echo 'checked'; ?>><?php echo t('trans_ukjv'); ?> (UKJV)<br/>
+<input type='checkbox' name='kjv1611' value='kjv1611' <?php if ($kjv1611) echo 'checked'; ?>><?php echo t('trans_kjv1611'); ?> (KJV1611)<br/>
 <input type='checkbox' name='bbe' value='bbe' <?php if ($bbe) echo 'checked'; ?>><?php echo t('trans_bbe'); ?> (BBE)
+</div>
 </div>
 </form>
 </div></center>
