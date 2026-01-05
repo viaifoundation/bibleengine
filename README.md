@@ -37,7 +37,13 @@ A powerful Bible study and search engine supporting multiple Bible translations 
 
 - **Multiple Interfaces**:
   - Web interface (`index.php`) - responsive design works on all devices
-  - API endpoints (`api.php`)
+    - **Dual Search Options**: Regular search button and AI search button side by side
+    - Both buttons use the same input field and form options
+    - AI search queries `/api/ai` endpoint via JavaScript
+    - Regular search submits form to `index.php`
+  - API endpoints:
+    - Main API: `/api/` or `/api/index.php` - standard Bible search
+    - AI API: `/api/ai` or `/api/ai.php` - AI-enhanced search (under development)
   - WeChat integration (`wechat.php`, `wechata.php`, `wxb.php`)
   - Weibo integration (`weibo.php`)
 
@@ -237,6 +243,7 @@ bibleengine/
 ├── api/                   # API endpoints
 │   ├── index.php          # Main API endpoint (accessible as /api/)
 │   └── ai.php             # AI-enhanced API endpoint (accessible as /api/ai)
+├── API_COMMUNICATION.md   # API communication documentation
 ├── legacy/                # Legacy/backup code
 │   ├── api.php            # Old API implementation
 │   └── api/               # Old WeChat API modules
