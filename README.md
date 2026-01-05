@@ -96,7 +96,7 @@ A powerful Bible study and search engine supporting multiple Bible translations 
    ```
 
 5. **Configure Gemini API (optional, for AI search)**:
-   Create a `config/gemini_apikeys.php` file with your Gemini API key:
+   Create a `config/apikeys.php` file with your Gemini API key:
    ```php
    <?php
    define('GEMINI_API_KEY', 'your_gemini_api_key_here');
@@ -109,7 +109,7 @@ A powerful Bible study and search engine supporting multiple Bible translations 
    - Set `config/` directory permissions to 600 (read/write for owner only):
      ```bash
      chmod 600 config/dbconfig.php
-     chmod 600 config/gemini_apikeys.php
+     chmod 600 config/apikeys.php
      ```
 
 ## Configuration
@@ -270,7 +270,7 @@ bibleengine/
 │   └── wiki_utils.php     # Wiki utilities
 ├── config/                # Sensitive configuration files (not in git)
 │   ├── dbconfig.php       # Database configuration (create this)
-│   └── gemini_apikeys.php # Gemini API keys (create this for AI search)
+│   └── apikeys.php         # Gemini API keys (create this for AI search)
 ├── gemini/                # Gemini AI integration
 │   ├── aiconfig.php       # Gemini API configuration
 │   ├── parser.php         # Bible query parser using Gemini AI

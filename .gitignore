@@ -49,5 +49,6 @@ Thumbs.db
 /tmp/
 
 # Gemini API keys (sensitive)
+config/apikeys.php
 config/gemini_apikeys.php
 gemini/apikeys.php
