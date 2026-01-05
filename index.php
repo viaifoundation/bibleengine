@@ -378,8 +378,8 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/config/dbconfig.php';
 
 try {
-    if (!file_exists(__DIR__ . '/dbconfig.php')) {
-        throw new Exception("Error: " . __DIR__ . "/dbconfig.php not found");
+    if (!file_exists(__DIR__ . '/config/dbconfig.php')) {
+        throw new Exception("Error: " . __DIR__ . "/config/dbconfig.php not found");
     }
     require_once __DIR__ . '/config/dbconfig.php';
 
