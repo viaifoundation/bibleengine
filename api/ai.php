@@ -66,6 +66,9 @@ try {
                 'text' => 'AI search functionality is under development. Your query: ' . htmlspecialchars($query)
             ]
         ];
+    } else {
+        // No query provided
+        $results = [];
     }
     
     // Format response based on API format
