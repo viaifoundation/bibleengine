@@ -21,6 +21,8 @@ try {
     require_once(__DIR__ . '/../utils/env_config.php');
     require_once(__DIR__ . '/../utils/db_utils.php');
     require_once(__DIR__ . '/../utils/text_utils.php');
+    require_once(__DIR__ . '/../utils/book_utils.php');
+    require_once(__DIR__ . '/../gemini/parser.php');
     require_once(__DIR__ . '/../config.php');
     require_once(__DIR__ . '/../common.php');
 } catch (Throwable $e) {
@@ -72,15 +74,97 @@ try {
             // This is a simplified version - full implementation needed
         }
     } elseif ($query) {
-        // Process search query
-        // TODO: Implement AI search logic
-        // For now, return a placeholder response
-        $results = [
-            [
-                'reference' => 'AI Search',
-                'text' => 'AI search functionality is under development. Your query: ' . htmlspecialchars($query)
-            ]
-        ];
+        // Use Gemini to parse the query
+        $parsed = GeminiBibleParser::parsePrompt($query);
+        
+        if (isset($parsed['error'])) {
+            // Gemini parsing failed, return error
+            $results = [
+                [
+                    'reference' => 'AI Parse Error',
+                    'text' => 'Failed to parse query: ' . $parsed['error']
+                ]
+            ];
+        } elseif (!empty($parsed['book']) && !empty($parsed['chapter'])) {
+            // Verse reference case: book + chapter (and optionally verse)
+            global $book_index, $book_short;
+            require_once(__DIR__ . '/../utils/book_utils.php');
+            
+            // Find book ID from book name
+            $book_name_lower = strtolower(trim($parsed['book']));
+            $book_id = 0;
+            
+            // Try to find book in book_index
+            foreach ($book_index as $book_key => $id) {
+                if (strtolower($book_key) === $book_name_lower || 
+                    strtolower($book_key) === str_replace(' ', '', $book_name_lower)) {
+                    $book_id = $id;
+                    break;
+                }
+            }
+            
+            // If not found, try book_short array
+            if (!$book_id) {
+                for ($i = 1; $i <= 66; $i++) {
+                    if (isset($book_short[$i]) && strtolower($book_short[$i]) === $book_name_lower) {
+                        $book_id = $i;
+                        break;
+                    }
+                }
+            }
+            
+            if ($book_id > 0) {
+                // Build query string: "booknamechapter:verse" (e.g., "john3:16")
+                $book_short_name = strtolower($book_short[$book_id] ?? '');
+                $chapter = (int)$parsed['chapter'];
+                $verse = !empty($parsed['verse']) ? (int)$parsed['verse'] : 0;
+                
+                if ($verse > 0) {
+                    $generated_query = $book_short_name . $chapter . ':' . $verse;
+                } else {
+                    $generated_query = $book_short_name . $chapter;
+                }
+                
+                // Use the generated query for search
+                $query = $generated_query;
+                $results = [
+                    [
+                        'reference' => 'AI Parsed',
+                        'text' => 'Parsed query: ' . htmlspecialchars($generated_query) . ' (from: ' . htmlspecialchars($query) . ')',
+                        'parsed' => $parsed,
+                        'generated_query' => $generated_query
+                    ]
+                ];
+            } else {
+                $results = [
+                    [
+                        'reference' => 'AI Parse Error',
+                        'text' => 'Could not find book: ' . htmlspecialchars($parsed['book'])
+                    ]
+                ];
+            }
+        } elseif (!empty($parsed['keyword'])) {
+            // Keyword search case
+            $generated_query = trim($parsed['keyword']);
+            $query = $generated_query;
+            $results = [
+                [
+                    'reference' => 'AI Parsed',
+                    'text' => 'Parsed keyword: ' . htmlspecialchars($generated_query),
+                    'parsed' => $parsed,
+                    'generated_query' => $generated_query
+                ]
+            ];
+        } else {
+            // Empty or invalid parse result
+            $results = [
+                [
+                    'reference' => 'AI Parse',
+                    'text' => 'Could not parse query. Please try a verse reference (e.g., "John 3:16") or a keyword.',
+                    'parsed' => $parsed
+                ]
+            ];
+        }
     } else {
         // No query provided
         $results = [];
