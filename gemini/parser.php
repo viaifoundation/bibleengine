@@ -58,13 +58,25 @@ class GeminiBibleParser {
         
         // Check if response has expected structure
         if (isset($response['candidates'][0]['content']['parts'][0]['text'])) {
-            $jsonText = $response['candidates'][0]['content']['parts'][0]['text'];
+            $responseText = $response['candidates'][0]['content']['parts'][0]['text'];
+            
+            // Try to extract JSON from the response (may contain markdown code blocks or plain text)
+            // Remove markdown code blocks if present
+            $jsonText = preg_replace('/```json\s*/', '', $responseText);
+            $jsonText = preg_replace('/```\s*/', '', $jsonText);
+            $jsonText = trim($jsonText);
+            
+            // Try to find JSON object in the text
+            if (preg_match('/\{[^}]+\}/', $jsonText, $matches)) {
+                $jsonText = $matches[0];
+            }
+            
             $parsed = json_decode($jsonText, true);
-            if ($parsed !== null) {
+            if ($parsed !== null && is_array($parsed)) {
                 return $parsed;
             } else {
-                error_log("Gemini API: Failed to parse JSON from response: " . $jsonText);
-                return ['error' => 'Failed to parse JSON', 'raw' => $jsonText];
+                error_log("Gemini API: Failed to parse JSON from response: " . $responseText);
+                return ['error' => 'Failed to parse JSON', 'raw' => $responseText];
             }
         }
         
