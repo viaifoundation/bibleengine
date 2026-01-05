@@ -91,24 +91,40 @@ try {
             require_once(__DIR__ . '/../utils/book_utils.php');
             
             // Find book ID from book name
-            $book_name_lower = strtolower(trim($parsed['book']));
-            $book_id = 0;
+            $book_name = trim($parsed['book']);
+            $book_id = getBookId($book_name); // Use utility function
             
-            // Try to find book in book_index
-            foreach ($book_index as $book_key => $id) {
-                if (strtolower($book_key) === $book_name_lower || 
-                    strtolower($book_key) === str_replace(' ', '', $book_name_lower)) {
-                    $book_id = $id;
-                    break;
-                }
-            }
-            
-            // If not found, try book_short array
+            // If not found, try fuzzy matching
             if (!$book_id) {
-                for ($i = 1; $i <= 66; $i++) {
-                    if (isset($book_short[$i]) && strtolower($book_short[$i]) === $book_name_lower) {
-                        $book_id = $i;
+                $book_name_lower = strtolower($book_name);
+                // Try exact match in book_index
+                foreach ($book_index as $book_key => $id) {
+                    if (strtolower($book_key) === $book_name_lower || 
+                        strtolower(str_replace(' ', '', $book_key)) === str_replace(' ', '', $book_name_lower)) {
+                        $book_id = $id;
                         break;
+                    }
+                }
+                
+                // Try book_short array
+                if (!$book_id) {
+                    global $book_short;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_short[$i]) && strtolower($book_short[$i]) === $book_name_lower) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_english array
+                if (!$book_id) {
+                    global $book_english;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_english[$i]) && strtolower($book_english[$i]) === $book_name_lower) {
+                            $book_id = $i;
+                            break;
+                        }
                     }
                 }
             }
