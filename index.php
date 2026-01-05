@@ -1921,12 +1921,12 @@ function show_form(string $seq = '0'): void {
 <div style="display: inline-block; vertical-align: top; margin-right: 15px;">
 <strong><?php echo t('popular_translations_full'); ?>:</strong><br/>
 <input type='checkbox' name='esv' value='esv' <?php if ($esv) echo 'checked'; ?>><?php echo t('trans_esv'); ?> (ESV)<br/>
+<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?> (NCVS)<br/>
 <input type='checkbox' name='cuvc' value='cuvc' <?php if ($cuvc) echo 'checked'; ?>><?php echo t('trans_cuvc'); ?> (CUVC)<br/>
 <input type='checkbox' name='pinyin' value='pinyin' <?php if ($pinyin) echo 'checked'; ?>><?php echo t('trans_pinyin'); ?> (pinyin)
 </div>
 <div style="display: inline-block; vertical-align: top;">
 <strong><?php echo t('more_translations_full'); ?>:</strong><br/>
-<input type='checkbox' name='ncvs' value='ncvs' <?php if ($ncvs) echo 'checked'; ?>><?php echo t('trans_ncvs'); ?> (NCVS)<br/>
 <input type='checkbox' name='lcvs' value='lcvs' <?php if ($lcvs) echo 'checked'; ?>><?php echo t('trans_lcvs'); ?> (LCVS)<br/>
 <input type='checkbox' name='ccsb' value='ccsb' <?php if ($ccsb) echo 'checked'; ?>><?php echo t('trans_ccsb'); ?> (CCSB)<br/>
 <input type='checkbox' name='clbs' value='clbs' <?php if ($clbs) echo 'checked'; ?>><?php echo t('trans_clbs'); ?> (CLBS)<br/>
