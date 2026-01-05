@@ -148,6 +148,7 @@ $translations = [
         'language' => '語言',
         'language_full' => '語言 Language',
         'translation_full' => '譯本',
+        'popular_translations_full' => '熱門譯本',
         'more_translations_full' => '更多譯本',
         
         // Bible sections
@@ -298,6 +299,7 @@ $translations = [
         'language' => '语言',
         'language_full' => '语言 Language',
         'translation_full' => '译本',
+        'popular_translations_full' => '热门译本',
         'more_translations_full' => '更多译本',
         
         // Bible sections
@@ -402,7 +404,7 @@ $translations = [
         'multi_verse' => 'Multi Verse',
         'multi_verse_full' => 'Multi Verse',
         'extend' => 'Context',
-        'extend_full' => 'Context',
+        'extend_full' => 'Verse Context',
         'verses' => 'Verses',
         'verses_full' => 'Verses',
         'simplified' => 'CN',
@@ -448,6 +450,7 @@ $translations = [
         'language' => 'Language',
         'language_full' => 'Language',
         'translation_full' => 'Translations',
+        'popular_translations_full' => 'Popular Translations',
         'more_translations_full' => 'More Translations',
         
         // Bible sections
