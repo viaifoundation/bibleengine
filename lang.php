@@ -147,7 +147,7 @@ $translations = [
         'lang_en' => 'English',
         'language' => '語言',
         'language_full' => '語言 Language',
-        'translation_full' => '譯本',
+        'translation_full' => '原文譯本',
         'popular_translations_full' => '熱門譯本',
         'more_translations_full' => '更多譯本',
         
@@ -298,7 +298,7 @@ $translations = [
         'lang_en' => 'English',
         'language' => '语言',
         'language_full' => '语言 Language',
-        'translation_full' => '译本',
+        'translation_full' => '原文译本',
         'popular_translations_full' => '热门译本',
         'more_translations_full' => '更多译本',
         
@@ -449,7 +449,7 @@ $translations = [
         'lang_en' => 'English',
         'language' => 'Language',
         'language_full' => 'Language',
-        'translation_full' => 'Translations',
+        'translation_full' => 'Original Text',
         'popular_translations_full' => 'Popular Translations',
         'more_translations_full' => 'More Translations',
         
