@@ -1894,7 +1894,7 @@ function show_form(string $seq = '0'): void {
     $current_lang = function_exists('detectLanguage') ? detectLanguage() : 'en';
     $verse_text = ($current_lang == 'zh_tw') ? '節' : (($current_lang == 'zh_cn') ? '节' : '');
     for ($i = 0; $i <= 5; $i++) {
-        $selected = (!$context || $context == $i) ? 'SELECTED' : '';
+        $selected = ((!$context && $i == 0) || $context == $i) ? 'SELECTED' : '';
         if ($current_lang == 'en') {
             $display_text = $i . ' ' . ($i == 1 ? 'Verse' : 'Verses');
         } else {
