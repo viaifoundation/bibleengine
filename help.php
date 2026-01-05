@@ -2,15 +2,15 @@
 
 header("Location: https://bible.world/wiki/BibleEngine");
 
-$search = trim($_REQUEST['s']);
-$chapter = $_REQUEST['c'];
-$verse = $_REQUEST['v'];
-$book = $_REQUEST['b'];
-$name = $_REQUEST['n'];
-$query=$_REQUEST['q'];
-$multi_verse=$_REQUEST['m'];
+$search = trim($_REQUEST['s'] ?? '');
+$chapter = $_REQUEST['c'] ?? 0;
+$verse = $_REQUEST['v'] ?? 0;
+$book = $_REQUEST['b'] ?? '';
+$name = $_REQUEST['n'] ?? '';
+$query = $_REQUEST['q'] ?? '';
+$multi_verse = $_REQUEST['m'] ?? 0;
 $search_table = 'bible_cuv_search';
-$language = $_REQUEST['l'];
+$language = $_REQUEST['l'] ?? '';
 if($language)
 	$search_table = 'bible_cuvt_search';
 if($multi_verse)
@@ -25,6 +25,7 @@ $count = 0;
 $title = "$name.$chapter";
 if($verse)
 $title = $title . ".$verse";
+$verse2 = $_REQUEST['verse2'] ?? 0;
 if($verse)
 	$show_verse = true;
 else
@@ -40,7 +41,14 @@ $logo= "/logos/logo_bible.png";
 ?>
 
 
-<?php include("../header1.php") ?>
+<?php 
+// Legacy help.php - redirects to wiki, but include footer if needed
+if (file_exists(__DIR__ . '/header.php')) {
+    include(__DIR__ . '/header.php');
+} elseif (file_exists(__DIR__ . '/banner.php')) {
+    include(__DIR__ . '/banner.php');
+}
+?>
 <script type="text/javascript" charset="gb2312-80"  >
 var momourl = " http://zhsw.org/bk";
 var momoid = "";
@@ -50,7 +58,9 @@ var momotype = "0";
 <script type="text/javascript" src=" http://zhsw.org/bk/plugins/momo/momo.js"></script>
 </head>
 <body>
-<?php include("../header3.php") ?>
+<?php 
+// Legacy header3.php - skip if not exists
+?>
 <h1 id="firstHeading" class="firstHeading">神同在圣经</h1>
 		<div id="bodyContent">
 			<h3 id="siteSub">出自Godwithus Wiki</h3>
@@ -95,4 +105,8 @@ var momotype = "0";
 <p>5 意见建议反馈 本网络模块旨在方便主内牧者和肢体查经服务，希望尽量满足肢体的需求和方便使用，如果您有任何的意见建议请发电邮反馈给Michael HUO  godwithus[AT]bible.world。谢谢，感谢神。
 </p>
 <P>&nbsp;</P>
-<?php include("../footer.php") ?>
+<?php 
+if (file_exists(__DIR__ . '/footer.php')) {
+    include(__DIR__ . '/footer.php');
+}
+?>

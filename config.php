@@ -4,7 +4,20 @@ if (!isset($img_url)) {
     $img_url = "https://engine.bible.world";
 }
 require_once(__DIR__ . "/common.php");
-require_once(__DIR__ . "/config/dbconfig.php");
+// Load dbconfig.php with error handling
+$dbconfig_path = __DIR__ . "/config/dbconfig.php";
+if (!file_exists($dbconfig_path)) {
+    // Try alternative location for backward compatibility
+    $dbconfig_path_alt = __DIR__ . "/dbconfig.php";
+    if (file_exists($dbconfig_path_alt)) {
+        require_once($dbconfig_path_alt);
+    } else {
+        error_log("Error: Database config file not found. Expected: " . __DIR__ . "/config/dbconfig.php");
+        throw new Exception("Database configuration file not found. Please create config/dbconfig.php with database credentials.");
+    }
+} else {
+    require_once($dbconfig_path);
+}
 if (!isset($long_url_base)) {
     $long_url_base = "https://engine.bible.world";
 }
