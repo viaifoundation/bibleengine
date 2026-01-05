@@ -25,6 +25,7 @@ A powerful Bible study and search engine supporting multiple Bible translations 
   - Verse reference lookup (e.g., "John 3:16", "约 3:16")
   - Book range filtering (e.g., "@创-申" for Pentateuch, "@40-43" for Gospels)
   - Multi-verse range support (e.g., "John 3:16-18,20-22")
+  - **AI-Enhanced Search**: AI button for intelligent search (under development)
 
 - **Responsive Design**: Modern, mobile-friendly interface that automatically adapts to desktop and mobile devices - no separate mobile version needed
 
@@ -496,6 +497,33 @@ Users can easily switch between environments using the navigation menu:
 - Shows appropriate link (Production or Development) based on current domain
 - Preserves query parameters when switching
 - Displays in the selected UI language only (no bilingual mixing)
+
+## Recent Updates
+
+### AI Search Integration (January 2026)
+- Added AI search button alongside regular search button
+- Implemented `/api/ai` endpoint for AI-enhanced search
+- Frontend-backend communication via JSON API
+- Both search options use the same form and input field
+- AI search currently returns placeholder responses (under development)
+- See `API_COMMUNICATION.md` for technical details
+
+### Code Refactoring
+- Separated frontend (`index.php`) from backend APIs
+- Created modular API structure (`api/index.php`, `api/ai.php`)
+- Extracted utilities into `utils/` directory:
+  - `db_utils.php` - Database connection and query utilities
+  - `text_utils.php` - Text processing and formatting
+  - `book_utils.php` - Bible book name utilities
+  - `wiki_utils.php` - Wiki search utilities
+  - `env_config.php` - Environment configuration (prod/dev)
+- Moved legacy code to `legacy/` directory
+
+### Environment Management
+- Implemented production/development branch strategy
+- Automatic environment detection based on hostname
+- Environment switcher in navigation menu
+- Separate configurations for `bibleengine.ai` (prod) and `bibledev.com` (dev)
 
 ## Support
 
