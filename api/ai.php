@@ -6,13 +6,36 @@
 
 declare(strict_types=1);
 
-// Load dependencies
-require_once(__DIR__ . '/../lang.php');
-require_once(__DIR__ . '/../utils/env_config.php');
-require_once(__DIR__ . '/../utils/db_utils.php');
-require_once(__DIR__ . '/../utils/text_utils.php');
-require_once(__DIR__ . '/../config.php');
-require_once(__DIR__ . '/../common.php');
+// Set up error handling early
+error_reporting(E_ALL);
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
+// Set response headers early
+header('Content-Type: application/json; charset=utf-8');
+
+// Wrap everything in try-catch to catch require errors
+try {
+    // Load dependencies
+    require_once(__DIR__ . '/../lang.php');
+    require_once(__DIR__ . '/../utils/env_config.php');
+    require_once(__DIR__ . '/../utils/db_utils.php');
+    require_once(__DIR__ . '/../utils/text_utils.php');
+    require_once(__DIR__ . '/../config.php');
+    require_once(__DIR__ . '/../common.php');
+} catch (Throwable $e) {
+    // Catch any errors during require/include
+    http_response_code(500);
+    error_log("API AI Load Error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    echo json_encode([
+        'success' => false,
+        'error' => 'Failed to load dependencies: ' . $e->getMessage(),
+        'file' => basename($e->getFile()),
+        'line' => $e->getLine(),
+        'type' => 'Load Error'
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 // Get request parameters
 $query = trim($_REQUEST['q'] ?? '');
@@ -32,14 +55,6 @@ $esv = isset($_REQUEST['esv']) ? 'esv' : '';
 $strongs = isset($_REQUEST['strongs']) ? true : false;
 
 $bible_books = array_filter([$cuvs, $cuvt, $kjv, $nasb, $esv]);
-
-// Set response headers
-header('Content-Type: application/json; charset=utf-8');
-
-// Enable error reporting for debugging (remove in production)
-error_reporting(E_ALL);
-ini_set('display_errors', '0'); // Don't display, but log errors
-ini_set('log_errors', '1');
 
 try {
     // Get database connection
