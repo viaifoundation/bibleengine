@@ -9,4 +9,7 @@ define('GEMINI_API_URL', 'https://generativelanguage.googleapis.com/v1beta/model
 
 // Optional: Temperature (0.0-0.3 for more stable output)
 define('GEMINI_TEMPERATURE', 0.2);
+
+// Optional: Show thinking process in response (default: false)
+define('GEMINI_SHOW_THINKING', false);
 ?>
