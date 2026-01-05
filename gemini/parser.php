@@ -4,21 +4,18 @@ require_once __DIR__ . '/aiconfig.php';
 
 class GeminiBibleParser {
     public static function parsePrompt($userPrompt) {
-        $url = GEMINI_API_URL . '?key=' . GEMINI_API_KEY;
+        $url = GEMINI_API_URL;
 
-        // Build system instruction as part of contents
-        $systemInstruction = 'You are a Bible query parser. Please analyze user input and output only pure JSON format: {"book":"","chapter":"","verse":"","keyword":""}. If unable to parse, return empty JSON {}. Do not output any explanations or thinking process.';
+        // Build system instruction as part of contents (matching official portal format)
+        $systemInstruction = '你是一個聖經查詢解析器。請分析以下用戶輸入，只輸出純 JSON 格式：{"book":"","chapter":"","verse":"","keyword":""}。如果無法解析，返回空 JSON {}。';
         
         $data = [
             'contents' => [
                 [
                     'parts' => [
-                        ['text' => $systemInstruction . "\n\nUser query: " . $userPrompt]
+                        ['text' => $systemInstruction . "\n用戶輸入：" . $userPrompt]
                     ]
                 ]
-            ],
-            'generationConfig' => [
-                'temperature' => GEMINI_TEMPERATURE,
             ]
         ];
 
@@ -28,6 +25,7 @@ class GeminiBibleParser {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
+            'X-goog-api-key: ' . GEMINI_API_KEY,
         ]);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
