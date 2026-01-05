@@ -36,6 +36,11 @@ $bible_books = array_filter([$cuvs, $cuvt, $kjv, $nasb, $esv]);
 // Set response headers
 header('Content-Type: application/json; charset=utf-8');
 
+// Enable error reporting for debugging (remove in production)
+error_reporting(E_ALL);
+ini_set('display_errors', '0'); // Don't display, but log errors
+ini_set('log_errors', '1');
+
 try {
     // Get database connection
     $db = getDbConnection();
@@ -96,9 +101,24 @@ try {
     
 } catch (Exception $e) {
     http_response_code(500);
+    // Log the error
+    error_log("API AI Error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
     echo json_encode([
         'success' => false,
-        'error' => $e->getMessage()
+        'error' => $e->getMessage(),
+        'file' => basename($e->getFile()),
+        'line' => $e->getLine()
+    ], JSON_UNESCAPED_UNICODE);
+} catch (Error $e) {
+    // Catch fatal errors (PHP 7+)
+    http_response_code(500);
+    error_log("API AI Fatal Error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    echo json_encode([
+        'success' => false,
+        'error' => $e->getMessage(),
+        'file' => basename($e->getFile()),
+        'line' => $e->getLine(),
+        'type' => 'Fatal Error'
     ], JSON_UNESCAPED_UNICODE);
 }
 
