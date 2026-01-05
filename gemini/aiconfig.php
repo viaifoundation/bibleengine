@@ -1,5 +1,5 @@
 <?php
-require_once 'apikeys.php';
+require_once __DIR__ . '/apikeys.php';
 // Gemini API configuration file - Set permissions to 600, only allow www-data to read
 // Model used (recommended Flash, free and fast)
 define('GEMINI_MODEL', 'gemini-1.5-flash');
