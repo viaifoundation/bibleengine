@@ -70,7 +70,7 @@ A powerful Bible study and search engine supporting multiple Bible translations 
    ```
 
 2. **Configure database connection**:
-   Create a `dbconfig.php` file with your database credentials:
+   Create a `config/dbconfig.php` file with your database credentials:
    ```php
    <?php
    $dbhost = 'localhost';
@@ -80,6 +80,7 @@ A powerful Bible study and search engine supporting multiple Bible translations 
    $dbport = 3306; // Optional, defaults to 3306
    ?>
    ```
+   **Note**: The `config/` directory is used for sensitive configuration files and should have restricted permissions (600 recommended).
 
 3. **Import database schema**:
    Import your Bible database schema. The application expects tables named `bible_books` and `bible_search` with appropriate structure.
@@ -94,8 +95,22 @@ A powerful Bible study and search engine supporting multiple Bible translations 
    $wiki_base = 'https://engine.bible.world';
    ```
 
-5. **Set file permissions**:
-   Ensure the web server has read access to all files.
+5. **Configure Gemini API (optional, for AI search)**:
+   Create a `config/gemini_apikeys.php` file with your Gemini API key:
+   ```php
+   <?php
+   define('GEMINI_API_KEY', 'your_gemini_api_key_here');
+   ?>
+   ```
+   **Note**: This file is required only if you plan to use the AI search functionality.
+
+6. **Set file permissions**:
+   - Ensure the web server has read access to all files
+   - Set `config/` directory permissions to 600 (read/write for owner only):
+     ```bash
+     chmod 600 config/dbconfig.php
+     chmod 600 config/gemini_apikeys.php
+     ```
 
 ## Configuration
 
@@ -138,7 +153,7 @@ All UI elements are translated:
 
 ### Database Configuration
 
-The `dbconfig.php` file should contain:
+The `config/dbconfig.php` file should contain:
 - `$dbhost`: Database host
 - `$dbuser`: Database username
 - `$dbpassword`: Database password
@@ -253,9 +268,15 @@ bibleengine/
 │   ├── text_utils.php     # Text processing utilities
 │   ├── book_utils.php       # Bible book name utilities
 │   └── wiki_utils.php     # Wiki utilities
+├── config/                # Sensitive configuration files (not in git)
+│   ├── dbconfig.php       # Database configuration (create this)
+│   └── gemini_apikeys.php # Gemini API keys (create this for AI search)
+├── gemini/                # Gemini AI integration
+│   ├── aiconfig.php       # Gemini API configuration
+│   ├── parser.php         # Bible query parser using Gemini AI
+│   └── test.php           # Test script for parser
 ├── config.php             # Configuration file
 ├── lang.php               # Internationalization (i18n) - language translations
-├── dbconfig.php           # Database configuration (create this)
 ├── common.php             # Common functions and variables
 ├── header.php             # HTML header template
 ├── footer.php             # HTML footer template
@@ -524,6 +545,9 @@ Users can easily switch between environments using the navigation menu:
   - `book_utils.php` - Bible book name utilities
   - `wiki_utils.php` - Wiki search utilities
   - `env_config.php` - Environment configuration (prod/dev)
+- Created `config/` directory for sensitive configuration files:
+  - `config/dbconfig.php` - Database credentials
+  - `config/gemini_apikeys.php` - Gemini API keys (for AI search)
 - Moved legacy code to `legacy/` directory
 
 ### Environment Management
