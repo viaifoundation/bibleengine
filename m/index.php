@@ -819,7 +819,7 @@ if (!$sitename) {
 
 require_once(__DIR__ . "/../common.php");
 require_once(__DIR__ . "/../config.php");
-require_once(__DIR__ . "/../dbconfig.php");
+require_once(__DIR__ . "/../config/dbconfig.php");
 //print_r($book_index);
 
 //$init=false;

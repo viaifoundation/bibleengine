@@ -4,7 +4,7 @@ if (!isset($img_url)) {
     $img_url = "https://engine.bible.world";
 }
 require_once(__DIR__ . "/common.php");
-require_once(__DIR__ . "/dbconfig.php");
+require_once(__DIR__ . "/config/dbconfig.php");
 if (!isset($long_url_base)) {
     $long_url_base = "https://engine.bible.world";
 }

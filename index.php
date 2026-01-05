@@ -375,13 +375,13 @@ if ($en) {
 $bible_books = array_filter([$cuvs, $cuvt, $kjv, $nasb, $esv, $ncvs, $cuvc, $lcvs, $pinyin, $ccsb, $ckjvs, $ckjvt, $clbs, $ukjv, $kjv1611, $bbe]);
 
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/dbconfig.php';
+require_once __DIR__ . '/config/dbconfig.php';
 
 try {
     if (!file_exists(__DIR__ . '/dbconfig.php')) {
         throw new Exception("Error: " . __DIR__ . "/dbconfig.php not found");
     }
-    require_once __DIR__ . '/dbconfig.php';
+    require_once __DIR__ . '/config/dbconfig.php';
 
     if (!isset($dbhost, $dbuser, $dbpassword, $database)) {
         throw new Exception("Error: Database configuration variables not set in dbconfig.php");

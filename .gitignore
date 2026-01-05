@@ -1,4 +1,6 @@
 # Sensitive configuration files
+config/dbconfig.php
+config/dbconfig_bak.php
 dbconfig.php
 dbconfig_bak.php
 
@@ -47,4 +49,5 @@ Thumbs.db
 /tmp/
 
 # Gemini API keys (sensitive)
+config/gemini_apikeys.php
 gemini/apikeys.php

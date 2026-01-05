@@ -12,7 +12,7 @@ function getDbConnection(): mysqli {
     // Check if dbconfig.php has already been loaded
     static $dbconfig_loaded = false;
     if (!$dbconfig_loaded) {
-        require_once(__DIR__ . '/../dbconfig.php');
+        require_once(__DIR__ . '/../config/dbconfig.php');
         $dbconfig_loaded = true;
     }
     

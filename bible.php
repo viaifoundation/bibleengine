@@ -9,7 +9,7 @@ else
 	$url = "index.php?b=$book&c=$chapter&v=$verse";
 if($cmd=='like' && $book && $verse && $chapter)
 {
-	require_once(__DIR__ . '/dbconfig.php');
+	require_once(__DIR__ . '/config/dbconfig.php');
 	require_once(__DIR__ . '/config.php');
 	
 	// Use mysqli instead of SaeMysql
