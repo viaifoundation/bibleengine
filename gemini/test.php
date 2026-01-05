@@ -62,7 +62,10 @@ foreach ($testCases as $index => $testInput) {
         echo "<div class='output'>\n";
         echo "<strong>Result:</strong> ";
         
-        if (empty($result)) {
+        if (isset($result['error'])) {
+            echo "<span class='error'>✗ Error: " . htmlspecialchars($result['error']) . "</span>\n";
+            $failed++;
+        } elseif (empty($result) || (count($result) == 1 && isset($result['error']))) {
             echo "<span class='error'>Empty result (no parsing possible)</span>\n";
             $failed++;
         } else {
@@ -73,6 +76,17 @@ foreach ($testCases as $index => $testInput) {
         echo "<br><strong>Duration:</strong> {$duration}ms\n";
         echo "<br><strong>Output:</strong>\n";
         echo "<pre>" . htmlspecialchars(print_r($result, true)) . "</pre>\n";
+        
+        // Show raw response if error
+        if (isset($result['raw'])) {
+            echo "<br><strong>Raw API Response:</strong>\n";
+            echo "<pre>" . htmlspecialchars($result['raw']) . "</pre>\n";
+        }
+        if (isset($result['response'])) {
+            echo "<br><strong>Full API Response:</strong>\n";
+            echo "<pre>" . htmlspecialchars(print_r($result['response'], true)) . "</pre>\n";
+        }
+        
         echo "</div>\n";
         
     } catch (Exception $e) {
