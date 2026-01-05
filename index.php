@@ -1810,10 +1810,6 @@ function show_form(string $seq = '0'): void {
 <?php if ($portable) echo "<br/>"; ?>
 <input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)"><?php echo t('options_full'); ?>
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
-<a href="help.php"> <?php echo t('help_full'); ?></a>
-<small><a href="copyright.php"><?php echo t('copyright_full'); ?></a></small>
-<strong style="margin: 0 5px;"><?php echo t('language'); ?>:</strong><?php echo getLanguageSwitcher(); ?>
-<small><a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo t('source_code_full'); ?></a></small>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
 <br/><?php echo t('books_full'); ?>
 <select name="b">
