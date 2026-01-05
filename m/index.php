@@ -2123,8 +2123,6 @@ function show_form($seq='0')
 <?php if($portable) echo "<br/>"?>
 <input type='checkbox' name='o' id='<?php echo "o$seq";?>' value='<?php echo "o$seq";?>' <?php if($options) echo 'checked'?> onChange="javascript:toggleOptions(this,<?php echo $seq?>)">选项 Options
 <input type='checkbox' name='p' value='1' <?php if($portable) echo 'checked' ?>>便携 Portable
-<a href="../help.php"> 帮助 Help</a> 
-<small><a href="../copyright.php">版权 Copyright</a></small>
 <div id=<?php echo "options$seq"?> style="display:
 <?php 
 if ($options) echo "inline"; 
