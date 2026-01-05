@@ -9,10 +9,18 @@
  * @throws Exception If connection fails
  */
 function getDbConnection(): mysqli {
-    require_once(__DIR__ . '/../dbconfig.php');
+    // Check if dbconfig.php has already been loaded
+    static $dbconfig_loaded = false;
+    if (!$dbconfig_loaded) {
+        require_once(__DIR__ . '/../dbconfig.php');
+        $dbconfig_loaded = true;
+    }
+    
+    // Access variables from global scope (they're set by dbconfig.php)
+    global $dbhost, $dbuser, $dbpassword, $database, $dbport;
     
     if (!isset($dbhost, $dbuser, $dbpassword, $database)) {
-        throw new Exception("Error: Database configuration variables not set in dbconfig.php");
+        throw new Exception("Error: Database configuration variables not set in dbconfig.php. Please check that dbconfig.php defines \$dbhost, \$dbuser, \$dbpassword, and \$database.");
     }
     
     $dbport_int = isset($dbport) ? (int)$dbport : 3306;
