@@ -6,22 +6,19 @@ class GeminiBibleParser {
     public static function parsePrompt($userPrompt) {
         $url = GEMINI_API_URL . '?key=' . GEMINI_API_KEY;
 
+        // Build system instruction as part of contents
+        $systemInstruction = 'You are a Bible query parser. Please analyze user input and output only pure JSON format: {"book":"","chapter":"","verse":"","keyword":""}. If unable to parse, return empty JSON {}. Do not output any explanations or thinking process.';
+        
         $data = [
             'contents' => [
                 [
                     'parts' => [
-                        ['text' => $userPrompt]
+                        ['text' => $systemInstruction . "\n\nUser query: " . $userPrompt]
                     ]
                 ]
             ],
             'generationConfig' => [
-                'responseMimeType' => 'application/json',  // Force JSON output
                 'temperature' => GEMINI_TEMPERATURE,
-            ],
-            'systemInstruction' => [
-                'parts' => [
-                    ['text' => 'You are a Bible query parser. Please analyze user input and output only pure JSON format: {"book":"","chapter":"","verse":"","keyword":""}. If unable to parse, return empty JSON {}. Do not output any explanations or thinking process.']
-                ]
             ]
         ];
 
