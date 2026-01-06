@@ -13,6 +13,9 @@ class GeminiBibleParser {
         
         if ($noThinking) {
             $systemInstruction .= '絕對不要輸出任何解釋或思考過程。';
+        } else {
+            // When thinking is enabled, explicitly ask for thinking process before JSON
+            $systemInstruction .= '請先輸出你的思考過程，然後再輸出 JSON。';
         }
         
         $data = [
