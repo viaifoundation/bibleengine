@@ -1829,7 +1829,7 @@ function show_form(string $seq = '0'): void {
 <?php if ($portable) echo "<br/>"; ?>
 <input type='checkbox' name='o' id='<?php echo "o$seq"; ?>' value='<?php echo "o$seq"; ?>' <?php if ($options) echo 'checked'; ?> onChange="javascript:toggleOptions(this,<?php echo $seq; ?>)"><?php echo t('options_full'); ?>
 <input type='checkbox' name='p' value='1' <?php if ($portable) echo 'checked'; ?>><?php echo t('portable_full'); ?>
-<input type='checkbox' name='show_thinking' id='showThinking<?php echo $seq; ?>' value='1' checked><?php echo t('show_thinking_full'); ?>
+<input type='checkbox' name='show_thinking' id='showThinking<?php echo $seq; ?>' value='1' checked><?php echo t('show_thinking'); ?>
 <div id="<?php echo "options$seq"; ?>" style="display: <?php echo $options ? 'inline' : 'none'; ?>">
 <br/><?php echo t('books_full'); ?>
 <select name="b" style="max-width: 250px; width: auto;">

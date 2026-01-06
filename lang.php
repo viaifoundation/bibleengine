@@ -274,19 +274,19 @@ $translations = [
         
         // Bible study resources
         'bible_study' => '本节研经资料',
-        'bible_study_full' => '本节研经资料 Bible Study',
+        'bible_study_full' => '本节研经资料',
         'quick_link' => '直达',
-        'quick_link_full' => '直达 Quick Link:',
+        'quick_link_full' => '直达',
         'like_verse' => '喜爱本节',
-        'like_verse_full' => '喜爱本节 Like the Verse',
+        'like_verse_full' => '喜爱本节',
         'please_select' => '请选择',
-        'please_select_full' => '请选择 Please Select',
+        'please_select_full' => '请选择',
         'loading' => '加载中',
-        'loading_full' => '加载中 Loading...',
+        'loading_full' => '加载中',
         'error' => '错误',
-        'error_full' => '错误 Error',
+        'error_full' => '错误',
         'search_results' => '搜索结果',
-        'search_results_full' => '搜索结果 Search Results',
+        'search_results_full' => '搜索结果',
         
         // Errors
         'format_error' => '章节格式错误，可能章号不正确，正确格式参考：',
@@ -319,17 +319,17 @@ $translations = [
         
         // Font size
         'font_size' => '字体大小',
-        'font_size_full' => '字体大小 FontSize',
+        'font_size_full' => '字体大小',
         'font_xs' => '更小',
-        'font_xs_full' => '更小 XS',
+        'font_xs_full' => '更小',
         'font_s' => '小',
-        'font_s_full' => '小 S',
+        'font_s_full' => '小',
         'font_m' => '中',
-        'font_m_full' => '中 M',
+        'font_m_full' => '中',
         'font_l' => '大',
-        'font_l_full' => '大 L',
+        'font_l_full' => '大',
         'font_xl' => '更大',
-        'font_xl_full' => '更大 XL',
+        'font_xl_full' => '更大',
         
         // Bible translations (Simplified Chinese - full names only, short codes in English)
         'trans_cuvs' => '简体和合本',
