@@ -74,8 +74,11 @@ try {
             // This is a simplified version - full implementation needed
         }
     } elseif ($query) {
+        // Get show thinking flag (default: true/enabled)
+        $show_thinking = isset($_REQUEST['show_thinking']) && $_REQUEST['show_thinking'] !== '' && $_REQUEST['show_thinking'] !== '0';
+        
         // Use Gemini to parse the query
-        $parsed = GeminiBibleParser::parsePrompt($query);
+        $parsed = GeminiBibleParser::parsePrompt($query, $show_thinking);
         
         if (isset($parsed['error'])) {
             // Gemini parsing failed, return error
@@ -186,15 +189,25 @@ try {
         $results = [];
     }
     
+    // Get thinking from parsed result if available
+    $thinking = null;
+    if (isset($parsed['thinking'])) {
+        $thinking = $parsed['thinking'];
+    }
+    
     // Format response based on API format
     switch ($api_format) {
         case 'json':
-            echo json_encode([
+            $response = [
                 'success' => true,
                 'data' => $results,
                 'count' => count($results),
                 'query' => $query
-            ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            ];
+            if ($thinking !== null) {
+                $response['thinking'] = $thinking;
+            }
+            echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             break;
             
         case 'text':

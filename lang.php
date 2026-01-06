@@ -117,6 +117,8 @@ $translations = [
         'study_full' => '搜尋',
         'ai' => 'AI',
         'ai_full' => 'AI',
+        'show_thinking' => '顯示思考過程',
+        'show_thinking_full' => '顯示思考過程 Show Thinking',
         
         // Bible study resources
         'bible_study' => '本節研經資料',
@@ -268,6 +270,8 @@ $translations = [
         'study_full' => '搜索',
         'ai' => 'AI',
         'ai_full' => 'AI',
+        'show_thinking' => '显示思考过程',
+        'show_thinking_full' => '显示思考过程 Show Thinking',
         
         // Bible study resources
         'bible_study' => '本节研经资料',
@@ -419,6 +423,8 @@ $translations = [
         'study_full' => 'Search',
         'ai' => 'AI',
         'ai_full' => 'AI',
+        'show_thinking' => 'Show Thinking',
+        'show_thinking_full' => 'Show Thinking',
         
         // Bible study resources
         'bible_study' => 'Bible Study',

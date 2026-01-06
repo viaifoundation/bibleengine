@@ -1716,6 +1716,12 @@ function handleAISearch(seq) {
     return false; // Prevent form submission
 }
 
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 function displayAIResults(data, seq) {
     seq = seq || '0';
     // Create a container for AI results
