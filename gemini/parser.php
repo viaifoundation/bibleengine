@@ -72,7 +72,7 @@ class GeminiBibleParser {
                 // First, try to find JSON object (may be nested, so use balanced braces)
                 // Look for the first { and find its matching }
                 $jsonStart = strpos($responseText, '{');
-                if ($jsonStart !== false) {
+                if ($jsonStart !== false && $jsonStart > 0) {
                     // Extract thinking (everything before the JSON)
                     $thinking = trim(substr($responseText, 0, $jsonStart));
                     
@@ -91,6 +91,28 @@ class GeminiBibleParser {
                         }
                     }
                     $jsonText = substr($responseText, $jsonStart, $jsonEnd - $jsonStart);
+                } elseif ($jsonStart === 0) {
+                    // JSON starts immediately, no thinking before it
+                    // But check if there's text after the JSON
+                    $braceCount = 0;
+                    $jsonEnd = 0;
+                    for ($i = 0; $i < strlen($responseText); $i++) {
+                        if ($responseText[$i] === '{') {
+                            $braceCount++;
+                        } elseif ($responseText[$i] === '}') {
+                            $braceCount--;
+                            if ($braceCount === 0) {
+                                $jsonEnd = $i + 1;
+                                break;
+                            }
+                        }
+                    }
+                    $jsonText = substr($responseText, 0, $jsonEnd);
+                    // Check if there's content after JSON
+                    $afterJson = trim(substr($responseText, $jsonEnd));
+                    if (!empty($afterJson)) {
+                        $thinking = $afterJson;
+                    }
                 } else {
                     // No JSON found, treat entire response as thinking
                     $thinking = $responseText;
@@ -98,13 +120,17 @@ class GeminiBibleParser {
                 }
                 
                 // Clean up thinking: remove markdown code block markers if present
-                $thinking = preg_replace('/^```json\s*/', '', $thinking);
-                $thinking = preg_replace('/^```\s*/', '', $thinking);
-                $thinking = trim($thinking);
+                if (!empty($thinking)) {
+                    $thinking = preg_replace('/^```json\s*/', '', $thinking);
+                    $thinking = preg_replace('/^```\s*/', '', $thinking);
+                    $thinking = preg_replace('/```\s*$/', '', $thinking);
+                    $thinking = trim($thinking);
+                }
                 
                 // Clean up JSON: remove markdown code block markers if present
                 $jsonText = preg_replace('/^```json\s*/', '', $jsonText);
                 $jsonText = preg_replace('/^```\s*/', '', $jsonText);
+                $jsonText = preg_replace('/```\s*$/', '', $jsonText);
                 $jsonText = trim($jsonText);
             } else {
                 // No thinking: just extract JSON
