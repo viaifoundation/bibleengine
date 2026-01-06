@@ -8,7 +8,7 @@ class GeminiBibleParser {
 
         // Build system instruction as part of contents (matching official portal format)
         $noThinking = defined('GEMINI_SHOW_THINKING') && !GEMINI_SHOW_THINKING;
-        $systemInstruction = '你是一個聖經查詢解析器。請分析以下用戶輸入，只輸出純 JSON 格式：{"book":"","chapter":"","verse":"","keyword":""}。如果無法解析，返回空 JSON {}。';
+        $systemInstruction = '你是一個聖經查詢解析器。請分析以下用戶輸入，只輸出純 JSON 格式：{"book":"","chapter":"","verse":"","keyword":""}。如果無法解析，返回空 JSON {}。用戶輸入的可能為簡體中文可能為繁體中文也可能是英文甚至可能是三種語言的混合，需要全部都能夠解析。';
         
         if ($noThinking) {
             $systemInstruction .= '絕對不要輸出任何解釋或思考過程。';
