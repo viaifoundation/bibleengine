@@ -69,18 +69,43 @@ class GeminiBibleParser {
             $jsonText = $responseText;
             
             if ($showThinking) {
-                // Try to extract thinking process (text before JSON)
-                // Look for JSON object in the response
-                if (preg_match('/^(.+?)(\{[^}]+\})/s', $responseText, $matches)) {
-                    $thinking = trim($matches[1]);
-                    $jsonText = $matches[2];
-                } else {
-                    // If no clear separation, try to find JSON and treat rest as thinking
-                    if (preg_match('/\{[^}]+\}/', $responseText, $jsonMatch, PREG_OFFSET_CAPTURE)) {
-                        $thinking = trim(substr($responseText, 0, $jsonMatch[0][1]));
-                        $jsonText = $jsonMatch[0][0];
+                // First, try to find JSON object (may be nested, so use balanced braces)
+                // Look for the first { and find its matching }
+                $jsonStart = strpos($responseText, '{');
+                if ($jsonStart !== false) {
+                    // Extract thinking (everything before the JSON)
+                    $thinking = trim(substr($responseText, 0, $jsonStart));
+                    
+                    // Extract JSON (from first { to matching })
+                    $braceCount = 0;
+                    $jsonEnd = $jsonStart;
+                    for ($i = $jsonStart; $i < strlen($responseText); $i++) {
+                        if ($responseText[$i] === '{') {
+                            $braceCount++;
+                        } elseif ($responseText[$i] === '}') {
+                            $braceCount--;
+                            if ($braceCount === 0) {
+                                $jsonEnd = $i + 1;
+                                break;
+                            }
+                        }
                     }
+                    $jsonText = substr($responseText, $jsonStart, $jsonEnd - $jsonStart);
+                } else {
+                    // No JSON found, treat entire response as thinking
+                    $thinking = $responseText;
+                    $jsonText = '';
                 }
+                
+                // Clean up thinking: remove markdown code block markers if present
+                $thinking = preg_replace('/^```json\s*/', '', $thinking);
+                $thinking = preg_replace('/^```\s*/', '', $thinking);
+                $thinking = trim($thinking);
+                
+                // Clean up JSON: remove markdown code block markers if present
+                $jsonText = preg_replace('/^```json\s*/', '', $jsonText);
+                $jsonText = preg_replace('/^```\s*/', '', $jsonText);
+                $jsonText = trim($jsonText);
             } else {
                 // No thinking: just extract JSON
                 // Remove markdown code blocks if present
@@ -88,8 +113,8 @@ class GeminiBibleParser {
                 $jsonText = preg_replace('/```\s*/', '', $jsonText);
                 $jsonText = trim($jsonText);
                 
-                // Try to find JSON object in the text
-                if (preg_match('/\{[^}]+\}/', $jsonText, $matches)) {
+                // Try to find JSON object in the text (handle nested braces)
+                if (preg_match('/\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/', $jsonText, $matches)) {
                     $jsonText = $matches[0];
                 }
             }
@@ -102,7 +127,7 @@ class GeminiBibleParser {
                 }
                 return $parsed;
             } else {
-                error_log("Gemini API: Failed to parse JSON from response: " . $responseText);
+                error_log("Gemini API: Failed to parse JSON from response. JSON text: " . substr($jsonText, 0, 200) . "... Full response: " . substr($responseText, 0, 500));
                 return ['error' => 'Failed to parse JSON', 'raw' => $responseText];
             }
         }
