@@ -1671,6 +1671,12 @@ function handleAISearch(seq) {
         params.append('e', context.value);
     }
     
+    // Add show thinking flag
+    var showThinking = searchForm.querySelector('input[name="show_thinking"]');
+    if (showThinking && showThinking.checked) {
+        params.append('show_thinking', '1');
+    }
+    
     // Show loading indicator
     var aiButton = document.getElementById('aiButton' + seq);
     var originalValue = '';
@@ -1744,7 +1750,14 @@ function displayAIResults(data, seq) {
     // Display results based on API response format
     if (data.error) {
         resultsContainer.innerHTML += '<p style="color: red;">' + data.error + '</p>';
-    } else if (data.data && data.data.length > 0) {
+    }
+    
+    // Show thinking process if available
+    if (data.thinking) {
+        resultsContainer.innerHTML += '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 3px solid #007bff; border-radius: 3px;"><strong><?php echo addslashes(t('show_thinking_full') ?? 'Thinking Process'); ?>:</strong><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 5px 0;">' + escapeHtml(data.thinking) + '</pre></div>';
+    }
+    
+    if (data.data && data.data.length > 0) {
         var resultsHtml = '<ul>';
         data.data.forEach(function(result) {
             resultsHtml += '<li>';
