@@ -271,6 +271,7 @@ $translations = [
         'ai' => 'AI',
         'ai_full' => 'AI',
         'show_thinking' => '显示思考过程',
+        'show_thinking_full' => '显示思考过程',
         
         // Bible study resources
         'bible_study' => '本节研经资料',
@@ -423,6 +424,7 @@ $translations = [
         'ai' => 'AI',
         'ai_full' => 'AI',
         'show_thinking' => 'Show Thinking',
+        'show_thinking_full' => 'Show Thinking',
         
         // Bible study resources
         'bible_study' => 'Bible Study',
