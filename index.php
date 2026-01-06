@@ -1759,8 +1759,9 @@ function displayAIResults(data, seq) {
     }
     
     // Show thinking process if available
-    if (data.thinking) {
-        resultsContainer.innerHTML += '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 3px solid #007bff; border-radius: 3px;"><strong><?php echo addslashes(t('thinking') ?? 'Thinking'); ?>:</strong><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 5px 0; max-height: 300px; overflow-y: auto; overflow-x: hidden; padding: 5px; background: #fff; border: 1px solid #ddd; border-radius: 3px;">' + escapeHtml(data.thinking) + '</pre></div>';
+    if (data.thinking !== undefined && data.thinking !== null) {
+        var thinkingContent = data.thinking || '(No thinking process provided)';
+        resultsContainer.innerHTML += '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 3px solid #007bff; border-radius: 3px;"><strong><?php echo addslashes(t('thinking') ?? 'Thinking'); ?>:</strong><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 5px 0; max-height: 300px; overflow-y: auto; overflow-x: hidden; padding: 5px; background: #fff; border: 1px solid #ddd; border-radius: 3px;">' + escapeHtml(thinkingContent) + '</pre></div>';
     }
     
     if (data.data && data.data.length > 0) {
