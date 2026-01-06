@@ -64,7 +64,7 @@ $translations = [
         'engine_name_full' => '歌珊地聖經引擎——給力的聖經研讀和聖經搜索引擎',
         'engine_tagline' => '給力的聖經研讀和聖經搜索引擎',
         'web_version' => '網頁版',
-        'web_version_full' => '網頁版 Web',
+        'web_version_full' => '網頁版',
         
         // Search and results
         'search_hint' => '提示：請輸入聖經章節，如 \'John 3:16\' 或 \'約 3:16\'。',
@@ -74,9 +74,9 @@ $translations = [
         
         // Display sections
         'verse_by_verse' => '逐節對照',
-        'verse_by_verse_full' => '逐節對照 Verse-by-Verse Comparison',
+        'verse_by_verse_full' => '逐節對照',
         'whole_chapter' => '整章/整段顯示',
-        'whole_chapter_full' => '整章/整段顯示 Whole Chapter/Block Display',
+        'whole_chapter_full' => '整章/整段顯示',
         
         // Form labels
         'books' => '書卷',
@@ -118,23 +118,23 @@ $translations = [
         'ai' => 'AI',
         'ai_full' => 'AI',
         'show_thinking' => '顯示思考過程',
-        'show_thinking_full' => '顯示思考過程 Show Thinking',
+        'show_thinking_full' => '顯示思考過程',
         
         // Bible study resources
         'bible_study' => '本節研經資料',
-        'bible_study_full' => '本節研經資料 Bible Study',
+        'bible_study_full' => '本節研經資料',
         'quick_link' => '直達',
-        'quick_link_full' => '直達 Quick Link:',
+        'quick_link_full' => '直達',
         'like_verse' => '喜愛本節',
-        'like_verse_full' => '喜愛本節 Like the Verse',
+        'like_verse_full' => '喜愛本節',
         'please_select' => '請選擇',
-        'please_select_full' => '請選擇 Please Select',
+        'please_select_full' => '請選擇',
         'loading' => '載入中',
-        'loading_full' => '載入中 Loading...',
+        'loading_full' => '載入中',
         'error' => '錯誤',
-        'error_full' => '錯誤 Error',
+        'error_full' => '錯誤',
         'search_results' => '搜尋結果',
-        'search_results_full' => '搜尋結果 Search Results',
+        'search_results_full' => '搜尋結果',
         
         // Errors
         'format_error' => '章節格式錯誤，可能章號不正確，正確格式參考：',
@@ -216,7 +216,7 @@ $translations = [
         'engine_name_full' => '歌珊地圣经引擎——给力的圣经研读和圣经搜索引擎',
         'engine_tagline' => '给力的圣经研读和圣经搜索引擎',
         'web_version' => '网页版',
-        'web_version_full' => '网页版 Web',
+        'web_version_full' => '网页版',
         
         // Search and results
         'search_hint' => '提示：请输入圣经章节，如 \'John 3:16\' 或 \'约 3:16\'。',
@@ -227,9 +227,9 @@ $translations = [
         
         // Display sections
         'verse_by_verse' => '逐节对照',
-        'verse_by_verse_full' => '逐节对照 Verse-by-Verse Comparison',
+        'verse_by_verse_full' => '逐节对照',
         'whole_chapter' => '整章/整段显示',
-        'whole_chapter_full' => '整章/整段显示 Whole Chapter/Block Display',
+        'whole_chapter_full' => '整章/整段显示',
         
         // Form labels
         'books' => '书卷',

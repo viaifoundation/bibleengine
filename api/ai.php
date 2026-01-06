@@ -131,6 +131,50 @@ try {
                     }
                 }
                 
+                // Try book_english2 array
+                if (!$book_id) {
+                    global $book_english2;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_english2[$i]) && strtolower($book_english2[$i]) === $book_name_lower) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_en array
+                if (!$book_id) {
+                    global $book_en;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_en[$i]) && strtolower($book_en[$i]) === $book_name_lower) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_en2 array
+                if (!$book_id) {
+                    global $book_en2;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_en2[$i]) && strtolower($book_en2[$i]) === $book_name_lower) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_en3 array
+                if (!$book_id) {
+                    global $book_en3;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_en3[$i]) && strtolower($book_en3[$i]) === $book_name_lower) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
                 // Try book_chinese array (Simplified Chinese)
                 if (!$book_id) {
                     global $book_chinese;
