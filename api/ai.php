@@ -130,6 +130,50 @@ try {
                         }
                     }
                 }
+                
+                // Try book_chinese array (Simplified Chinese)
+                if (!$book_id) {
+                    global $book_chinese;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_chinese[$i]) && $book_chinese[$i] === $book_name) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_taiwan array (Traditional Chinese)
+                if (!$book_id) {
+                    global $book_taiwan;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_taiwan[$i]) && $book_taiwan[$i] === $book_name) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_cn array (Simplified Chinese short names)
+                if (!$book_id) {
+                    global $book_cn;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_cn[$i]) && $book_cn[$i] === $book_name) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Try book_tw array (Traditional Chinese short names)
+                if (!$book_id) {
+                    global $book_tw;
+                    for ($i = 1; $i <= 66; $i++) {
+                        if (isset($book_tw[$i]) && $book_tw[$i] === $book_name) {
+                            $book_id = $i;
+                            break;
+                        }
+                    }
+                }
             }
             
             if ($book_id > 0) {

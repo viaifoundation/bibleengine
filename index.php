@@ -1760,7 +1760,7 @@ function displayAIResults(data, seq) {
     
     // Show thinking process if available
     if (data.thinking) {
-        resultsContainer.innerHTML += '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 3px solid #007bff; border-radius: 3px;"><strong><?php echo addslashes(t('show_thinking_full') ?? 'Thinking Process'); ?>:</strong><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 5px 0;">' + escapeHtml(data.thinking) + '</pre></div>';
+        resultsContainer.innerHTML += '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 3px solid #007bff; border-radius: 3px;"><strong><?php echo addslashes(t('show_thinking') ?? 'Thinking Process'); ?>:</strong><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 5px 0;">' + escapeHtml(data.thinking) + '</pre></div>';
     }
     
     if (data.data && data.data.length > 0) {
