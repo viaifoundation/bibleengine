@@ -1505,17 +1505,17 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                     ["https://www.bible.com/bible/47/" . ($book_short[$bid] ?? '') . ".$cid.$vid", "优训读经"]
                 ];
                 foreach ($links as $link) {
-                    $text_cmp .= "<option value=\"" . htmlspecialchars($link[0]) . "\">" . htmlspecialchars($link[1]) . "</option>\n";
-                    $quick_link_text .= "<a href=\"" . htmlspecialchars($link[0]) . "\" target=\"_blank\">" . htmlspecialchars($link[1]) . "</a> ";
+                    $verse_by_verse_section .= "<option value=\"" . htmlspecialchars($link[0]) . "\">" . htmlspecialchars($link[1]) . "</option>\n";
+                    $quick_link_text .= "<a href=\"" . htmlspecialchars($link[0]) . "\" target=\"_blank\">" . htmlspecialchars($link[1]) . "</a> ";
                 }
-                $text_cmp .= "</select>$quick_link_text";
-                $text_cmp .= " <small><a href=\"bible.php?cmd=like&b=$bid&c=$cid&v=$vid\"><img src='like.png' width=14 height=14 border=0 alt='Like'/>" . t('like_verse_full') . "</a>";
+                $verse_by_verse_section .= "</select>$quick_link_text";
+                $verse_by_verse_section .= " <small><a href=\"bible.php?cmd=like&b=$bid&c=$cid&v=$vid\"><img src='like.png' width=14 height=14 border=0 alt='Like'/>" . t('like_verse_full') . "</a>";
                 if ($likes > 0) {
-                    $text_cmp .= " ($likes)";
+                    $verse_by_verse_section .= " ($likes)";
                 }
-                $text_cmp .= "</small></p>\n";
+                $verse_by_verse_section .= "</small></p>\n";
             }
-            $text_cmp .= "</td></tr></table>";
+            $verse_by_verse_section .= "</td></tr></table>";
             $wiki_text .= "<p>[[MHC:" . htmlspecialchars($book_chinese[$bid] ?? '') . " $cid:$vid | " . htmlspecialchars($book_chinese[$bid] ?? '') . " $cid:$vid]]</p>\n";
             $verse_number++;
             if (!$chapter && !($verse_number % 5)) {
