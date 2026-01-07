@@ -1077,8 +1077,9 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
         $unique_books = [];
         $unique_chapters = [];
         
-        // Add section header for verse-by-verse display
-        $text_cmp .= "<h2>" . t('verse_by_verse_full') . "</h2>\n";
+        // Store verse-by-verse content separately (will be combined with whole chapter section later)
+        $verse_by_verse_section = '';
+        $verse_by_verse_section .= "<h2>" . t('verse_by_verse_full') . "</h2>\n";
 
         while ($row = $result->fetch_assoc()) {
             $bid = isset($row['book']) ? (int)$row['book'] : 0;
@@ -1301,7 +1302,7 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             }
 
             $background = ($verse_number % 2) ? " class=light" : " class=dark";
-            $text_cmp .= "<table border=0 width=100%><tr><td $background>";
+            $verse_by_verse_section .= "<table border=0 width=100%><tr><td $background>";
 
             // SECTION 1: Verse-by-verse display - all enabled translations for this verse
             // Add clickable verse reference before the translations list
@@ -1318,13 +1319,13 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             $verse_ref = ($book_short[$bid] ?? '') . " $cid:$vid";
             $verse_ref_display = $book_short_current . " $cid:$vid";
             if ($portable) {
-                $text_cmp .= "<p><strong>" . htmlspecialchars($verse_ref_display) . "</strong></p>\n";
+                $verse_by_verse_section .= "<p><strong>" . htmlspecialchars($verse_ref_display) . "</strong></p>\n";
             } elseif ($short_url_base) {
-                $text_cmp .= "<p><strong><a href=\"$short_url_base/$osis.htm\">" . htmlspecialchars($verse_ref_display) . "</a></strong></p>\n";
+                $verse_by_verse_section .= "<p><strong><a href=\"$short_url_base/$osis.htm\">" . htmlspecialchars($verse_ref_display) . "</a></strong></p>\n";
             } else {
-                $text_cmp .= "<p><strong><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($verse_ref_display) . "</a></strong></p>\n";
+                $verse_by_verse_section .= "<p><strong><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\">" . htmlspecialchars($verse_ref_display) . "</a></strong></p>\n";
             }
-            $text_cmp .= "<ul>\n";
+            $verse_by_verse_section .= "<ul>\n";
             foreach ($bible_books as $bible_book) {
                 if ($bible_book) {
                     $text_string = $row["text_$bible_book"] ?? '';
@@ -1437,7 +1438,7 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                         $text_string = preg_replace('/<[WH]?[GH]\d{1,4}[a-z]?>/i', '', $text_string);
                     }
                     // Output without htmlspecialchars to allow HTML tags like <p>, <b>, <strong>
-                    $text_cmp .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
+                    $verse_by_verse_section .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     
                     // Also build block text for this translation (for SECTION 2: Block/Chapter display)
                     // Add verse reference link - show only verse number if whole chapter, otherwise show book shortname + chapter:verse
@@ -1480,12 +1481,12 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                     }
                 }
             }
-            $text_cmp .= "</ul>\n";
+            $verse_by_verse_section .= "</ul>\n";
 
             if (!$portable) {
                 $quick_link_text = t('quick_link_full') . " ";
-                $text_cmp .= "<p>" . t('bible_study_full') . " ";
-                $text_cmp .= "<select name=\"$osis\" onchange=\"javascript:handleSelect(this)\">\n<option value=\"\">" . t('please_select_full') . "</option>\n";
+                $verse_by_verse_section .= "<p>" . t('bible_study_full') . " ";
+                $verse_by_verse_section .= "<select name=\"$osis\" onchange=\"javascript:handleSelect(this)\">\n<option value=\"\">" . t('please_select_full') . "</option>\n";
                 $links = [
                     ["http://www.blueletterbible.org/Bible.cfm?b=" . ($book_en[$bid] ?? '') . "&c=$cid&v=$vid", "Blue Letter Bible"],
                     ["http://www.yawill.com/modonline.php?book=$bid&chapter=$cid&node=$vid", "Yawill.com多版本对照"],
@@ -1518,12 +1519,12 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             $wiki_text .= "<p>[[MHC:" . htmlspecialchars($book_chinese[$bid] ?? '') . " $cid:$vid | " . htmlspecialchars($book_chinese[$bid] ?? '') . " $cid:$vid]]</p>\n";
             $verse_number++;
             if (!$chapter && !($verse_number % 5)) {
-                $text_cmp .= " <p> </p></div>\n";
-                $wiki_text .= "<p> </p>\n";
+                $verse_by_verse_section .= " <p> </p></div>\n";
+                $wiki_text .= "<p> </p>\n";
             }
             if ($chapter && !($verse_number % 10)) {
-                $text_cmp .= " <p> </p></div>\n";
-                $wiki_text .= "<p> </p>\n";
+                $verse_by_verse_section .= " <p> </p></div>\n";
+                $wiki_text .= "<p> </p>\n";
             }
         }
         $result->free();
