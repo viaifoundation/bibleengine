@@ -1437,8 +1437,42 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                         // Remove standalone Strong's code tags (not in sup tags)
                         $text_string = preg_replace('/<[WH]?[GH]\d{1,4}[a-z]?>/i', '', $text_string);
                     }
+                    
+                    // Determine translation language and get appropriate book short name
+                    // English translations: kjv, nasb, esv, ukjv, kjv1611, bbe
+                    // Chinese translations: cuvs (Simplified), cuvt (Traditional), cuvc, ncvs, lcvs, ccsb, clbs, ckjvs, ckjvt, pinyin
+                    $is_english_translation = in_array(strtolower($bible_book), ['kjv', 'nasb', 'esv', 'ukjv', 'kjv1611', 'bbe']);
+                    $is_traditional_chinese = in_array(strtolower($bible_book), ['cuvt', 'ckjvt']);
+                    
+                    // Get book short name based on translation language
+                    if ($is_english_translation) {
+                        $book_short_for_translation = $book_short[$bid] ?? '';
+                    } elseif ($is_traditional_chinese) {
+                        $book_short_for_translation = $book_tw[$bid] ?? '';
+                    } else {
+                        // Simplified Chinese or other Chinese translations
+                        $book_short_for_translation = $book_cn[$bid] ?? '';
+                    }
+                    
+                    // Build verse reference with link
+                    $verse_ref_for_translation = $book_short_for_translation . " $cid:$vid";
+                    $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Use OSIS for link
+                    $osis_ref = ($book_short[$bid] ?? '') . ".$cid";
+                    if ($vid) {
+                        $osis_ref .= ".$vid";
+                    }
+                    
+                    // Create clickable verse reference
+                    if ($portable) {
+                        $verse_ref_html = "<strong>" . htmlspecialchars($verse_ref_for_translation) . "</strong> ";
+                    } elseif ($short_url_base) {
+                        $verse_ref_html = "<strong><a href=\"$short_url_base/$osis_ref.htm\">" . htmlspecialchars($verse_ref_for_translation) . "</a></strong> ";
+                    } else {
+                        $verse_ref_html = "<strong><a href=\"$script?q=$verse_ref_link\">" . htmlspecialchars($verse_ref_for_translation) . "</a></strong> ";
+                    }
+                    
                     // Output without htmlspecialchars to allow HTML tags like <p>, <b>, <strong>
-                    $verse_by_verse_section .= "<li><p>" . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
+                    $verse_by_verse_section .= "<li><p>" . $verse_ref_html . $text_string . " (" . strtoupper($bible_book) . ")</p></li>\n";
                     
                     // Also build block text for this translation (for SECTION 2: Block/Chapter display)
                     // Add verse reference link - show only verse number if whole chapter, otherwise show book shortname + chapter:verse
