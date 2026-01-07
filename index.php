@@ -1535,7 +1535,7 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
             $is_whole_chapter = false;
         }
         
-        // SECTION 2: Block/Chapter display - one block per enabled translation showing all verses
+        // SECTION 1: Block/Chapter display - one block per enabled translation showing all verses (now displayed first)
         // Build block display HTML for each translation
         $block_display = '';
         if (!empty($block_texts)) {
@@ -1570,8 +1570,8 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                 }
             }
         }
-        // Append block display to text_cmp
-        $text_cmp .= $block_display;
+        // Combine sections: Whole Chapter first, then Verse-by-Verse
+        $text_cmp = $block_display . $verse_by_verse_section;
         
     } catch (Exception $e) {
         $echo_string = "Database query error: " . htmlspecialchars($e->getMessage());
