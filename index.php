@@ -1438,19 +1438,16 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                         $text_string = preg_replace('/<[WH]?[GH]\d{1,4}[a-z]?>/i', '', $text_string);
                     }
                     
-                    // Determine translation language and get appropriate book short name
-                    // English translations: kjv, nasb, esv, ukjv, kjv1611, bbe
-                    // Chinese translations: cuvs (Simplified), cuvt (Traditional), cuvc, ncvs, lcvs, ccsb, clbs, ckjvs, ckjvt, pinyin
+                    // Verse reference language must match the Bible text: three locales for all 66 books.
+                    // en => $book_short, zh_cn => $book_cn (Simplified), zh_tw => $book_tw (Traditional)
                     $is_english_translation = in_array(strtolower($bible_book), ['kjv', 'nasb', 'esv', 'ukjv', 'kjv1611', 'bbe']);
                     $is_traditional_chinese = in_array(strtolower($bible_book), ['cuvt', 'ckjvt']);
                     
-                    // Get book short name based on translation language
                     if ($is_english_translation) {
                         $book_short_for_translation = $book_short[$bid] ?? '';
                     } elseif ($is_traditional_chinese) {
                         $book_short_for_translation = $book_tw[$bid] ?? '';
                     } else {
-                        // Simplified Chinese or other Chinese translations
                         $book_short_for_translation = $book_cn[$bid] ?? '';
                     }
                     
@@ -1478,17 +1475,7 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                     // Add verse reference link - show only verse number if whole chapter, otherwise show book shortname + chapter:verse
                     // Only build if this translation is enabled and block_texts array has this key
                     if (isset($block_texts[$bible_book])) {
-                        // Get book short name in current language
-                        $book_names = function_exists('getBookNames') ? getBookNames() : null;
-                        if ($book_names) {
-                            $book_short_current = $book_names['short'][$bid] ?? ($book_short[$bid] ?? '');
-                        } else {
-                            // Fallback: use book_cn for Chinese, book_short for English
-                            $book_short_current = function_exists('getCurrentLang') && getCurrentLang() === 'en' 
-                                ? ($book_short[$bid] ?? '') 
-                                : ($book_cn[$bid] ?? '');
-                        }
-                        
+                        // Use book short name in the same language as this translation (already set above as $book_short_for_translation)
                         $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link (always use OSIS)
                         
                         // Determine display format based on whole chapter mode
@@ -1496,8 +1483,8 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                             // Whole chapter: show only verse number
                             $verse_number_display = (string)$vid;
                         } else {
-                            // Multiple chapters/books: show book shortname + chapter:verse
-                            $verse_number_display = $book_short_current . " $cid:$vid";
+                            // Multiple chapters/books: show book shortname + chapter:verse in translation's language
+                            $verse_number_display = $book_short_for_translation . " $cid:$vid";
                         }
                         
                         // Ensure $osis is defined (it should be defined earlier in the loop)
@@ -2000,22 +1987,11 @@ function show_form(string $seq = '0'): void {
 
 show_form();
 
-if (!$portable) {
-    echo "<p> </p>";
-    echo $book_menu;
-    echo "<p> </p>";
-}
-
 if ($wiki) {
     echo $wiki_book_menu;
 }
 
 if ($book) {
-    if (!$portable) {
-        echo "<p> </p>";
-        echo $chapter_menu;
-        echo "<p> </p>";
-    }
     if ($wiki) {
         echo $wiki_chapter_menu;
         if (!$chapter) {
