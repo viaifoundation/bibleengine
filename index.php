@@ -1063,9 +1063,15 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
         // Initialize arrays to store block text for each translation
         // This will be used for the block/chapter display section
         $block_texts = [];
+        $block_verse_min = [];
+        $block_verse_max = [];
+        $block_book_ref = [];
+        $block_chapter = [];
         foreach ($bible_books as $bible_book) {
             if ($bible_book) {
                 $block_texts[$bible_book] = '';
+                $block_verse_min[$bible_book] = null;
+                $block_verse_max[$bible_book] = null;
             }
         }
         
@@ -1478,6 +1484,12 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                         // Use book short name in the same language as this translation (already set above as $book_short_for_translation)
                         $verse_ref_link = ($book_short[$bid] ?? '') . " $cid:$vid"; // Full reference for link (always use OSIS)
                         
+                        // Track verse range and book ref for copy-with-citation
+                        $block_verse_min[$bible_book] = $block_verse_min[$bible_book] === null ? $vid : min($block_verse_min[$bible_book], $vid);
+                        $block_verse_max[$bible_book] = $block_verse_max[$bible_book] === null ? $vid : max($block_verse_max[$bible_book], $vid);
+                        $block_book_ref[$bible_book] = $book_short_for_translation;
+                        $block_chapter[$bible_book] = $cid;
+                        
                         // Determine display format based on whole chapter mode
                         if ($is_whole_chapter) {
                             // Whole chapter: show only verse number
@@ -1492,13 +1504,12 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                         if ($vid) {
                             $osis_block .= ".$vid";
                         }
-                        if ($portable) {
-                            $block_texts[$bible_book] .= " <sup>" . htmlspecialchars($verse_number_display) . "</sup> " . $text_string . " ";
-                        } elseif ($short_url_base) {
-                            $block_texts[$bible_book] .= " <sup><a href=\"$short_url_base/$osis_block.htm\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
-                        } else {
-                            $block_texts[$bible_book] .= " <sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup> " . $text_string . " ";
-                        }
+                        $sup_html = $portable
+                            ? "<sup>" . htmlspecialchars($verse_number_display) . "</sup>"
+                            : ($short_url_base
+                                ? "<sup><a href=\"$short_url_base/$osis_block.htm\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup>"
+                                : "<sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup>");
+                        $block_texts[$bible_book] .= " <span class=\"verse-unit\" data-verse=\"" . (int)$vid . "\">" . $sup_html . " " . $text_string . " </span>";
                     }
                 }
             }
@@ -1584,9 +1595,21 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                         'BBE' => t('trans_bbe') . ' (BBE)'
                     ];
                     $display_name = $translation_names[$translation_name] ?? $translation_name;
-                    
+                    // Short citation name for copy (e.g. ESV, 和合本)
+                    $citation_names = [
+                        'CUVS' => '和合本', 'CUVT' => '和合本', 'KJV' => 'KJV', 'NASB' => 'NASB', 'ESV' => 'ESV',
+                        'CUVC' => '和合本', 'NCVS' => '新译本', 'LCVS' => '吕振中', 'CCSB' => 'CCSB', 'CLBS' => 'CLBS',
+                        'CKJVS' => '和合本', 'CKJVT' => '和合本', 'PINYIN' => 'pinyin', 'UKJV' => 'UKJV', 'KJV1611' => 'KJV', 'BBE' => 'BBE'
+                    ];
+                    $citation_name = $citation_names[$translation_name] ?? $translation_name;
+                    $vmin = isset($block_verse_min[$bible_book]) ? (int)$block_verse_min[$bible_book] : 0;
+                    $vmax = isset($block_verse_max[$bible_book]) ? (int)$block_verse_max[$bible_book] : 0;
+                    $book_ref = isset($block_book_ref[$bible_book]) ? htmlspecialchars($block_book_ref[$bible_book]) : '';
+                    $chap = isset($block_chapter[$bible_book]) ? (int)$block_chapter[$bible_book] : 0;
+                    $block_display .= "<div class=\"bible-copy-block\" data-book-ref=\"" . $book_ref . "\" data-chapter=\"" . $chap . "\" data-verse-min=\"" . $vmin . "\" data-verse-max=\"" . $vmax . "\" data-translation-citation=\"" . htmlspecialchars($citation_name) . "\">\n";
                     $block_display .= "<h3>" . htmlspecialchars($display_name) . "</h3>\n";
                     $block_display .= "<p>" . $block_texts[$bible_book] . "</p>\n";
+                    $block_display .= "</div>\n";
                     $block_display .= "<p> </p>\n";
                 }
             }
@@ -1631,6 +1654,47 @@ function handleSelect(elm) {
         window.open(elm.value, '_blank');
     }
 }
+
+// Copy selected Bible text as plain text + citation: "text... (Book c:v1-v2 Translation)"
+document.addEventListener('copy', function(e) {
+    var sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    var range = sel.getRangeAt(0);
+    if (range.collapsed) return;
+    var node = range.commonAncestorContainer;
+    var block = node.nodeType === 1 ? node : node.parentElement;
+    if (!block || !block.closest) return;
+    block = block.closest('.bible-copy-block');
+    if (!block) return;
+    var units = block.querySelectorAll('.verse-unit');
+    var selected = [];
+    for (var i = 0; i < units.length; i++) {
+        try {
+            if (range.intersectsNode(units[i])) selected.push(units[i]);
+        } catch (err) { continue; }
+    }
+    if (selected.length === 0) return;
+    selected.sort(function(a, b) { return parseInt(a.getAttribute('data-verse'), 10) - parseInt(b.getAttribute('data-verse'), 10); });
+    var verses = selected.map(function(u) { return parseInt(u.getAttribute('data-verse'), 10); });
+    var vMin = verses[0], vMax = verses[verses.length - 1];
+    var plainParts = [];
+    for (var j = 0; j < selected.length; j++) {
+        var el = selected[j].cloneNode(true);
+        var sups = el.querySelectorAll('sup');
+        for (var k = 0; k < sups.length; k++) sups[k].parentNode.removeChild(sups[k]);
+        var t = (el.textContent || el.innerText || '').trim();
+        if (t) plainParts.push(t);
+    }
+    var plainText = plainParts.join(' ');
+    var bookRef = block.getAttribute('data-book-ref') || '';
+    var chapter = block.getAttribute('data-chapter') || '';
+    var citation = block.getAttribute('data-translation-citation') || '';
+    var rangeStr = vMin === vMax ? String(vMin) : vMin + '-' + vMax;
+    var citationSuffix = ' (' + bookRef + ' ' + chapter + ':' + rangeStr + ' ' + citation + ')';
+    var finalText = (plainText + citationSuffix).trim();
+    e.clipboardData.setData('text/plain', finalText);
+    e.preventDefault();
+});
 
 function toggleOptions(elm, idx) {
     var options = idx ? document.getElementById("options1") : document.getElementById("options0");
