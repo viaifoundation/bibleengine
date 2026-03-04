@@ -1509,7 +1509,7 @@ if (!empty($sql) && ($index || empty($echo_string) || $has_found_message)) {
                             : ($short_url_base
                                 ? "<sup><a href=\"$short_url_base/$osis_block.htm\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup>"
                                 : "<sup><a href=\"$script?q=" . ($book_short[$bid] ?? '') . " $cid:$vid\" title=\"" . htmlspecialchars($verse_ref_link) . "\">" . htmlspecialchars($verse_number_display) . "</a></sup>");
-                        $block_texts[$bible_book] .= " <span class=\"verse-unit\" data-verse=\"" . (int)$vid . "\">" . $sup_html . " " . $text_string . " </span>";
+                        $block_texts[$bible_book] .= " <span class=\"verse-unit\" data-verse=\"" . (int)$vid . "\" data-book-ref=\"" . htmlspecialchars($book_short_for_translation) . "\" data-chapter=\"" . (int)$cid . "\">" . $sup_html . " " . $text_string . " </span>";
                     }
                 }
             }
@@ -1655,7 +1655,7 @@ function handleSelect(elm) {
     }
 }
 
-// Copy selected Bible text as plain text + citation: "text... (Book c:v1-v2 Translation)"
+// Copy selected Bible text as plain text + citation. Single book/chapter: "Book c:v1-v2 Translation"; multiple: "(ref1,ref2,... Translation)"
 document.addEventListener('copy', function(e) {
     var sel = window.getSelection();
     if (!sel || sel.rangeCount === 0) return;
@@ -1667,30 +1667,50 @@ document.addEventListener('copy', function(e) {
     block = block.closest('.bible-copy-block');
     if (!block) return;
     var units = block.querySelectorAll('.verse-unit');
-    var selected = [];
+    var selectedSet = [];
     for (var i = 0; i < units.length; i++) {
         try {
-            if (range.intersectsNode(units[i])) selected.push(units[i]);
+            if (range.intersectsNode(units[i])) selectedSet.push(units[i]);
         } catch (err) { continue; }
     }
-    if (selected.length === 0) return;
-    selected.sort(function(a, b) { return parseInt(a.getAttribute('data-verse'), 10) - parseInt(b.getAttribute('data-verse'), 10); });
-    var verses = selected.map(function(u) { return parseInt(u.getAttribute('data-verse'), 10); });
-    var vMin = verses[0], vMax = verses[verses.length - 1];
+    if (selectedSet.length === 0) return;
+    // Preserve document order (important for multi-book/chapter search results)
+    var selected = [];
+    for (var i = 0; i < units.length; i++) {
+        if (selectedSet.indexOf(units[i]) >= 0) selected.push(units[i]);
+    }
     var plainParts = [];
+    var refs = [];
+    var bookRef0 = null, chapter0 = null;
     for (var j = 0; j < selected.length; j++) {
-        var el = selected[j].cloneNode(true);
+        var u = selected[j];
+        var el = u.cloneNode(true);
         var sups = el.querySelectorAll('sup');
         for (var k = 0; k < sups.length; k++) sups[k].parentNode.removeChild(sups[k]);
         var t = (el.textContent || el.innerText || '').trim();
         if (t) plainParts.push(t);
+        var bookRef = u.getAttribute('data-book-ref') || '';
+        var chapter = u.getAttribute('data-chapter') || '';
+        var verse = u.getAttribute('data-verse') || '';
+        if (j === 0) { bookRef0 = bookRef; chapter0 = chapter; }
+        refs.push(bookRef + ' ' + chapter + ':' + verse);
     }
     var plainText = plainParts.join(' ');
-    var bookRef = block.getAttribute('data-book-ref') || '';
-    var chapter = block.getAttribute('data-chapter') || '';
     var citation = block.getAttribute('data-translation-citation') || '';
-    var rangeStr = vMin === vMax ? String(vMin) : vMin + '-' + vMax;
-    var citationSuffix = ' (' + bookRef + ' ' + chapter + ':' + rangeStr + ' ' + citation + ')';
+    var citationSuffix;
+    var sameBookChapter = true;
+    for (var j = 0; j < selected.length; j++) {
+        var u = selected[j];
+        if (u.getAttribute('data-book-ref') !== bookRef0 || u.getAttribute('data-chapter') !== chapter0) { sameBookChapter = false; break; }
+    }
+    if (sameBookChapter && selected.length > 0) {
+        var verses = selected.map(function(u) { return parseInt(u.getAttribute('data-verse'), 10); });
+        var vMin = Math.min.apply(null, verses), vMax = Math.max.apply(null, verses);
+        var rangeStr = vMin === vMax ? String(vMin) : vMin + '-' + vMax;
+        citationSuffix = ' (' + bookRef0 + ' ' + chapter0 + ':' + rangeStr + ' ' + citation + ')';
+    } else {
+        citationSuffix = ' (' + refs.join(',') + ' ' + citation + ')';
+    }
     var finalText = (plainText + citationSuffix).trim();
     e.clipboardData.setData('text/plain', finalText);
     e.preventDefault();
