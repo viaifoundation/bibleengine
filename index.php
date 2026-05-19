@@ -1917,6 +1917,7 @@ function displayAIResults(data, seq) {
 </head>
 <body>
 <?php include __DIR__ . '/banner.php'; ?>
+<?php include __DIR__ . '/upper_menu.php'; ?>
 <center><div align="center">
 <?php
 function show_form(string $seq = '0'): void {
