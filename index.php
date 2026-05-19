@@ -888,10 +888,15 @@ $book_english_val = $book_english[$book] ?? '';
 $book_short_val = $book_short[$book] ?? '';
 $book_count_val = $book_count[$book] ?? 0;
 
-// Build chapter menu with consistent format: "创世记(创) Genesis(Gen)  1  2  3..."
+// Build chapter menu with language-specific short names
 $chapter_menu = '';
-if (isset($book_chinese[$book], $book_cn[$book], $book_english[$book], $book_short[$book])) {
-    $chapter_menu = "{$book_chinese[$book]}({$book_cn[$book]}) {$book_english[$book]}({$book_short[$book]}) ";
+$lang = function_exists('getCurrentLang') ? getCurrentLang() : 'zh_tw';
+if ($lang === 'zh_tw' && isset($book_tw[$book], $book_short[$book])) {
+    $chapter_menu = "<strong>" . $book_short[$book] . " " . $book_tw[$book] . "</strong> ";
+} elseif ($lang === 'zh_cn' && isset($book_cn[$book], $book_short[$book])) {
+    $chapter_menu = "<strong>" . $book_short[$book] . " " . $book_cn[$book] . "</strong> ";
+} elseif ($lang === 'en' && isset($book_short[$book])) {
+    $chapter_menu = "<strong>" . $book_short[$book] . "</strong> ";
 }
 $wiki_chapter_menu = "<p>=={$book_chinese_val}目录==</p><p> </p>\n";
 for ($i = 1; $i <= $book_count_val; $i++) {
@@ -1917,7 +1922,6 @@ function displayAIResults(data, seq) {
 </head>
 <body>
 <?php include __DIR__ . '/banner.php'; ?>
-<?php include __DIR__ . '/upper_menu.php'; ?>
 <center><div align="center">
 <?php
 function show_form(string $seq = '0'): void {
@@ -2072,6 +2076,15 @@ function show_form(string $seq = '0'): void {
 
 show_form();
 
+if (!$portable) {
+    if ($book) {
+        echo '<div class="upper-chapter-menu">';
+        echo $chapter_menu;
+        echo '</div>';
+    }
+    include __DIR__ . '/upper_menu.php';
+}
+
 if ($wiki) {
     echo $wiki_book_menu;
 }
@@ -2125,13 +2138,6 @@ if ($wiki) {
 }
 
 echo "<p> </p>";
-if ($book && !$portable) {
-    echo $chapter_menu;
-}
-echo "<p> </p>";
-if (!$portable) {
-    echo $book_menu;
-}
 
 echo "<p> </p>";
 if (!$portable) {

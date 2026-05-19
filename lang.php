@@ -83,10 +83,10 @@ $translations = [
         'books_full' => '書卷',
         'whole_bible' => '整本聖經',
         'whole_bible_full' => '整本聖經',
-        'old_testament' => '舊約全書',
-        'old_testament_full' => '舊約全書',
-        'new_testament' => '新約全書',
-        'new_testament_full' => '新約全書',
+        'old_testament' => 'OT 舊約',
+        'old_testament_full' => 'OT 舊約',
+        'new_testament' => 'NT 新約',
+        'new_testament_full' => 'NT 新約',
         'law' => '摩西五經',
         'history' => '歷史書',
         'poetry_wisdom' => '詩歌智慧書',
@@ -155,8 +155,8 @@ $translations = [
         'more_translations_full' => '更多譯本',
         
         // Bible sections
-        'old_testament' => '舊約 (OT)',
-        'new_testament' => '新約 (NT)',
+        'old_testament' => 'OT 舊約',
+        'new_testament' => 'NT 新約',
         
         // Organization names
         'viai_foundation' => '唯愛AI基金會',
@@ -237,10 +237,10 @@ $translations = [
         'books_full' => '书卷',
         'whole_bible' => '整本圣经',
         'whole_bible_full' => '整本圣经',
-        'old_testament' => '旧约全书',
-        'old_testament_full' => '旧约全书',
-        'new_testament' => '新约全书',
-        'new_testament_full' => '新约全书',
+        'old_testament' => 'OT 旧约',
+        'old_testament_full' => 'OT 旧约',
+        'new_testament' => 'NT 新约',
+        'new_testament_full' => 'NT 新约',
         'law' => '摩西五经',
         'history' => '历史书',
         'poetry_wisdom' => '诗歌智慧书',
@@ -309,8 +309,8 @@ $translations = [
         'more_translations_full' => '更多译本',
         
         // Bible sections
-        'old_testament' => '旧约 (OT)',
-        'new_testament' => '新约 (NT)',
+        'old_testament' => 'OT 旧约',
+        'new_testament' => 'NT 新约',
         
         // Organization names
         'viai_foundation' => '唯爱AI基金会',
@@ -391,10 +391,10 @@ $translations = [
         'books_full' => 'Books',
         'whole_bible' => 'Whole Bible',
         'whole_bible_full' => 'Whole Bible',
-        'old_testament' => 'Old Testament',
-        'old_testament_full' => 'Old Testament',
-        'new_testament' => 'New Testament',
-        'new_testament_full' => 'New Testament',
+        'old_testament' => 'OT (Old Testament)',
+        'old_testament_full' => 'OT (Old Testament)',
+        'new_testament' => 'NT (New Testament)',
+        'new_testament_full' => 'NT (New Testament)',
         'law' => 'Law',
         'history' => 'History',
         'poetry_wisdom' => 'Poetry & Wisdom',
@@ -463,8 +463,8 @@ $translations = [
         'more_translations_full' => 'More Translations',
         
         // Bible sections
-        'old_testament' => 'Old Testament (OT)',
-        'new_testament' => 'New Testament (NT)',
+        'old_testament' => 'OT (Old Testament)',
+        'new_testament' => 'NT (New Testament)',
         
         // Organization names
         'viai_foundation' => 'VI AI Foundation',
