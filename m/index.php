@@ -1296,7 +1296,15 @@ for($i=1;$i<=66;++$i) {
 $book_menu = $book_menu . " </p>";
 $wiki_book_menu = $wiki_book_menu . "\n";
 
-$chapter_menu =  $book_chinese[$book] . "(" . $book_cn[$book] . ") " . $book_english[$book] . "(" . $book_short[$book]  . ") ";
+$chapter_menu = '';
+$lang = function_exists('getCurrentLang') ? getCurrentLang() : 'zh_tw';
+if ($lang === 'zh_tw' && isset($book_tw[$book], $book_short[$book])) {
+    $chapter_menu = "<strong>" . $book_short[$book] . " " . $book_tw[$book] . "</strong> ";
+} elseif ($lang === 'zh_cn' && isset($book_cn[$book], $book_short[$book])) {
+    $chapter_menu = "<strong>" . $book_short[$book] . " " . $book_cn[$book] . "</strong> ";
+} elseif ($lang === 'en' && isset($book_short[$book])) {
+    $chapter_menu = "<strong>" . $book_short[$book] . "</strong> ";
+}
 $wiki_chapter_menu = "<p>==". $book_chinese[$book] . "目录==</p><p>&nbsp;</p>\n";
 for($i = 1; $i <= $book_count[$book]; $i++)
 {
@@ -2025,8 +2033,7 @@ if($index || !$echo_string)
 //$text_py = "<p>" . $text_py . " (Pinyin) </p>";
 }
 
-$chapter_menu = "<p>" . $chapter_menu . "</p>";
-
+// Wrapped in upper-chapter-menu class inside output section
 ?>
 
 <?php
@@ -2262,29 +2269,27 @@ else echo "none";
 <?php
 show_form();
 
-if(!$portable)
-{
-	echo "<p>&nbsp; </p>";
-	echo $book_menu;
-	echo "<p>&nbsp; </p>";
-
+if (!$portable) {
+    if ($book) {
+        echo '<div class="upper-chapter-menu">';
+        echo $chapter_menu;
+        echo '</div>';
+    }
+    include __DIR__ . '/../upper_menu.php';
 }
-if($wiki)
-	echo $wiki_book_menu;
-if($book)
-{
-	if(!$portable)
-	{
-		echo "<p>&nbsp; </p>";
-		echo $chapter_menu;
-		echo "<p>&nbsp; </p>";
-	}
-	if($wiki){
-		echo $wiki_chapter_menu;
-		if(!$chapter) 
-			echo "<p>&nbsp;</p><p>{{Template:MHC:" . $book_chinese[$book] .  "}}</p>";
-		echo "<p>{{Template:MHC:圣经}}</p><p>&nbsp;</p>";
-	}
+
+if ($wiki) {
+    echo $wiki_book_menu;
+}
+
+if ($book) {
+    if ($wiki) {
+        echo $wiki_chapter_menu;
+        if (!$chapter) {
+            echo "<p>&nbsp;</p><p>{{Template:MHC:" . $book_chinese[$book] .  "}}</p>";
+        }
+        echo "<p>{{Template:MHC:圣经}}</p><p>&nbsp;</p>";
+    }
 }
 echo "<div align=center><center>";
 ?>
@@ -2409,13 +2414,6 @@ if($wiki){
 		echo "<p>&nbsp;</p><p>{{Template:MHC:" . $book_chinese[$book] .  "}}</p>";
 	echo "<p>{{Template:MHC:圣经}}</p><p>&nbsp;</p>";
 }	
-echo "<p>&nbsp; </p>";
-if($book && !$portable)
-	echo $chapter_menu;
-echo "<p>&nbsp; </p>";
-if(!$portable)
-	echo $book_menu;
-
 echo "<p>&nbsp; </p>";
 if(!$portable)
 {
