@@ -15,32 +15,32 @@ $lang = function_exists('getCurrentLang') ? getCurrentLang() : 'zh_tw';
 <style>
 .upper-chapter-menu {
     text-align: center;
-    padding: 8px 12px;
-    font-size: 14px;
+    padding: 4px 8px;
+    font-size: 12px;
     max-width: 1000px;
-    margin: 8px auto 16px auto;
+    margin: 4px auto 8px auto;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 8px 12px;
+    gap: 4px 8px;
 }
 .upper-chapter-menu strong {
     color: #1e293b;
-    font-size: 14px;
-    border-right: 2px solid #cbd5e1;
-    padding-right: 12px;
-    margin-right: 4px;
+    font-size: 12px;
+    border-right: 1px solid #cbd5e1;
+    padding-right: 8px;
+    margin-right: 2px;
     font-weight: 700;
 }
 .upper-chapter-menu a {
     text-decoration: none;
     color: #0f766e;
-    padding: 3px 6px;
-    border-radius: 4px;
+    padding: 2px 4px;
+    border-radius: 3px;
     transition: all 0.2s ease;
     font-weight: 500;
 }
@@ -58,47 +58,47 @@ $lang = function_exists('getCurrentLang') ? getCurrentLang() : 'zh_tw';
 
 .upper-book-menu {
     text-align: center;
-    padding: 12px;
+    padding: 6px 10px;
     max-width: 1000px;
-    margin: 0 auto 16px auto;
+    margin: 0 auto 8px auto;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 6px;
 }
 .upper-book-menu .book-group {
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 8px;
 }
 .upper-book-menu .book-group:last-child {
     margin-bottom: 0;
 }
 .upper-book-menu .book-group strong {
-    font-size: 13px;
+    font-size: 11px;
     color: #475569;
     background-color: #e2e8f0;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 2px 5px;
+    border-radius: 3px;
     white-space: nowrap;
-    margin-top: 2px;
-    min-width: 60px;
+    margin-top: 1px;
+    min-width: 45px;
     text-align: center;
 }
 .upper-book-menu .book-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 6px 10px;
+    gap: 3px 6px;
     flex-grow: 1;
 }
 .upper-book-menu a {
     text-decoration: none;
     color: #334155;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap;
-    padding: 3px 6px;
-    border-radius: 4px;
+    padding: 1px 4px;
+    border-radius: 3px;
     transition: all 0.2s ease;
     border: 1px solid transparent;
 }
