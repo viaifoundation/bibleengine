@@ -1660,16 +1660,28 @@ function handleSelect(elm) {
     }
 }
 
-// Copy selected Bible text as plain text + citation. Single book/chapter: "Book c:v1-v2 Translation"; multiple: "(ref1,ref2,... Translation)"
 document.addEventListener('copy', function(e) {
     var sel = window.getSelection();
     if (!sel || sel.rangeCount === 0) return;
     var range = sel.getRangeAt(0);
     if (range.collapsed) return;
+    var block = null;
     var node = range.commonAncestorContainer;
-    var block = node.nodeType === 1 ? node : node.parentElement;
-    if (!block || !block.closest) return;
-    block = block.closest('.bible-copy-block');
+    var startBlock = node.nodeType === 1 ? node : node.parentElement;
+    if (startBlock && startBlock.closest) {
+        block = startBlock.closest('.bible-copy-block');
+    }
+    if (!block) {
+        var blocks = document.querySelectorAll('.bible-copy-block');
+        for (var i = 0; i < blocks.length; i++) {
+            try {
+                if (range.intersectsNode(blocks[i])) {
+                    block = blocks[i];
+                    break;
+                }
+            } catch (err) { continue; }
+        }
+    }
     if (!block) return;
     var units = block.querySelectorAll('.verse-unit');
     var selectedSet = [];

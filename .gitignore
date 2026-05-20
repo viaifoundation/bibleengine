@@ -47,7 +47,6 @@ Thumbs.db
 /cache/
 /logs/
 /tmp/
-
 # Gemini API keys (sensitive)
 config/apikeys.php
 config/gemini_apikeys.php
