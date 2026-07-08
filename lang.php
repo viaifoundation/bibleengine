@@ -60,8 +60,8 @@ $translations = [
         'copyright_full' => '版權',
         
         // Engine name and tagline
-        'engine_name' => '聖經引擎 AI',
-        'engine_name_full' => '聖經引擎 AI——給力的聖經研讀和聖經搜索引擎',
+        'engine_name' => '聖經引擎智能體',
+        'engine_name_full' => '聖經引擎智能體——給力的聖經研讀和聖經搜索引擎',
         'engine_tagline' => '給力的聖經研讀和聖經搜索引擎',
         'web_version' => '網頁版',
         'web_version_full' => '網頁版',
@@ -213,8 +213,8 @@ $translations = [
         'copyright_full' => '版权',
         
         // Engine name and tagline
-        'engine_name' => '圣经引擎 AI',
-        'engine_name_full' => '圣经引擎 AI——给力的圣经研读和圣经搜索引擎',
+        'engine_name' => '圣经引擎智能体',
+        'engine_name_full' => '圣经引擎智能体——给力的圣经研读和圣经搜索引擎',
         'engine_tagline' => '给力的圣经研读和圣经搜索引擎',
         'web_version' => '网页版',
         'web_version_full' => '网页版',
