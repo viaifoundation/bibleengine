@@ -37,7 +37,7 @@ $sitename = 'BibleEngine.ai';
 $engine_name_en = 'Bible Engine AI'; // English engine name (fallback)
 $engine_name_cn = function_exists('t') ? t('engine_name') : '圣经引擎'; // Chinese engine name (from translations)
 $engine_name_full = function_exists('t') ? t('engine_name_full') : ($engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Bible Study and Bible Search Engine');
-$copyright_text = '2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation'; // Copyright text
+$copyright_text = '2004-2026 唯爱AI基金会 VI AI Foundation'; // Copyright text
 
 function show_hint(): string {
     return t('search_hint');

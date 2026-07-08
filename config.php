@@ -54,7 +54,7 @@ if (!isset($engine_name_full)) {
     }
 }
 if (!isset($copyright_text)) {
-    $copyright_text = '2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';
+    $copyright_text = '2004-2026 唯爱AI基金会 VI AI Foundation';
 }
 if (!isset($github_url)) {
     $github_url = 'https://github.com/viaifoundation/bibleengine';
