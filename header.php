@@ -18,7 +18,7 @@ $https = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : '';
 $engine_name_cn_meta = function_exists('t') ? t('engine_name') : (isset($engine_name_cn) ? $engine_name_cn : '圣经引擎');
 $engine_tagline_cn_meta = function_exists('t') ? t('engine_tagline') : '给力的圣经研读和搜索引擎';
 $engine_name_en_meta = isset($engine_name_en) ? $engine_name_en : 'Bible Engine';
-$engine_tagline_en_meta = 'Powerful Bible Study and Search Engine';
+$engine_tagline_en_meta = 'Powerful Agentic Bible Study and Search Engine';
 echo htmlspecialchars($engine_name_cn_meta) . '——' . htmlspecialchars($engine_tagline_cn_meta) . ' ' . htmlspecialchars($engine_name_en_meta) . ' -- ' . htmlspecialchars($engine_tagline_en_meta);
 ?> " />
 	<meta name="keywords" content="圣经,研读,研经,搜索,引擎, Bible, Study, Search, Engine"/>

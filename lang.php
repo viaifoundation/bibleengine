@@ -368,8 +368,8 @@ $translations = [
         
         // Engine name and tagline
         'engine_name' => 'Bible Engine AI',
-        'engine_name_full' => 'Bible Engine AI -- Powerful Bible Study and Bible Search Engine',
-        'engine_tagline' => 'Powerful Bible Study and Bible Search Engine',
+        'engine_name_full' => 'Bible Engine AI -- Powerful Agentic Bible Study and Search Engine',
+        'engine_tagline' => 'Powerful Agentic Bible Study and Search Engine',
         'web_version' => 'Web',
         'web_version_full' => 'Web',
         

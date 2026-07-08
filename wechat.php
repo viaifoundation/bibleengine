@@ -46,7 +46,7 @@ function show_tips()
 function show_about()
 {
 	$txt="\n【关于我们】\n\n基督徒百科和圣经引擎微信公众版\n\n";
-    $txt .="\n 圣经引擎——给力的圣经研读和圣经搜索引擎\n Bible Engine -- Powerful Bible Study and Bible Search Engine ";
+    $txt .="\n 圣经引擎——给力的圣经研读和圣经搜索引擎\n Bible Engine -- Powerful Agentic Bible Study and Search Engine ";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） WCF，威斯敏斯特大要理问答（大要理问答）WLC，威斯敏斯特小要理问答（小要理问答）WSC";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
 	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 圣经引擎 BibleEngine ";
@@ -75,7 +75,7 @@ function show_hint()
 function show_helper()
 {
 	$txt="\n【功能开发中】\n\n基督徒百科和圣经引擎微信公众版\n\n";
-    $txt .="\n 圣经引擎——给力的圣经研读和圣经搜索引擎\n Bible Engine -- Powerful Bible Study and Bible Search Engine ";
+    $txt .="\n 圣经引擎——给力的圣经研读和圣经搜索引擎\n Bible Engine -- Powerful Agentic Bible Study and Search Engine ";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） WCF，威斯敏斯特大要理问答（大要理问答）WLC，威斯敏斯特小要理问答（小要理问答）WSC";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
 	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 圣经引擎 BibleEngine";

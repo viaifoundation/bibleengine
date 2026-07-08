@@ -50,7 +50,7 @@ if (!isset($engine_name_full)) {
     if (function_exists('t')) {
         $engine_name_full = t('engine_name_full');
     } else {
-        $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Bible Study and Bible Search Engine';
+        $engine_name_full = $engine_name_cn . '——给力的圣经研读和圣经搜索引擎 <br/> <b>' . $engine_name_en . '</b> -- Powerful Agentic Bible Study and Search Engine';
     }
 }
 if (!isset($copyright_text)) {
