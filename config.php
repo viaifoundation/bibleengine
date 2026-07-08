@@ -40,10 +40,10 @@ if (!isset($sitename)) {
     $sitename = "@圣经引擎 Wechat 微信号 CCBible/DBible/BibleEngine";
 }
 if (!isset($engine_name_en)) {
-    $engine_name_en = 'Bible Engine';
+    $engine_name_en = 'Bible Engine AI';
 }
 if (!isset($engine_name_cn)) {
-    $engine_name_cn = function_exists('t') ? t('engine_name') : '圣经引擎';
+    $engine_name_cn = function_exists('t') ? t('engine_name') : '圣经引擎 AI';
 }
 if (!isset($engine_name_full)) {
     // engine_name_full will be set from translations if lang.php is loaded
