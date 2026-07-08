@@ -7,7 +7,7 @@ require_once("config.php")?>
 <?php if(!$portable) { ?>
 <center><div align="center">
 <table border=0><tr>
-<td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="88" /></a> </td>
+<td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="31" /></a> </td>
 <td><?php 
 if (function_exists('t')) {
     $engine_name = t('engine_name');
@@ -38,7 +38,7 @@ echo $wiki_help_url;
 <?php }else{ ?>
 <center><div align="center">
 <table border=0><tr>
-<td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="88" /></a> </td>
+<td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="31" /></a> </td>
 <td><?php 
 if (function_exists('t')) {
     $engine_name = t('engine_name');
