@@ -15,7 +15,7 @@ if (function_exists('t')) {
     // Show only the current language
     echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline);
 } else {
-    echo isset($engine_name_full) ? $engine_name_full : '<b>歌珊地圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Goshen Bible Engine</b> -- Powerful Bible Study and Bible Search Engine';
+    echo isset($engine_name_full) ? $engine_name_full : '<b>圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Bible Engine</b> -- Powerful Bible Study and Bible Search Engine';
 }
 ?></td>
 </tr></table>
@@ -46,7 +46,7 @@ if (function_exists('t')) {
     // Show only the current language
     echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline);
 } else {
-    echo isset($engine_name_full) ? $engine_name_full : '<b>歌珊地圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Goshen Bible Engine</b> -- Powerful Bible Study and Bible Search Engine';
+    echo isset($engine_name_full) ? $engine_name_full : '<b>圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Bible Engine</b> -- Powerful Bible Study and Bible Search Engine';
 }
 ?></td>
 </tr></table>

@@ -2,14 +2,14 @@
 
 <p align=right><div align=right><?php 
 // Show only the current language
-$engine_name_display = function_exists('t') ? t('engine_name') : (isset($engine_name_cn) ? $engine_name_cn : (isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine'));
+$engine_name_display = function_exists('t') ? t('engine_name') : (isset($engine_name_cn) ? $engine_name_cn : (isset($engine_name_en) ? $engine_name_en : 'Bible Engine'));
 echo htmlspecialchars($engine_name_display); 
 ?> © <?php 
-$copyright_display = isset($copyright_text) ? $copyright_text : '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';
+$copyright_display = isset($copyright_text) ? $copyright_text : '2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';
 // Use translated organization names
-$goshen_name = function_exists('t') ? t('goshen_tech') : '歌珊地科技 Goshen Tech';
+$goshen_name = function_exists('t') ? t('goshen_tech') : '圣经科技 Bible Tech';
 $viai_name = function_exists('t') ? t('viai_foundation') : '唯爱AI基金会 VI AI Foundation';
-$copyright_display = str_replace('歌珊地科技 Goshen Tech', '<a href="https://geshandi.com" target="_blank">' . htmlspecialchars($goshen_name) . '</a>', $copyright_display);
+$copyright_display = str_replace('圣经科技 Bible Tech', '<a href="https://weiai.ai" target="_blank">' . htmlspecialchars($goshen_name) . '</a>', $copyright_display);
 $copyright_display = str_replace('唯爱AI基金会 VI AI Foundation', '<a href="https://viaifoundation.org" target="_blank">' . htmlspecialchars($viai_name) . '</a>', $copyright_display);
 echo $copyright_display;
 ?> | <a href="copyright.php"><?php echo function_exists('t') ? t('copyright_full') : '版权 Copyright'; ?></a> | <?php if (function_exists('getLanguageSwitcher')) echo getLanguageSwitcher() . ' | '; ?><a href="<?php echo isset($long_url_base) ? $long_url_base : 'https://bibleengine.ai'; ?>"><?php echo isset($long_url_base) ? $long_url_base : 'https://bibleengine.ai'; ?></a> | <a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo function_exists('t') ? t('source_code_full') : '源码 Source Code'; ?></a></div></p>

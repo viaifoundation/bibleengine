@@ -37,13 +37,13 @@ if (!isset($max_record_count)) {
     $max_record_count = 500;
 }
 if (!isset($sitename)) {
-    $sitename = "@歌珊地圣经引擎 Wechat 微信号 CCBible/DBible/BibleEngine";
+    $sitename = "@圣经引擎 Wechat 微信号 CCBible/DBible/BibleEngine";
 }
 if (!isset($engine_name_en)) {
-    $engine_name_en = 'Goshen Bible Engine';
+    $engine_name_en = 'Bible Engine';
 }
 if (!isset($engine_name_cn)) {
-    $engine_name_cn = function_exists('t') ? t('engine_name') : '歌珊地圣经引擎';
+    $engine_name_cn = function_exists('t') ? t('engine_name') : '圣经引擎';
 }
 if (!isset($engine_name_full)) {
     // engine_name_full will be set from translations if lang.php is loaded
@@ -54,7 +54,7 @@ if (!isset($engine_name_full)) {
     }
 }
 if (!isset($copyright_text)) {
-    $copyright_text = '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';
+    $copyright_text = '2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation';
 }
 if (!isset($github_url)) {
     $github_url = 'https://github.com/viaifoundation/bibleengine';

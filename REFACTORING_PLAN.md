@@ -129,12 +129,12 @@ bibleengine/
 - **Production**: 
   - `short_url_base`: `https://bibleengine.ai`
   - `sitename`: `BibleEngine.ai`
-  - `engine_name_en`: `Goshen Bible Engine`
+  - `engine_name_en`: `Bible Engine`
   
 - **Development**:
   - `short_url_base`: `https://bibledev.com`
   - `sitename`: `BibleDev.com`
-  - `engine_name_en`: `Goshen Bible Engine (Dev)`
+  - `engine_name_en`: `Bible Engine (Dev)`
 
 ## 7. Refactoring Progress
 

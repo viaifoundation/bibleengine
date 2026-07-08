@@ -69,6 +69,6 @@ var momolength = "16";
 var momotype = "0";
 </script>
 <!--<script type="text/javascript" src="http://zhsw.org/bk/plugins/momo/momo.js"></script>-->
-<script type="text/javascript" src="http://bible.geshandi.com/js/momo.js"></script>
+<script type="text/javascript" src="http://bible.weiai.ai/js/momo.js"></script>
 
 

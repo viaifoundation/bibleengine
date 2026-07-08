@@ -1,4 +1,4 @@
-# Goshen Bible Engine (歌珊地圣经引擎)
+# Bible Engine (圣经引擎)
 
 A powerful Bible study and search engine supporting multiple Bible translations in Chinese (Simplified, Traditional), English, and Pinyin. Built with PHP 8 and MySQL/MariaDB.
 
@@ -124,9 +124,9 @@ In `index.php`, you can configure:
 - `$sitename`: Site name displayed in headers
 - `$wiki_base`: Base URL for wiki integration
 - `$wiki_search_base`: Base URL for wiki search
-- `$engine_name_en`: English engine name (default: "Goshen Bible Engine")
-- `$engine_name_cn`: Chinese engine name (default: "歌珊地圣经引擎")
-- `$copyright_text`: Copyright text (default: "2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation")
+- `$engine_name_en`: English engine name (default: "Bible Engine")
+- `$engine_name_cn`: Chinese engine name (default: "圣经引擎")
+- `$copyright_text`: Copyright text (default: "2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation")
 - `$github_url`: GitHub repository URL (default: "https://github.com/viaifoundation/bibleengine")
 
 ### Internationalization (i18n)
@@ -171,7 +171,7 @@ The application supports two environments with automatic detection:
 - **Configuration**: Managed via `utils/env_config.php`
   - `short_url_base`: `https://bibleengine.ai`
   - `sitename`: `BibleEngine.ai`
-  - `engine_name_en`: `Goshen Bible Engine`
+  - `engine_name_en`: `Bible Engine`
 - **Status**: Currently synchronized with `dev` branch (as of latest merge)
 
 #### Development Environment
@@ -181,7 +181,7 @@ The application supports two environments with automatic detection:
 - **Configuration**: Managed via `utils/env_config.php`
   - `short_url_base`: `https://bibledev.com`
   - `sitename`: `BibleDev.com`
-  - `engine_name_en`: `Goshen Bible Engine (Dev)`
+  - `engine_name_en`: `Bible Engine (Dev)`
 - **Status**: Active development branch. Changes are tested here before merging to `main`
 
 #### Branch Strategy
@@ -322,7 +322,7 @@ bibleengine/
 
 ## Bible Text Tag Formats
 
-The Goshen Bible Engine supports MySword/theWord-style tagged Bible modules. The following tags are processed when Strong's codes are enabled:
+The Bible Engine supports MySword/theWord-style tagged Bible modules. The following tags are processed when Strong's codes are enabled:
 
 ### 1. Strong's Number Tags (Lexical/Concordance Tags)
 
@@ -488,7 +488,7 @@ Enable debug mode by adding `?debug=1` to the URL to see SQL queries and debug i
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Copyright © 2004-2024 [歌珊地科技 Goshen Tech](https://geshandi.com), 2025-2026 [唯爱AI基金会 VI AI Foundation](https://viaifoundation.org)
+Copyright © 2004-2024 [圣经科技 Bible Tech](https://weiai.ai), 2025-2026 [唯爱AI基金会 VI AI Foundation](https://viaifoundation.org)
 
 ## Internationalization
 
@@ -575,8 +575,8 @@ For issues, questions, or contributions:
 
 ## Acknowledgments
 
-- **Goshen Bible Engine (歌珊地圣经引擎)** - A powerful Bible study and search engine
-- **Developed by**: [唯爱AI基金会 VI AI Foundation](https://viaifoundation.org) (歌珊地科技 Goshen Tech)
+- **Bible Engine (圣经引擎)** - A powerful Bible study and search engine
+- **Developed by**: [唯爱AI基金会 VI AI Foundation](https://viaifoundation.org) (圣经科技 Bible Tech)
 - **GitHub**: [https://github.com/viaifoundation/bibleengine](https://github.com/viaifoundation/bibleengine)
 
 ## Links

@@ -4,7 +4,7 @@ $data = <<< EOD
     {	
           "type":"view",
           "name":"Mobile",
-          "url":"http://bible.geshandi.com/m"
+          "url":"http://bible.weiai.ai/m"
       },
 	{	
           "type":"view",

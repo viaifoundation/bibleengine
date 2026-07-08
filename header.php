@@ -15,9 +15,9 @@ $https = isset($_SERVER['HTTPS']) ? strtolower($_SERVER['HTTPS']) : '';
 	<link rel="icon" href="<?php echo $img_url?>/favicon.ico" type="image/x-icon"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo $img_url?>/css/css.css" />
 	<meta name="description" content="<?php 
-$engine_name_cn_meta = function_exists('t') ? t('engine_name') : (isset($engine_name_cn) ? $engine_name_cn : '歌珊地圣经引擎');
+$engine_name_cn_meta = function_exists('t') ? t('engine_name') : (isset($engine_name_cn) ? $engine_name_cn : '圣经引擎');
 $engine_tagline_cn_meta = function_exists('t') ? t('engine_tagline') : '给力的圣经研读和搜索引擎';
-$engine_name_en_meta = isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine';
+$engine_name_en_meta = isset($engine_name_en) ? $engine_name_en : 'Bible Engine';
 $engine_tagline_en_meta = 'Powerful Bible Study and Search Engine';
 echo htmlspecialchars($engine_name_cn_meta) . '——' . htmlspecialchars($engine_tagline_cn_meta) . ' ' . htmlspecialchars($engine_name_en_meta) . ' -- ' . htmlspecialchars($engine_tagline_en_meta);
 ?> " />

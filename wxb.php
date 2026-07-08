@@ -49,16 +49,16 @@ class wechatCallbackapiTest
                 {
               		$msgType = "text";
                 	$contentStr = search($keyword);
-					//$contentStr="歌珊地圣经引擎 微信公众平台 bibleengine http://bible.geshandi.com";
+					//$contentStr="圣经引擎 微信公众平台 bibleengine http://bible.weiai.ai";
                 	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                 	echo $resultStr;
                 }else{
-                	$contentStr="\n可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@基督徒百科 ccbible @歌珊地圣经引擎  bibleengine http://bible.geshandi.com bible@geshandi.com";
+                	$contentStr="\n可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@基督徒百科 ccbible @圣经引擎  bibleengine http://bible.weiai.ai bible@weiai.ai";
 					echo $contentStr;
                 }
 
         }else {
-			$contentStr="\n可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@基督徒百科 ccbible @歌珊地圣经引擎  bibleengine http://bible.geshandi.com bible@geshandi.com";
+			$contentStr="\n可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@基督徒百科 ccbible @圣经引擎  bibleengine http://bible.weiai.ai bible@weiai.ai";
         	echo $contentStr;
         	exit;
         }
@@ -85,11 +85,11 @@ class wechatCallbackapiTest
 }
 function show_help()
 {
-	$txt="歌珊地圣经引擎微信公众版使用帮助\n";
+	$txt="圣经引擎微信公众版使用帮助\n";
 	$txt .= "\n可选择书卷范围 例如“神 说 @创” 或 “神 说 @出-利” 或“神 说 @2-5”（支持所有中英文简繁体书卷名和缩写格式和数字序号），需要将这个选项放在最后\n";
 	$txt .= "\n可使用斜线设定选项，例如 /E /EN 英文 /C /CN 简体中文 /T /TW 繁体中文 /P /PINYIN 拼音译本 /NCVS /LCVS /BBE /KJV1611 /UKJV等译本, /KJV,/CUVS,/CUVT,/NASB含原文编码\n";
 	$txt .= "欢迎提供改进意见和建议以便我们升级改进，您可以直接回复消息或者微博联系@基督徒百科 ccbible";
-	$txt .=  "\n @歌珊地圣经引擎 ";
+	$txt .=  "\n @圣经引擎 ";
 	return $txt;
 }
 function search($q)
@@ -97,8 +97,8 @@ function search($q)
 
 	if($q==""|| $q=="subscribe" || $q=="Hello2BizUser")
 	{
-		$txt="欢迎关注，愿上帝赐福！\n@歌珊地圣经引擎 微信号 bibleengine。@基督徒百科 ccbible\n";
-		$txt .=  "可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@歌珊地圣经引擎 bibleengine @基督徒百科 ccbible http://bible.geshandi.com bible@geshandi.com" ;
+		$txt="欢迎关注，愿上帝赐福！\n@圣经引擎 微信号 bibleengine。@基督徒百科 ccbible\n";
+		$txt .=  "可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@圣经引擎 bibleengine @基督徒百科 ccbible http://bible.weiai.ai bible@weiai.ai" ;
 		return $txt;	
 	}
 $book_short=array("", "Gen", "Exod", "Lev", "Num", "Deut", "Josh", "Judg", "Ruth", "1Sam", "2Sam", "1Kgs", "2Kgs", "1Chr", "2Chr", "Ezra", "Neh", "Esth", "Job", "Ps", "Prov", "Eccl", "Song", "Isa", "Jer", "Lam", "Ezek", "Dan", "Hos", "Joel", "Amos", "Obad", "Jonah", "Mic", "Nah", "Hab", "Zeph", "Hag", "Zech", "Mal", "Matt", "Mark", "Luke", "John", "Acts", "Rom", "1Cor", "2Cor", "Gal", "Eph", "Phil", "Col", "1Thess", "2Thess", "1Tim", "2Tim", "Titus", "Phlm", "Heb", "Jas", "1Pet", "2Pet", "1John", "2John", "3John", "Jude", "Rev");
@@ -1666,7 +1666,7 @@ if($index || !$echo_string)
 	$txt .=  $text_cmp;
 	if($query && $echo_string)
 		$txt .=  "\n" . $echo_string;
-	$txt .= "\n @歌珊地圣经引擎 ";
+	$txt .= "\n @圣经引擎 ";
 	return $txt;
 }
 ?>

@@ -19,7 +19,7 @@ function show_example()
 function show_help()
 {
 	$txt="\n【使用帮助】\n\n";
-	$txt .="(接收#每日真道圣言#推送请关注歌珊地iGeshandi和基督徒百科CCBible)\n\n";
+	$txt .="(接收#每日真道圣言#推送请关注歌珊地和基督徒百科CCBible)\n\n";
 	$txt .="请发送圣经搜索关键词或圣经章节索引查询(请不要输入标点符号)。支持中文简体繁体和英文大小写的混合输入，兼容半角和全角的标点符号。\n";
 	$txt .= "\n可选择书卷范围 例如“神 说 @创” 或 “神 说 @出-利” 或“以赛亚 @40-66”\n";
 	$txt .= "\n可使用斜线设定输出选项，例如 /E /EN 发送英文 /C /CN 简体中文 /T /TW 繁体中文 /P /PINYIN 拼音译本 /NCVS /LCVS /BBE /KJV1611 /UKJV  不同译本，/s 显示原文编码\n";
@@ -34,22 +34,22 @@ function show_help()
 }
 function show_about()
 {
-	$txt="\n【关于我们】\n\n基督徒百科和歌珊地圣经引擎微信公众版\n\n";
+	$txt="\n【关于我们】\n\n基督徒百科和圣经引擎微信公众版\n\n";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） wcf，威斯敏斯特大要理问答（大要理问答）wlc，威斯敏斯特小要理问答（小要理问答）wsc";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
-	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible  歌珊地 iGeshandi 歌珊地圣经引擎服务号 BibleEngine";
-    $txt .= "\n\n我们的微博：@基督徒百科@歌珊地科技";
+	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible  歌珊地  圣经引擎服务号 BibleEngine";
+    $txt .= "\n\n我们的微博：@基督徒百科@圣经科技";
     $txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600 　学习群226112909 　团契群89857902 　神学群81591230 　商务群226112700";
-    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://baike.jidutu.org/wiki/BibleEngine\n";
+    $txt .= "\n\n详细帮助请参阅基督徒百科的圣经引擎词条 http://baike.jidutu.org/wiki/BibleEngine\n";
 	$txt .= "\n\n基督徒百科微信公众版词条 http://baike.jidutu.org/wiki/ccbible\n";
-    $txt .= "\n\n联系方式：微博 @如鹰展翼而上@歌珊地圣经引擎 微信脸书推特领英 michaelhuo 电邮 huo@live.cn QQ 38799316\n";
+    $txt .= "\n\n联系方式：微博 @如鹰展翼而上@圣经引擎 微信脸书推特领英 michaelhuo 电邮 huo@live.cn QQ 38799316\n";
 	$txt .=  $this->show_hint() . $this->show_banner();
 	return $txt;
 }
 function show_banner()
 {
 
-	$txt =  "\n基督徒百科 CCBible 歌珊地 iGeshandi 歌珊地圣经引擎 BibleEngine\n@基督徒百科@歌珊地科技";
+	$txt =  "\n基督徒百科 CCBible 歌珊地  圣经引擎 BibleEngine\n@基督徒百科@圣经科技";
 	return $txt;
 }
 function show_hint()
@@ -94,7 +94,7 @@ function show_example()
 function show_help()
 {
 	$txt="\n【使用帮助】\n\n";
-	$txt .="(接收#每日真道圣言#推送请关注歌珊地iGeshandi和基督徒百科CCBible)\n\n";
+	$txt .="(接收#每日真道圣言#推送请关注歌珊地和基督徒百科CCBible)\n\n";
 	$txt .="请发送圣经搜索关键词或圣经章节索引查询(请不要输入标点符号)。支持中文简体繁体和英文大小写的混合输入，兼容半角和全角的标点符号。\n";
 	$txt .= "\n可选择书卷范围 例如“神 说 @创” 或 “神 说 @出-利” 或“以赛亚 @40-66”\n";
 	$txt .= "\n可使用斜线设定输出选项，例如 /E /EN 发送英文 /C /CN 简体中文 /T /TW 繁体中文 /P /PINYIN 拼音译本 /NCVS /LCVS /BBE /KJV1611 /UKJV  不同译本，/s 显示原文编码\n";
@@ -109,22 +109,22 @@ function show_help()
 }
 function show_about()
 {
-	$txt="\n【关于我们】\n\n基督徒百科和歌珊地圣经引擎微信公众版\n\n";
+	$txt="\n【关于我们】\n\n基督徒百科和圣经引擎微信公众版\n\n";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） wcf，威斯敏斯特大要理问答（大要理问答）wlc，威斯敏斯特小要理问答（小要理问答）wsc";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
-	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible  歌珊地 iGeshandi 歌珊地圣经引擎服务号 BibleEngine";
-    $txt .= "\n\n我们的微博：@基督徒百科@歌珊地科技";
+	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible  歌珊地  圣经引擎服务号 BibleEngine";
+    $txt .= "\n\n我们的微博：@基督徒百科@圣经科技";
     $txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600 　学习群226112909 　团契群89857902 　神学群81591230 　商务群226112700";
-    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://baike.jidutu.org/wiki/BibleEngine\n";
+    $txt .= "\n\n详细帮助请参阅基督徒百科的圣经引擎词条 http://baike.jidutu.org/wiki/BibleEngine\n";
 	$txt .= "\n\n基督徒百科微信公众版词条 http://baike.jidutu.org/wiki/ccbible\n";
-    $txt .= "\n\n联系方式：微博 @如鹰展翼而上@歌珊地圣经引擎 微信脸书推特领英 michaelhuo 电邮 huo@live.cn QQ 38799316\n";
+    $txt .= "\n\n联系方式：微博 @如鹰展翼而上@圣经引擎 微信脸书推特领英 michaelhuo 电邮 huo@live.cn QQ 38799316\n";
 	$txt .=  show_hint() . show_banner();
 	return $txt;
 }
 function show_banner()
 {
 
-	$txt =  "\n基督徒百科 CCBible 歌珊地 iGeshandi 歌珊地圣经引擎 BibleEngine\n@基督徒百科@歌珊地科技";
+	$txt =  "\n基督徒百科 CCBible 歌珊地  圣经引擎 BibleEngine\n@基督徒百科@圣经科技";
 	return $txt;
 }
 function show_hint()

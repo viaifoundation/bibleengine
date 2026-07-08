@@ -579,8 +579,8 @@ $book_index=array(
 krsort($book_index); //reversely sort by keys
 
 $short_url_base="http://ymnl.org";
-$long_url_base="http://bible.geshandi.com";
-$BibleEngine_base="http://wiki.geshandi.com";
+$long_url_base="http://bible.weiai.ai";
+$BibleEngine_base="http://baike.weiai.ai";
 $max_book_count = 7;
 $max_record_count =200;
 
@@ -937,7 +937,7 @@ if($query)
 else
 		$title = $english_title;
 		
-$title .= " - 歌珊地圣经引擎 Geshandi BibleEngine.com";
+$title .= " - 圣经引擎 Geshandi bible.weiai.ai";
 /*if($mode != 'QUERY')
 	$title .= $short_url_title . ".htm";
 */	
@@ -1523,8 +1523,8 @@ function toggleOptions(elm)
 
 
 <p>&nbsp;</p>
-  <p>歌珊地圣经引擎 Geshandi Bible Engile <a href="http://BibleEngine.com">BibleEngine.com</a>  <br/>
-  <a href="http://bible.geshandi.com">bible.geshandi.com</a> <a href="http://shengjing.geshandi.com">shengjing.geshandi.com</a>   <a href="http://b.ymnl.org">b.ymnl.org</a>   <a href="http://bible.world/bible">bible.world/bible</a>
+  <p>圣经引擎 Bible Engine <a href="http://bible.weiai.ai">bible.weiai.ai</a>  <br/>
+  <a href="http://bible.weiai.ai">bible.weiai.ai</a> <a href="http://bible.weiai.ai">bible.weiai.ai</a>   <a href="http://b.ymnl.org">b.ymnl.org</a>   <a href="http://bible.world/bible">bible.world/bible</a>
 <!-- (<a href="devel.php">Devel</a> | <a href="alpha.php">Alpha</a>  | <a href="beta.php">Beta</a>  | <a href="legacy.php">Legacy</a>) -->
 <br/>
 </p>
@@ -1544,8 +1544,8 @@ function show_form()
 <input type="text" size="80" maxlength="128" name="q" value="<?php echo $query ?>"> 
 <input  type="submit" value="查经 STUDY"> 
 <input type='checkbox' name='o' id='o' value='o' <?php if($options) echo 'checked'?> onChange="javascript:toggleOptions(this)">选项 Options
-<a href="http://wiki.geshandi.com/wiki/BibleEngine"> 帮助 Help</a> 
-<br/>(<small><a href="http://wiki.geshandi.com/wiki/圣经版权">圣经译本版权信息 Bible Translation Copyright Information</a></small>)
+<a href="http://baike.weiai.ai/wiki/BibleEngine"> 帮助 Help</a> 
+<br/>(<small><a href="http://baike.weiai.ai/wiki/圣经版权">圣经译本版权信息 Bible Translation Copyright Information</a></small>)
 
 
 <div id=options style="display:

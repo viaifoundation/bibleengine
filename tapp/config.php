@@ -121,7 +121,7 @@ else
 {
 define( "APP_KEY",'801260250');
 define( "APP_SKEY" , '58de863a338d3858eb123a0cc2862010' );
-define( "CALLBACK_URL" , "http://bible.geshandi.com/app" );
+define( "CALLBACK_URL" , "http://bible.weiai.ai/app" );
 define( "APP_WEIBO", 0);
 define( "APP_QQ", 0);
 }

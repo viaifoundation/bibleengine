@@ -1575,7 +1575,7 @@ function toggleOptions(elm,idx=0)
 
 <p>&nbsp;</p>
 <!--
-  <p><?php echo $sitename?><a href="http://BibleEngine.com">BibleEngine.com</a>  <br/>
+  <p><?php echo $sitename?><a href="http://bible.weiai.ai">bible.weiai.ai</a>  <br/>
   <a href="<?php echo $long_url_base?>"><?php echo $long_url_base?></a> <a href="<?php echo $short_url_base?>"><?php echo $short_url_base?></a> 
 -->  
 <!-- (<a href="devel.php">Devel</a> | <a href="alpha.php">Alpha</a>  | <a href="beta.php">Beta</a>  | <a href="legacy.php">Legacy</a>) -->

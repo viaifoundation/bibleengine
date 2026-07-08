@@ -59,7 +59,7 @@ class wechatCallbackapiTest
 						$contentStr= $txt . show_help();
 					}else  if($keyword == "unsubscribe"){
 						//$txt=save_user($fromUsername, false);
-						$contentStr="\n感谢关注 @基督徒百科 微信公众号 ccbible ，欢迎再次关注，也欢迎关注 歌珊地圣经引擎 微信号 BibleEngine 愿上帝赐福。";
+						$contentStr="\n感谢关注 @基督徒百科 微信公众号 ccbible ，欢迎再次关注，也欢迎关注 圣经引擎 微信号 BibleEngine 愿上帝赐福。";
 					}
 					else if($keyword =="CLICK"){
 						if($EventKey=="HELP"){
@@ -69,10 +69,10 @@ class wechatCallbackapiTest
 							$contentStr=show_example();
 						}
 						else
-							$contentStr="感谢联系歌珊地圣经引擎微信公众版。该操作还未支持，请发送问号？字符H或数字1获取帮助。";
+							$contentStr="感谢联系圣经引擎微信公众版。该操作还未支持，请发送问号？字符H或数字1获取帮助。";
 						
 					}else
-						$contentStr="感谢联系歌珊地圣经引擎微信公众版。该操作还未支持，请发送问号？字符H或数字1获取帮助。";
+						$contentStr="感谢联系圣经引擎微信公众版。该操作还未支持，请发送问号？字符H或数字1获取帮助。";
 					//$contentStr = $keyword . "\n" . show_help();
 
 				
@@ -94,17 +94,17 @@ class wechatCallbackapiTest
 						}
 						else if(substr($keyword,0,1)=="?"){
 							$logStr=save_log($MsgID,$fromUsername,$toUsername,$time,$msgType,$keyword);
-							$contentStr = "您的问题已经收到，感谢您的消息，愿上帝赐福！发送问号？字符H或数字1获取帮助。另，推荐关注生命季刊微信公众号 cclife2013gmail 发送问题会有牧者公开解答。@歌珊地圣经引擎 微信号 BibleEngine\n" . $logStr;
+							$contentStr = "您的问题已经收到，感谢您的消息，愿上帝赐福！发送问号？字符H或数字1获取帮助。另，推荐关注生命季刊微信公众号 cclife2013gmail 发送问题会有牧者公开解答。@圣经引擎 微信号 BibleEngine\n" . $logStr;
 						}else{
 							$contentStr = search($keyword);
 						}
 						$msg=save_user($fromUsername, true);
 						//$contentStr .= "\n$msg";
-						//$contentStr="歌珊地圣经引擎 微信公众平台 bibleengine http://bible.geshandi.com";
+						//$contentStr="圣经引擎 微信公众平台 bibleengine http://bible.weiai.ai";
 					//}
 
                 }else{
-                	$contentStr="\n可文本发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@歌珊地圣经引擎  BibleEngine @基督徒百科 BibleEngine  http://bible.geshandi.com bible@geshandi.com";
+                	$contentStr="\n可文本发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@圣经引擎  BibleEngine @基督徒百科 BibleEngine  http://bible.weiai.ai bible@weiai.ai";
 				//	echo $contentStr;
                 }
 				
@@ -115,7 +115,7 @@ class wechatCallbackapiTest
                 echo $resultStr;
 
         }else {
-			$contentStr="\n可文本发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@歌珊地圣经引擎  BibleEngine 基督徒百科 ccbible  http://bible.geshandi.com bible@geshandi.com";
+			$contentStr="\n可文本发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@圣经引擎  BibleEngine 基督徒百科 ccbible  http://bible.weiai.ai bible@weiai.ai";
         	echo $contentStr;
         	exit;
         }
@@ -148,7 +148,7 @@ class wechatCallbackapiTest
 }
 function show_example()
 {
-	$txt="歌珊地圣经引擎微信公众版使用示例\n\n";
+	$txt="圣经引擎微信公众版使用示例\n\n";
 	$txt .="(查询百科和接收今日真道圣言请关注 基督徒百科 CCBible)\n\n";
 	$txt .="请发送圣经搜索关键词或圣经章节索引查询。\n例如：“是就说是” “上帝爱世人” “耶稣 Christ 保羅”，或“太1” “約3：16-18” “Mic 6:8;约3:16” 等（不含引号）。支持中文简体繁体和英文大小写的混合输入，兼容半角和全角的标点符号。\n";
 	$txt .="在输入框内输入空格分隔的关键词例如“耶稣 保羅 Christ”，或者输入标准的圣经书卷名索引例如“约 3:16-18；Mt 5:10;1 John 2:1-2;羅馬書 1:2-4,7,9-11”";
@@ -159,13 +159,13 @@ function show_example()
 	$txt .= "\n可选择书卷范围 例如搜索摩西五经“神 说 @创-申” 或 “神 说 @1-5” 或搜索新约“以赛亚 @40-66”或“以赛亚 @太-启”，搜索福音书“是就说是 @40-43”或“是就说是 @太-约”（支持所有中英文简繁体书卷名和缩写格式和数字序号），需要将这个选项放在最后\n";
 	$txt .= "\n可使用斜线设定输出选项，例如 /E /EN 发送英文 /C /CN 简体中文 /T /TW 繁体中文 /P /PINYIN 拼音译本 /NCVS /LCVS /BBE /KJV1611 /UKJV  不同译本，/s 显示原文编码\n";
 	$txt .= "\n获取帮助请发送发送问号？字符h或数字1\n";
-	$txt .= "\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://godwithus.cn/wiki/BibleEngine\n";
-	$txt .=  "查询百科请关注 基督徒百科微信公众版 CCBible 查询圣经请关注 歌珊地圣经引擎微信公众版 BibleEngine\n@基督徒百科@歌珊地圣经引擎";
+	$txt .= "\n详细帮助请参阅基督徒百科的圣经引擎词条 http://godwithus.cn/wiki/BibleEngine\n";
+	$txt .=  "查询百科请关注 基督徒百科微信公众版 CCBible 查询圣经请关注 圣经引擎微信公众版 BibleEngine\n@基督徒百科@圣经引擎";
 	return $txt;
 }
 function show_help()
 {
-	$txt="歌珊地圣经引擎微信公众版使用帮助\n\n";
+	$txt="圣经引擎微信公众版使用帮助\n\n";
 	$txt .="(查询百科和接收今日真道圣言请关注 基督徒百科 CCBible)\n\n";
 	$txt .="请发送圣经搜索关键词或圣经章节索引查询。\n例如：“是就说是” “上帝爱世人” “耶稣 Christ 保羅”，或“太1” “約3：16-18” “Mic 6:8;约3:16” 等（不含引号）。支持中文简体繁体和英文大小写的混合输入，兼容半角和全角的标点符号。\n";
 	$txt .= "\n可选择书卷范围 例如“神 说 @创” 或 “神 说 @出-利” 或“以赛亚 @40-66”（支持所有中英文简繁体书卷名和缩写格式和数字序号），需要将这个选项放在最后\n";
@@ -173,8 +173,8 @@ function show_help()
 	$txt .= "\n获取帮助请发送发送问号？字符h或数字1\n";
 	$txt .= "\n发送问号 ? 开头的信息不自动回复，将保存并由同工手动回复，欢迎发送属灵问题或者代祷需求，使用问题反馈和改进意见建议。\n";
 	$txt .= "\n附圣经书卷编号 创1, 出2, 利3, 民4, 申5, 书6, 士7, 得8, 撒上9, 撒下10, 王上11, 王下12, 代上13, 代下14, 拉15, 尼16, 斯17, 伯18, 诗19, 箴20, 传21, 歌22, 赛23, 耶24, 哀25, 结26, 但27, 何28, 珥29, 摩30, 俄31, 拿32, 弥33, 鸿34, 哈35, 番36, 该37, 亚38, 玛39, 太40, 可41, 路42, 约43, 徒44, 罗45, 林前46, 林后47, 加48, 弗49, 腓50, 西51, 帖前52, 帖后53, 提前54, 提后55, 多56, 门57, 来58, 雅59, 彼前60, 彼后61, 约一62, 约二63, 约三64, 犹65, 启66\n";
-	$txt .= "\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://godwithus.cn/wiki/BibleEngine\n";
-	$txt .=  "查询百科请关注 基督徒百科微信公众版 CCBible 查询圣经请关注 歌珊地圣经引擎微信公众版 BibleEngine\n@基督徒百科@歌珊地圣经引擎";
+	$txt .= "\n详细帮助请参阅基督徒百科的圣经引擎词条 http://godwithus.cn/wiki/BibleEngine\n";
+	$txt .=  "查询百科请关注 基督徒百科微信公众版 CCBible 查询圣经请关注 圣经引擎微信公众版 BibleEngine\n@基督徒百科@圣经引擎";
 	return $txt;
 }
 function save_log($MsgID,$fromUsername,$toUsername,$time,$msgType,$keyword)
@@ -225,8 +225,8 @@ function search($q)
 
 	if($q==""|| $q=="subscribe" || $q=="Hello2BizUser")
 	{
-		$txt="欢迎关注，愿上帝赐福！\n@歌珊地圣经引擎 微信号 bibleengine。@基督徒百科 ccbible\n";
-		$txt .=  "可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@歌珊地圣经引擎 bibleengine @基督徒百科 ccbible http://bible.geshandi.com bible@geshandi.com" ;
+		$txt="欢迎关注，愿上帝赐福！\n@圣经引擎 微信号 bibleengine。@基督徒百科 ccbible\n";
+		$txt .=  "可发送搜索关键词或经文章节号查询检索，欢迎您的意见或改进建议\n@圣经引擎 bibleengine @基督徒百科 ccbible http://bible.weiai.ai bible@weiai.ai" ;
 		return $txt;	
 	}
 $book_short=array("", "Gen", "Exod", "Lev", "Num", "Deut", "Josh", "Judg", "Ruth", "1Sam", "2Sam", "1Kgs", "2Kgs", "1Chr", "2Chr", "Ezra", "Neh", "Esth", "Job", "Ps", "Prov", "Eccl", "Song", "Isa", "Jer", "Lam", "Ezek", "Dan", "Hos", "Joel", "Amos", "Obad", "Jonah", "Mic", "Nah", "Hab", "Zeph", "Hag", "Zech", "Mal", "Matt", "Mark", "Luke", "John", "Acts", "Rom", "1Cor", "2Cor", "Gal", "Eph", "Phil", "Col", "1Thess", "2Thess", "1Tim", "2Tim", "Titus", "Phlm", "Heb", "Jas", "1Pet", "2Pet", "1John", "2John", "3John", "Jude", "Rev");
@@ -1808,7 +1808,7 @@ if($index || !$echo_string)
 		$txt .=  "\n" . $echo_string . "\n请发送 发送 问号？ 字符h 或数字 1 获取帮助。\n欢迎回复改进意见和建议";
 	if(strlen($txt)>1970)
 		$txt=mb_strcut($txt,0,1970,'utf-8') . "\n\n内容太长有删节\n";
-	$txt .= "\n@歌珊地圣经引擎\n微信号BibleEngine";
+	$txt .= "\n@圣经引擎\n微信号BibleEngine";
 	return $txt;
 }
 ?>

@@ -37,7 +37,7 @@ function show_tips()
 	$txt .="(微信 BibleEngine iGoshen 和 CCBible 支持菜单可访问 圣经引擎微信触屏版)\n\n";
 	$txt .="因为本引擎目前不是只能自然语言识别，所以请尽量输入空格分隔的会出现在搜索结果中的“关键词”\n";
     $txt .="请不要输入标点符号，也不要输入“章”“节”等，例如请搜索“约3:16”或者“约翰福音3:16”而不是“约翰福音3章”或者“约3章16节”\n";
-    $txt .="如果网速流量许可，请使用触屏版<a href=\"http://engine.geshandi.com\">歌珊地圣经引擎微信触屏版</a>\n";
+    $txt .="如果网速流量许可，请使用触屏版<a href=\"http://bible.weiai.ai\">圣经引擎微信触屏版</a>\n";
 	$txt .= "\n发送问号 ? 开头的信息不自动回复，将保存并由同工手动回复，欢迎发送问题、代祷需求或反馈建议。\n";
 	$txt .= "\n发送数字0开头的信息进入歌珊地圣经问答模块。(开发中)\n";
 	$txt .=  show_hint() . show_banner();
@@ -45,25 +45,25 @@ function show_tips()
 }
 function show_about()
 {
-	$txt="\n【关于我们】\n\n基督徒百科和歌珊地圣经引擎微信公众版\n\n";
-    $txt .="\n 歌珊地圣经引擎——给力的圣经研读和圣经搜索引擎\n Geshandi Bible Engine -- Powerful Bible Study and Bible Search Engine ";
+	$txt="\n【关于我们】\n\n基督徒百科和圣经引擎微信公众版\n\n";
+    $txt .="\n 圣经引擎——给力的圣经研读和圣经搜索引擎\n Bible Engine -- Powerful Bible Study and Bible Search Engine ";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） WCF，威斯敏斯特大要理问答（大要理问答）WLC，威斯敏斯特小要理问答（小要理问答）WSC";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
-	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 歌珊地圣经引擎 BibleEngine ";
-    $txt .= "\n\n我们的微博：@基督徒百科@歌珊地圣经引擎";
+	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 圣经引擎 BibleEngine ";
+    $txt .= "\n\n我们的微博：@基督徒百科@圣经引擎";
     $txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600　学习群226112909";
-    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 https://bible.world//BibleEngine\n";
+    $txt .= "\n\n详细帮助请参阅基督徒百科的圣经引擎词条 https://bible.world//BibleEngine\n";
 	$txt .= "\n\n基督徒百科微信公众版词条 https://bible.world//ccbible\n";
     $txt .= "\n\n联系方式：微博 @如鹰展翼而上 微信 michaelhuo 电邮 michaelhuo@gmail.com 要拉入微信学习群或it群请私信\n";
-    $txt .= "\n请点击访问\n <a href=\"http://engine.geshandi.com\">圣经引擎微信触屏版</a>\n";
+    $txt .= "\n请点击访问\n <a href=\"http://bible.weiai.ai\">圣经引擎微信触屏版</a>\n";
 	$txt .=  show_hint() . show_banner();
 	return $txt;
 }
 function show_banner()
 {
 
-    //$txt =  "\n基督徒百科 CCBible 歌珊地 iGeshandi 歌珊地圣经引擎 BibleEngine\n@基督徒百科@歌珊地科技";
-    $txt = "\n(@基督徒百科@歌珊地圣经引擎)\n";
+    //$txt =  "\n基督徒百科 CCBible 歌珊地  圣经引擎 BibleEngine\n@基督徒百科@圣经科技";
+    $txt = "\n(@基督徒百科@圣经引擎)\n";
 	return $txt;
 }
 function show_hint()
@@ -74,17 +74,17 @@ function show_hint()
 }
 function show_helper()
 {
-	$txt="\n【功能开发中】\n\n基督徒百科和歌珊地圣经引擎微信公众版\n\n";
-    $txt .="\n 歌珊地圣经引擎——给力的圣经研读和圣经搜索引擎\n Geshandi Bible Engine -- Powerful Bible Study and Bible Search Engine ";
+	$txt="\n【功能开发中】\n\n基督徒百科和圣经引擎微信公众版\n\n";
+    $txt .="\n 圣经引擎——给力的圣经研读和圣经搜索引擎\n Bible Engine -- Powerful Bible Study and Bible Search Engine ";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） WCF，威斯敏斯特大要理问答（大要理问答）WLC，威斯敏斯特小要理问答（小要理问答）WSC";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
-	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 歌珊地圣经引擎 BibleEngine";
-    $txt .= "\n\n我们的微博：@基督徒百科@歌珊地圣经引擎";
+	$txt .= "\n\n我们的微信公众号：基督徒百科 CCBible 圣经引擎 BibleEngine";
+    $txt .= "\n\n我们的微博：@基督徒百科@圣经引擎";
     $txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600　学习群226112909";
-    $txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://bible.world/BibleEngine\n";
+    $txt .= "\n\n详细帮助请参阅基督徒百科的圣经引擎词条 http://bible.world/BibleEngine\n";
 	$txt .= "\n\n基督徒百科微信公众版词条 http://bible.world/ccbible\n";
     $txt .= "\n\n联系方式：微博 @如鹰展翼而上 微信 michaelhuo 电邮 michaelhuo@gmail.com QQ 38799316 要拉入微信学习群或it群请私信\n";
-    $txt .= "\n请点击访问\n <a href=\"http://engine.geshandi.com\">圣经引擎微信触屏版</a>\n";
+    $txt .= "\n请点击访问\n <a href=\"http://bible.weiai.ai\">圣经引擎微信触屏版</a>\n";
 	$txt .=  show_hint() . show_banner();
 	return $txt;
 }
@@ -252,7 +252,7 @@ class wechatCallbackapiTest
 						}
 						//$msg=save_user($fromUsername, true);
 						//$contentStr .= "\n$msg";
-						//$contentStr="歌珊地圣经引擎 微信公众平台 bibleengine http://bible.geshandi.com";
+						//$contentStr="圣经引擎 微信公众平台 bibleengine http://bible.weiai.ai";
 					//}
 
                 }else{

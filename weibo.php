@@ -117,11 +117,11 @@ if (!empty($post_msg_str)) {
         	$weiboID = $msgData['key'];
             //$contentStr="您说：$keyword";
             if($receiver_id=="2764142363"){
-            	$keyword=str_replace("@歌珊地圣经引擎","",$keyword);
+            	$keyword=str_replace("@圣经引擎","",$keyword);
             }else if($receiver_id=="1797538110"){
                 $keyword=str_replace("@基督徒百科","",$keyword);
             }else if($receiver_id=="2780859372"){
-                $keyword=str_replace("@歌珊地科技","",$keyword);
+                $keyword=str_replace("@圣经科技","",$keyword);
             }
             
         }
@@ -164,7 +164,7 @@ if (!empty($post_msg_str)) {
 						}
 						//$msg=save_user($fromUsername, true);
 						//$contentStr .= "\n$msg";
-						//$contentStr="歌珊地圣经引擎 微信公众平台 bibleengine http://bible.geshandi.com";
+						//$contentStr="圣经引擎 微信公众平台 bibleengine http://bible.weiai.ai";
 					//}
   
 
@@ -261,22 +261,22 @@ function show_help()
 }
 function show_about()
 {
-	$txt="\n【关于我们】\n\n基督徒百科歌珊地圣经引擎粉丝服务平台\n\n";
-    $txt .="\n 歌珊地圣经引擎——给力的圣经研读查经和圣经搜索引擎\n " . (isset($engine_name_en) ? $engine_name_en : 'Goshen Bible Engine') . " -- Powerful Bible Study and Bible Search Engine ";
+	$txt="\n【关于我们】\n\n基督徒百科圣经引擎粉丝服务平台\n\n";
+    $txt .="\n 圣经引擎——给力的圣经研读查经和圣经搜索引擎\n " . (isset($engine_name_en) ? $engine_name_en : 'Bible Engine') . " -- Powerful Bible Study and Bible Search Engine ";
 	$txt .= "\n我们的信条：威斯敏斯特信条（西敏信条） wcf，威斯敏斯特大要理问答（大要理问答）wlc，威斯敏斯特小要理问答（小要理问答）wsc";
     $txt .= "\n我们也认信：使徒信经 尼西亚信经 亚他那修信经 海德堡要理问答hc 比利时信条bc 多特法典cd 芝加哥圣经无误宣言";
-    $txt .= "\n\n我们的微博：@基督徒百科@如鹰展翼而上@歌珊地圣经引擎";
+    $txt .= "\n\n我们的微博：@基督徒百科@如鹰展翼而上@圣经引擎";
     //$txt .= "\n\n我们的信望爱团契千人QQ群：福音群4619600 　学习群226112909 　团契群89857902 　神学群81591230 　商务群226112700";
-    //$txt .= "\n\n详细帮助请参阅基督徒百科的歌珊地圣经引擎词条 http://baike.jidutu.org/wiki/BibleEngine\n";
+    //$txt .= "\n\n详细帮助请参阅基督徒百科的圣经引擎词条 http://baike.jidutu.org/wiki/BibleEngine\n";
     //$txt .= "\n\n基督徒百科词条 http://baike.jidutu.org/wiki/ccbible\n";
-    //$txt .= "\n\n联系方式：微博 @如鹰展翼而上@歌珊地圣经引擎 电邮 huo@live.cn QQ 38799316\n";
+    //$txt .= "\n\n联系方式：微博 @如鹰展翼而上@圣经引擎 电邮 huo@live.cn QQ 38799316\n";
 	$txt .=  show_hint() . show_banner();
 	return $txt;
 }
 function show_banner()
 {
 
-	$txt =  "\n(@歌珊地圣经引擎)\n";
+	$txt =  "\n(@圣经引擎)\n";
 	return $txt;
 }
 function show_hint()

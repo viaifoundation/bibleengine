@@ -40,9 +40,9 @@ function getEnvironmentConfig(): array {
             'wiki_base' => 'https://bible.world/w',
             'wiki_search_base' => 'https://bible.world/w',
             'github_url' => 'https://github.com/viaifoundation/bibleengine',
-            'engine_name_en' => 'Goshen Bible Engine (Dev)',
-            'engine_name_cn' => '歌珊地圣经引擎 (开发版)',
-            'copyright_text' => '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation',
+            'engine_name_en' => 'Bible Engine (Dev)',
+            'engine_name_cn' => '圣经引擎 (开发版)',
+            'copyright_text' => '2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation',
         ];
     } else {
         // Production configuration
@@ -54,9 +54,9 @@ function getEnvironmentConfig(): array {
             'wiki_base' => 'https://bible.world/w',
             'wiki_search_base' => 'https://bible.world/w',
             'github_url' => 'https://github.com/viaifoundation/bibleengine',
-            'engine_name_en' => 'Goshen Bible Engine',
-            'engine_name_cn' => '歌珊地圣经引擎',
-            'copyright_text' => '2004-2024 歌珊地科技 Goshen Tech, 2025-2026 唯爱AI基金会 VI AI Foundation',
+            'engine_name_en' => 'Bible Engine',
+            'engine_name_cn' => '圣经引擎',
+            'copyright_text' => '2004-2024 圣经科技 Bible Tech, 2025-2026 唯爱AI基金会 VI AI Foundation',
         ];
     }
 }
