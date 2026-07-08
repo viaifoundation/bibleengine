@@ -29,10 +29,10 @@ $max_record_count = 500;
 $max_book_count = 10;
 $wiki_base = 'https://bible.world/w';
 $wiki_search_base = 'https://bible.world/w'; // Wiki search redirect base
-$short_url_base = 'https://bibleengine.ai';
-$long_url_base = 'https://bibleengine.ai';
-$img_url = 'https://bibleengine.ai'; // Image/asset base URL
-$sitename = 'BibleEngine.ai';
+$short_url_base = 'https://bible.weiai.ai';
+$long_url_base = 'https://bible.weiai.ai';
+$img_url = 'https://bible.weiai.ai'; // Image/asset base URL
+$sitename = 'bible.weiai.ai';
 // Engine names - will be set from translations if lang.php is loaded
 $engine_name_en = 'Bible Engine AI'; // English engine name (fallback)
 $engine_name_cn = function_exists('t') ? t('engine_name') : '圣经引擎'; // Chinese engine name (from translations)

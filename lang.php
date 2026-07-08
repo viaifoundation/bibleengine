@@ -621,7 +621,7 @@ function getEnvironmentSwitcher(): string {
     
     if ($current_env === 'dev') {
         // Currently on dev, show link to production
-        $target_url = 'https://bibleengine.ai' . $current_url . $query_string;
+        $target_url = 'https://bible.weiai.ai' . $current_url . $query_string;
         $link_text = t('production_full');
         return '<a href="' . htmlspecialchars($target_url) . '" title="' . htmlspecialchars(t('production')) . '">' . htmlspecialchars($link_text) . '</a>';
     } else {
