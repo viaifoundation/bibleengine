@@ -6,19 +6,19 @@ if (!function_exists('t')) {
 require_once("config.php")?>
 <?php if(!$portable) { ?>
 <center><div align="center">
-<table border=0><tr>
-<td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="31" /></a> </td>
-<td><?php 
-if (function_exists('t')) {
-    $engine_name = t('engine_name');
-    $engine_tagline = t('engine_tagline');
-    // Show only the current language
-    echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline);
-} else {
-    echo isset($engine_name_full) ? $engine_name_full : '<b>圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Bible Engine</b> -- Powerful Agentic Bible Study and Search Engine';
-}
-?></td>
-</tr></table>
+<div style="margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+  <div><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="31" /></a></div>
+  <div style="font-size: 16px; font-weight: normal;"><?php 
+  if (function_exists('t')) {
+      $engine_name = t('engine_name');
+      $engine_tagline = t('engine_tagline');
+      // Show only the current language
+      echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline);
+  } else {
+      echo isset($engine_name_full) ? $engine_name_full : '<b>圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Bible Engine</b> -- Powerful Agentic Bible Study and Search Engine';
+  }
+  ?></div>
+</div>
 <br/><br/>
 <a href="<?php echo $long_url_base?>"><?php echo $sitename?></a> 
 |
@@ -30,26 +30,25 @@ echo $wiki_help_url;
 <a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo function_exists('t') ? t('source_code_full') : '源码 Source Code'; ?></a>
 |
 <a href="https://viaifoundation.org" target="_blank"><?php echo function_exists('t') ? t('viai_foundation') : '唯爱AI基金会 VI AI Foundation'; ?></a>
-<?php if (function_exists('getEnvironmentSwitcher')) echo ' | ' . getEnvironmentSwitcher(); ?>
 <?php if (function_exists('getLanguageSwitcher')) echo ' | ' . getLanguageSwitcher(); ?>
  
 </div></center>
 </p>
 <?php }else{ ?>
 <center><div align="center">
-<table border=0><tr>
-<td><p><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="31" /></a> </td>
-<td><?php 
-if (function_exists('t')) {
-    $engine_name = t('engine_name');
-    $engine_tagline = t('engine_tagline');
-    // Show only the current language
-    echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline);
-} else {
-    echo isset($engine_name_full) ? $engine_name_full : '<b>圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Bible Engine</b> -- Powerful Agentic Bible Study and Search Engine';
-}
-?></td>
-</tr></table>
+<div style="margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+  <div><a href="<?php echo $long_url_base?>"><img src="<?php echo $logo?>" alt="<?php echo $title?>" longdesc="<?php echo $title?>" border="0" height="31" width="31" /></a></div>
+  <div style="font-size: 16px; font-weight: normal;"><?php 
+  if (function_exists('t')) {
+      $engine_name = t('engine_name');
+      $engine_tagline = t('engine_tagline');
+      // Show only the current language
+      echo '<b>' . htmlspecialchars($engine_name) . '</b>——' . htmlspecialchars($engine_tagline);
+  } else {
+      echo isset($engine_name_full) ? $engine_name_full : '<b>圣经引擎</b>——给力的圣经研读和圣经搜索引擎 <br/> <b>Bible Engine</b> -- Powerful Agentic Bible Study and Search Engine';
+  }
+  ?></div>
+</div>
 <br/><a href="<?php echo $long_url_base?>"><?php echo $sitename?></a>
 <a href="../"><?php echo function_exists('t') ? t('web_version_full') : '网页版 Web'; ?></a> |
 <a href="<?php 
@@ -58,7 +57,6 @@ echo $wiki_help_url;
 ?>"><?php echo function_exists('t') ? t('help_full') : '帮助 Help'; ?></a> |
 <a href="<?php echo isset($github_url) ? $github_url : 'https://github.com/viaifoundation/bibleengine'; ?>" target="_blank"><?php echo function_exists('t') ? t('source_code_full') : '源码 Source Code'; ?></a> |
 <a href="https://viaifoundation.org" target="_blank"><?php echo function_exists('t') ? t('viai_foundation') : '唯爱AI基金会 VI AI Foundation'; ?></a>
-<?php if (function_exists('getEnvironmentSwitcher')) echo ' | ' . getEnvironmentSwitcher(); ?>
 <?php if (function_exists('getLanguageSwitcher')) echo ' | ' . getLanguageSwitcher(); ?>
 </div></center>
 
